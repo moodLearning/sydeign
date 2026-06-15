@@ -30,7 +30,6 @@ export async function loader(args: Route.LoaderArgs) {
 async function loadCriticalData({context}: Route.LoaderArgs) {
   const [{collections}] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   return {
@@ -48,7 +47,6 @@ function loadDeferredData({context}: Route.LoaderArgs) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error: Error) => {
-      // Log query errors, but don't throw them so the page can still render
       console.error(error);
       return null;
     });
@@ -64,6 +62,21 @@ export default function Homepage() {
     <div className="home">
       {data.isShopLinked ? null : <MockShopNotice />}
       <FeaturedCollection collection={data.featuredCollection} />
+      
+      {/* ⚡ FIXED: Clean syntax comment block below */}
+      {/* New Featured Designers CTA Section */}
+      <section className="designers-cta-section my-12 text-center p-8 bg-gray-50 rounded-xl">
+        <h2 className="text-2xl font-bold mb-2">Curate Your Feed</h2>
+        <p className="text-gray-600 mb-6">Follow your favorite designers and get a custom product feed tailored to your style.</p>
+        
+        <Link 
+          to="/account/designers" 
+          className="inline-block bg-black text-white px-6 py-3 font-medium rounded-md hover:bg-gray-800 transition-colors duration-200 shadow-sm"
+        >
+          View Your Designers
+        </Link>
+      </section>
+
       <RecommendedProducts products={data.recommendedProducts} />
     </div>
   );
@@ -175,3 +188,4 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     }
   }
 ` as const;
+

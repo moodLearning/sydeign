@@ -1,4 +1,4 @@
-import {redirect, useLoaderData} from 'react-router';
+import {useLoaderData, useFetcher} from 'react-router';
 import type {Route} from './+types/products.$handle';
 import {
   getSelectedProductOptions,
@@ -24,19 +24,11 @@ export const meta: Route.MetaFunction = ({data}) => {
 };
 
 export async function loader(args: Route.LoaderArgs) {
-  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
   return {...deferredData, ...criticalData};
 }
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- */
 async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   const {handle} = params;
   const {storefront} = context;
@@ -49,14 +41,12 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
     storefront.query(PRODUCT_QUERY, {
       variables: {handle, selectedOptions: getSelectedProductOptions(request)},
     }),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   if (!product?.id) {
     throw new Response(null, {status: 404});
   }
 
-  // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, {handle, data: product});
 
   return {
@@ -64,32 +54,25 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   };
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
 function loadDeferredData({context, params}: Route.LoaderArgs) {
-  // Put any API calls that is not critical to be available on first page render
-  // For example: product reviews, product recommendations, social feeds.
-
   return {};
 }
 
 export default function Product() {
   const {product} = useLoaderData<typeof loader>();
+  const fetcher = useFetcher();
 
-  // Optimistically selects a variant with given available variant information
+  const designerName = product.metafield?.value;
+  const isLoading = fetcher.state !== 'idle';
+
+  // Optimistically selects a variant
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
     getAdjacentAndFirstAvailableVariants(product),
   );
 
-  // Sets the search param to the selected variant without navigation
-  // only when no search params are set in the url
   useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
 
-  // Get the product options array
   const productOptions = getProductOptions({
     ...product,
     selectedOrFirstAvailableVariant: selectedVariant,
@@ -120,6 +103,7 @@ export default function Product() {
         <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
         <br />
       </div>
+
       <Analytics.ProductView
         data={{
           products: [
@@ -135,9 +119,33 @@ export default function Product() {
           ],
         }}
       />
+
+      {/* Renders safely only if a designer actually exists */}
+      {designerName && (
+        <div className="designer-section" style={{marginTop: '2rem', padding: '1rem', border: '1px solid #ccc'}}>
+          <p>Designer: {designerName}</p>
+          
+          {/* Submits to the dedicated API route to prevent Storefront Schema Codegen errors */}
+          <fetcher.Form method="POST" action="/api/follow">
+            <input type="hidden" name="designerName" value={designerName} />
+            <button type="submit" disabled={isLoading}>
+              {isLoading ? 'Following...' : 'Follow Designer'}
+            </button>
+          </fetcher.Form>
+
+          {fetcher.data?.error && (
+            <p className="text-red-500 error-msg" style={{color: 'red'}}>{fetcher.data.error}</p>
+          )}
+          {fetcher.data?.success && (
+            <p className="text-green-500 success-msg" style={{color: 'green'}}>Successfully followed!</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
+
+// --- GRAPHQL QUERIES ---
 
 const PRODUCT_VARIANT_FRAGMENT = `#graphql
   fragment ProductVariant on ProductVariant {
@@ -206,15 +214,7 @@ const PRODUCT_FRAGMENT = `#graphql
     selectedOrFirstAvailableVariant(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {
       ...ProductVariant
     }
-    adjacentVariants (selectedOptions: $selectedOptions) {
-      ...ProductVariant
-    }
-    seo {
-      description
-      title
-    }
   }
-  ${PRODUCT_VARIANT_FRAGMENT}
 ` as const;
 
 const PRODUCT_QUERY = `#graphql
@@ -226,7 +226,13 @@ const PRODUCT_QUERY = `#graphql
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...Product
+      
+      metafield(namespace: "custom", key: "designer") {
+        value
+      }
     }
   }
   ${PRODUCT_FRAGMENT}
+  ${PRODUCT_VARIANT_FRAGMENT}
 ` as const;
+
