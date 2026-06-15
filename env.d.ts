@@ -5,3 +5,15 @@
 
 // Enhance TypeScript's built-in typings.
 import '@total-typescript/ts-reset';
+
+/// <reference types="@remix-run/dev" />
+/// <reference types="@shopify/remix-oxygen" />
+
+declare global {
+  interface Env {
+    PUBLIC_STORE_DOMAIN: string;
+    PUBLIC_STOREFRONT_API_TOKEN: string;
+    PUBLIC_STOREFRONT_API_VERSION: string;
+  }
+}
+
