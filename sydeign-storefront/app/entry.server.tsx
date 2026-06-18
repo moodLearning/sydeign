@@ -1,10 +1,7 @@
 import {ServerRouter} from 'react-router';
 import {isbot} from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
-import {
-  createContentSecurityPolicy,
-  type HydrogenRouterContextProvider,
-} from '@shopify/hydrogen';
+import {createContentSecurityPolicy} from '@shopify/hydrogen';
 import type {EntryContext} from 'react-router';
 
 export default async function handleRequest(
@@ -12,7 +9,7 @@ export default async function handleRequest(
   responseStatusCode: number,
   responseHeaders: Headers,
   reactRouterContext: EntryContext,
-  context: HydrogenRouterContextProvider,
+  context: any,
 ) {
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     shop: {
@@ -20,6 +17,20 @@ export default async function handleRequest(
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
   });
+
+  const customCspHeader = 
+    `${header}; ` + 
+    `img-src 'self' https://cdn.shopify.com https://images.unsplash.com data: blob:; ` +
+    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; ` +
+    `font-src 'self' https://fonts.gstatic.com; ` +
+    `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.shopify.com 'nonce-${nonce}';`;
+
+  const fixedCspHeader = 
+    `${header}; ` + 
+    `img-src 'self' https://cdn.shopify.com https://images.unsplash.com data: blob:; ` +
+    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; ` +
+    `font-src 'self' https://fonts.gstatic.com; ` +
+    `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.shopify.com 'nonce-${nonce}';`;
 
   const body = await renderToReadableStream(
     <NonceProvider>
@@ -44,7 +55,8 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
+  // Pass the properly concatenated CSP string
+  responseHeaders.set('Content-Security-Policy', customCspHeader);
 
   return new Response(body, {
     headers: responseHeaders,

@@ -10,13 +10,12 @@ class ProductController extends Controller
 {
     public function index()
     {
-        return Product::with([
-            'images',
-            'merchant',
-            'category'
-        ])->latest()->get();
-    }
+        $products = Product::with('images')->latest()->get(); 
 
+        return response()->json([
+            'data' => $products
+        ]);
+    }
     public function show($id)
     {
         return Product::with([

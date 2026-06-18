@@ -7,6 +7,26 @@ use App\Models\Product;
 
 class ProductController extends Controller
 {
+    public function index()
+    {
+        // Eager load the 'images' relationship so the frontend grids can render image index [0]
+        $products = Product::with('images')->latest()->get();
+
+        return response()->json([
+            'data' => $products
+        ]);
+    }
+
+    public function show($id)
+    {
+        // Eager loads both your 'images' collection and the related 'merchant' profile 
+        $product = Product::with(['images', 'merchant'])->findOrFail($id);
+
+        return response()->json([
+            'data' => $product
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -38,8 +58,8 @@ class ProductController extends Controller
             'product' => $product
         ]);
     }
-
-    public function myProducts(Request $request){
+    public function myProducts(Request $request)
+    {
         $user = $request->user();
 
         if (!$user->merchant) {
@@ -48,7 +68,7 @@ class ProductController extends Controller
             ], 403);
         }
 
-        $products = Product::where('merchant_id', $user->merchant->id)->get();
+        $products = Product::with('images')->where('merchant_id', $user->merchant->id)->get();
 
         return response()->json([
             'products' => $products
