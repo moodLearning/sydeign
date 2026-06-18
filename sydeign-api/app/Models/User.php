@@ -1,14 +1,8 @@
-<?php
-
-namespace App\Models;
-
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens;
 
     protected $fillable = [
         'first_name',
@@ -23,7 +17,6 @@ class User extends Authenticatable
         'password',
     ];
 
-    // ROLE RELATIONSHIP (many-to-many)
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_roles');
@@ -37,10 +30,5 @@ class User extends Authenticatable
     public function merchant()
     {
         return $this->hasOne(Merchant::class);
-    }
-
-    public function addresses()
-    {
-        return $this->hasMany(Address::class);
     }
 }

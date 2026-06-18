@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Merchant extends Model
 {
     protected $fillable = [
+        'user_id',
         'store_name',
         'store_description',
     ];
