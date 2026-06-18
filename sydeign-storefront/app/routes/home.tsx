@@ -82,7 +82,7 @@ export default function Home() {
 
                 return (
                   <Link to={`/products/${product.id}`} key={product.id} className="bg-[#FFFCEB] rounded-2xl overflow-hidden border border-[#EBECE1] shadow-sm hover:shadow-md transition flex flex-col">
-                    <div className="relative aspect-square bg-[#ECEFE4]">
+                    <div className="relative aspect-square bg-[#ECEFE4] w-full h-56 shrink-0">
                       <img src={displayImage} alt={product.name} className="w-full h-full object-cover" />
                       <button className="absolute top-3 left-3 bg-[#FFFCEB]/80 rounded-full p-1.5 text-xs select-none cursor-not-allowed opacity-60">🛒+</button>
                       <button className="absolute top-3 right-3 bg-[#FFFCEB]/80 rounded-full p-1.5 text-xs select-none cursor-not-allowed opacity-60">❤️</button>

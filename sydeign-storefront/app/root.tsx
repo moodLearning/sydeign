@@ -44,7 +44,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html>
       <head>
-<<<<<<< HEAD
         <Meta />
         <Links />
       </head>
@@ -86,15 +85,4 @@ export function ErrorBoundary() {
       </div>
     </Layout>
   );
-=======
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Sydeign</title>
-      </head>
-      <body>
-        {/* Hydrogen injects routes automatically */}
-      </body>
-    </html>
-  );
->>>>>>> main
 }
