@@ -1,4 +1,5 @@
 import { Form, Link, useSubmit } from 'react-router';
+import { Search, ShoppingCart, Heart, Settings } from 'lucide-react';
 
 export default function Header({ q }: { q?: string }) {
   const submit = useSubmit();
@@ -23,19 +24,29 @@ export default function Header({ q }: { q?: string }) {
             onChange={(e) => submit(e.currentTarget.form)}
             className="w-full bg-[#FAFAF2] border border-[#BAC3A1] rounded-full px-6 py-2 text-[#4B6B40] focus:outline-none focus:ring-1 focus:ring-[#4B6B40] placeholder-[#A3AF8A]"
           />
-          <span className="absolute right-4 top-2.5 text-[#4B6B40]">🔍</span>
+          <span className="absolute right-4 top-2.5 text-[#4B6B40]">
+            <Search className="w-5 h-5 stroke-[2.5]" />
+          </span>
         </Form>
       </div>
 
       <nav className="flex items-center gap-8 text-[#4B6B40] font-medium ml-8">
+        <Link to="/home" className="hover:text-[#2C4124]">Home</Link>
         <Link to="/products" className="hover:text-[#2C4124]">Products</Link>
-        <Link to="/shops" className="hover:text-[#2C4124]">Shops</Link>
-        <a href="#contact" className="hover:text-[#2C4124]">Contact</a>
+        <Link to="/designers" className="hover:text-[#2C4124]">Designers</Link>
+        <Link to="/about" className="hover:text-[#2C4124]">About Us</Link>
+        <Link to="/contact" className="hover:text-[#2C4124]">Contact Us</Link>
         
-        <div className="flex items-center gap-4 ml-4 text-xl select-none">
-          <span title="Cart feature coming soon" className="cursor-not-allowed opacity-60">🛒</span>
-          <span title="Wishlist feature coming soon" className="cursor-not-allowed opacity-60">❤️</span>
-          <span title="Settings feature coming soon" className="cursor-not-allowed opacity-60">⚙️</span>
+        <div className="flex items-center gap-4 ml-4 text-xl select-none text-[#4B6B40]">
+          <span title="Cart feature coming soon" className="cursor-not-allowed opacity-60 hover:text-[#2C4124] transition-colors">
+            <ShoppingCart className="w-6 h-6" />
+          </span>
+          <span title="Wishlist feature coming soon" className="cursor-not-allowed opacity-60 hover:text-[#2C4124] transition-colors">
+            <Heart className="w-6 h-6" />
+          </span>
+          <span title="Settings feature coming soon" className="cursor-not-allowed opacity-60 hover:text-[#2C4124] transition-colors">
+            <Settings className="w-6 h-6" />
+          </span>
         </div>
       </nav>
     </header>

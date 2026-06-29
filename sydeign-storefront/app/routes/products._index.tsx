@@ -1,172 +1,96 @@
-import { useLoaderData, Link } from 'react-router';
-import type { LoaderFunctionArgs } from 'react-router';
-import { useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-interface ProductImage {
-  id: number;
-  image_url: string;
-}
+export default function ProductsIndex() {
+  const categories = [
+    'Rings', 'Necklaces', 'Bracelets', 'Earrings', 'Brooches', 
+    'Toe Rings', 'Cufflinks', 'Anklets', 'Body Jewelry', 'Hair Jewelry', 'Armlets'
+  ];
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  currency: string;
-  images?: ProductImage[];
-}
-
-export async function loader({ context, request }: LoaderFunctionArgs) {
-  const apiBase = context.env?.PUBLIC_LARAVEL_API_URL || 'http://localhost:8000';
-  
-  try {
-    const response = await fetch(`${apiBase}/api/products`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) throw new Error('Failed to retrieve catalog metadata');
-    
-    const rawData = await response.json();
-    const rawDataObject = rawData as { data?: unknown[] };
-
-    const arrayData = Array.isArray(rawData) 
-      ? rawData 
-      : (rawDataObject.data || []);
-
-    const sanitizedProducts = arrayData.map((item: any) => ({
-      id: Number(item?.id || 0),
-      name: String(item?.name || 'Unnamed Item'),
-      price: Number(item?.price || 0),
-      currency: String(item?.currency || 'Php'),
-      images: Array.isArray(item?.images) 
-        ? item.images.map((img: any) => ({
-            id: Number(img?.id || 0),
-            image_url: String(img?.image_url || ''),
-          }))
-        : [],
-    }));
-
-    return { products: sanitizedProducts };
-
-  } catch (error) {
-    console.error('Laravel Data Fetch Error:', error);
-    return { products: [] };
-  }
-}
-
-export default function ProductsList() {
-  const { products } = useLoaderData<typeof loader>();
-
-  // Internal Search State
-  const [searchQuery, setSearchQuery] = useState('');
-
-  // Tracks the slicing limit purely and directly
-  const [visibleCount, setVisibleCount] = useState(10);
-
-  // 1. Filter products based on search query
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  // 2. Slice only the visible count from filtered items
-  const visibleProducts = filteredProducts.slice(0, visibleCount);
-
-  const loadMore = () => {
-    setVisibleCount((prevCount) => {
-      const nextCount = prevCount + 10;
-      return Math.min(nextCount, filteredProducts.length);
-    });
-  };
+  const popularProducts = [
+    { id: 'p1', title: 'Handmade Water Jug', price: '₱ 200.00', image: 'https://images.unsplash.com/photo-1578749556568-bc2c40e6d661?w=500' },
+    { id: 'p2', title: 'Handmade Water Jug', price: '₱ 200.00', image: 'https://images.unsplash.com/photo-1611082260246-302a80b263b6?w=500' },
+  ];
 
   return (
-    <div className="bg-[#FAF9F0] min-h-screen flex flex-col">
-      <Header />
-      
-      <div className="w-full h-48 bg-[#ECEEE3] relative overflow-hidden flex items-center justify-center">
-        <div className="opacity-40 text-center font-serif tracking-widest text-lg">
-          MODERN CURATED CRAFTS & ARTWORKS BANNER
+    <div>
+    <section className="relative w-screen py-12 md:py-32 flex items-center justify-center bg-gray-100 overflow-hidden">
+      <img 
+        src={"/hero.png"} 
+        alt="Sydeign Banner" 
+        className="absolute inset-0 w-full h-full object-cover opacity-100"
+      />
+    </section>
+
+    <div className="max-w-7xl mx-auto px-6 py-12 flex gap-12">
+      {/* Sidebar Filters */}
+      <aside className="w-64 hidden md:block shrink-0">
+        <h2 className="text-xl font-bold text-gray-700 mb-6 flex items-center gap-2">
+          <span className="text-amber-600">▼</span> Categories
+        </h2>
+        <ul className="space-y-3">
+          {categories.map((cat) => (
+            <li key={cat}>
+              <label className="flex items-center gap-3 text-gray-700 cursor-pointer hover:text-black">
+                <input type="checkbox" className="rounded border-gray-300 text-amber-600 focus:ring-amber-500" />
+                {cat}
+              </label>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-10 border-t pt-6">
+          <h3 className="font-bold text-gray-700 mb-4">Price Range</h3>
+          <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+            <span>₱1,000</span>
+            <span>₱10,000</span>
+          </div>
+          <input type="range" min="1000" max="10000" className="w-full accent-amber-600" />
+          <button className="mt-4 w-full bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 rounded text-sm font-medium border border-gray-300">
+            APPLY
+          </button>
         </div>
+      </aside>
+
+      {/* Main Catalog View */}
+      <div className="flex-1">
+        {/* Header Banner */}
+        <div className="relative h-48 bg-emerald-950 rounded-lg overflow-hidden mb-12 flex items-center justify-center">
+          <img 
+            src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=1400&q=80" 
+            alt="Banner" 
+            className="absolute inset-0 w-full h-full object-cover opacity-50"
+          />
+          <h1 className="relative z-10 text-5xl font-serif text-white tracking-wide">RINGS</h1>
+        </div>
+
+        {/* Section: Popular Products */}
+        <section className="mb-16">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">Popular Products</h2>
+            <Link to="#" className="text-sm text-gray-600 hover:underline">See All</Link>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            {popularProducts.map((p) => (
+              <Link key={p.id} to={`/products/${p.id}`} className="border rounded-lg p-3 bg-white shadow-sm hover:shadow transition">
+                <div className="aspect-square bg-gray-50 overflow-hidden rounded mb-3">
+                  <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
+                </div>
+                <h3 className="text-sm font-medium text-gray-800 truncate">{p.title}</h3>
+                <p className="text-gray-500 text-xs mt-1">Nida Bacaling</p>
+                <div className="flex justify-between items-center mt-2">
+                  <span className="font-bold text-sm">{p.price}</span>
+                  <div className="flex gap-2 text-gray-400">
+                    <button>♡</button>
+                    <button>🛒</button>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
       </div>
-
-      <main className="max-w-7xl mx-auto w-full p-8 flex-grow">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-          <h1 className="text-3xl font-serif font-bold text-[#4B6B40]">Products</h1>
-          
-          {/* Local Search Bar */}
-          <div className="w-full md:w-80">
-            <input 
-              type="text" 
-              placeholder="Search local crafts & arts..." 
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                setVisibleCount(10); // Reset pagination slicing window on search
-              }}
-              className="w-full px-4 py-2.5 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#4B6B40] bg-white shadow-sm text-sm"
-            />
-          </div>
-        </div>
-
-        <div className="bg-white p-4 rounded-xl border border-gray-200 mb-6 text-sm font-mono">
-          Total Found: <span className="text-blue-600 font-bold">{filteredProducts.length}</span> | 
-          Currently Showing: <span className="text-green-600 font-bold">{visibleProducts.length}</span>
-        </div>
-
-        {filteredProducts.length === 0 ? (
-          <div className="text-center py-20 text-gray-500">
-            No items matching your criteria found in the database catalog.
-          </div>
-        ) : (
-          <>
-            {/* Fixed height grid constraint layer */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-              {visibleProducts.map((product) => {
-                const fallbackImg = 'https://via.placeholder.com/400x400/E3785E/ffffff?text=Sydeign+Art';
-                const displayImage = product.images?.[0]?.image_url || fallbackImg;
-
-                return (
-                  <Link 
-                    to={`/products/${product.id}`} 
-                    key={product.id} 
-                    className="bg-[#FFFCEB] rounded-2xl overflow-hidden border border-[#EBECE1] shadow-sm hover:shadow-md transition flex flex-col h-[360px]"
-                  >
-                    <div className="relative w-full h-56 shrink-0">
-                      <img src={displayImage} alt={product.name} className="w-full h-full object-cover" />
-                    </div>
-                    <div className="p-4 flex justify-between items-center mt-auto h-20 border-t border-[#EBECE1]/50">
-                      <h4 className="text-sm font-semibold text-gray-800 line-clamp-2 pr-1">
-                        {product.name}
-                      </h4>
-                      <span className="text-xs font-bold bg-[#E7ECDC] text-[#4B6B40] px-2 py-1 rounded shrink-0">
-                        {product.currency || 'Php'} {Number(product.price).toLocaleString()}
-                      </span>
-                    </div>
-                  </Link>
-                ); 
-              })}
-            </div>
-
-            {visibleCount < filteredProducts.length && (
-              <div className="flex justify-center mt-12 mb-8">
-                <button 
-                  type="button"
-                  onClick={loadMore}
-                  className="bg-emerald-800 text-white px-6 py-3 rounded-md hover:bg-emerald-900 transition shadow-md font-medium"
-                >
-                  Load More Products
-                </button>
-              </div>
-            )}
-          </>
-        )}
-      </main>
-
-      <Footer />
+    </div>
     </div>
   );
 }

@@ -8,7 +8,10 @@ import {
   useRouteError,
 } from 'react-router';
 import type { LinksFunction, MetaFunction } from 'react-router';
+import Header from './components/Header';
+import Footer from './components/Footer';
 import tailwindStyles from './styles/tailwind.css?url';
+import appStyles from "./styles/app.css"; 
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
@@ -17,6 +20,10 @@ export const links: LinksFunction = () => [
     rel: 'preconnect',
     href: 'https://fonts.gstatic.com',
     crossOrigin: 'anonymous',
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap',
   },
   {
     rel: 'stylesheet',
@@ -42,13 +49,16 @@ export const headers = () => {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <head>
+        <meta charSet="utf-8" />
         <Meta />
         <Links />
       </head>
       <body className="font-sans antialiased bg-[#FAF9F0] text-gray-900 min-h-screen flex flex-col">
+        <Header />
         {children}
+        <Footer />
         <ScrollRestoration />
         <Scripts />
       </body>

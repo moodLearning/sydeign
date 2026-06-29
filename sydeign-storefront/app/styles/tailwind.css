@@ -3,4 +3,11 @@
  * https://tailwindcss.com/docs/v4-beta#css-first-configuration
  */
 
+
 @import 'tailwindcss';
+
+@theme {
+  --color-primary: #718560;
+  --color-background: #FFF5E1;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
