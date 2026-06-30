@@ -57,7 +57,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body className="font-sans antialiased bg-[#FAF9F0] text-gray-900 min-h-screen flex flex-col">
         <Header />
-        {children}
+        <main className="flex-1">
+          {children}
+        </main>
         <Footer />
         <ScrollRestoration />
         <Scripts />
