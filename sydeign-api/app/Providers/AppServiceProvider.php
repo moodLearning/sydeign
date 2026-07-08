@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
+
+    
     /**
      * Register any application services.
      */
@@ -22,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        if (str_contains(request()->HttpHost(), 'ngrok-free.dev')) {
+            URL::forceScheme('https');
+        }
         if (str_contains(config('app.url'), 'ngrok')) {
             URL::forceRootUrl(config('app.url'));
             URL::forceScheme('https');

@@ -1,34 +1,49 @@
 import React from 'react';
 
 export default function ContactPage() {
+  const contactBlocks = [
+    { 
+      icon: '📞',
+      label: 'Phone',
+      description: ['(+63 2) - 652 - 5922', '286526922']
+    }, 
+    {
+      icon: '✉️',
+      label: 'Email',
+      description: ['sydeignshop.com']
+    }, 
+    {
+      icon: '📍',
+      label: 'Address',
+      description: ['National Engineering Center, University of the Philippines, Diliman, Quezon City, Philippines']
+    }
+  ];
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16 font-sans">
-      <h1 className="text-4xl font-serif font-light text-center mb-16">Contact us</h1>
+    <div 
+      style={{ 
+        backgroundImage: "url('./contact-background.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+      className="w-screen min-h-[calc(100vh-370.336px)] font-sans pt-16"
+    >     
+      <h2 className="text-4xl font-sans text-center font-bold text-primary mt-16 mb-18">Contact Us</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        {/* Phone */}
-        <div className="border rounded-2xl p-6 text-center shadow-sm flex flex-col items-center justify-center h-48 bg-white">
-          <div className="text-3xl mb-3 text-emerald-700">📞</div>
-          <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 mb-2">Phone</h2>
-          <p className="text-gray-700 text-sm font-medium">(+63 2) - 652 - 5922</p>
-          <p className="text-gray-700 text-sm font-medium">286526922</p>
-        </div>
-
-        {/* Email */}
-        <div className="border rounded-2xl p-6 text-center shadow-sm flex flex-col items-center justify-center h-48 bg-white">
-          <div className="text-3xl mb-3 text-emerald-700">✉️</div>
-          <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 mb-2">Email</h2>
-          <p className="text-gray-700 text-sm font-medium break-all">sydeignshop.com</p>
-        </div>
-
-        {/* Address */}
-        <div className="border rounded-2xl p-6 text-center shadow-sm flex flex-col items-center justify-center h-48 bg-white">
-          <div className="text-3xl mb-3 text-emerald-700">📍</div>
-          <h2 className="text-xs uppercase tracking-wider font-bold text-gray-500 mb-2">Address</h2>
-          <p className="text-gray-700 text-xs leading-relaxed max-w-xs">
-            National Engineering Center, University of the Philippines, Diliman, Quezon City, Philippines
-          </p>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        {contactBlocks.map((block, index) => (
+          <div key={index} className="border rounded-2xl p-8 text-center shadow-sm flex flex-col items-center justify-center h-78 bg-white">
+            <div className="text-4xl mb-3 text-primary">{block.icon}</div>
+            <h2 className="text-2xl uppercase tracking-wider font-bold text-primary mb-2">{block.label}</h2>
+            
+            {block.description.map((line, i) => (
+              <p key={i} className="text-gray-700 text-l font-sans break-keep">
+                {line}
+              </p>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );

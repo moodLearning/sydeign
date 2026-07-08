@@ -1,13 +1,37 @@
-/**
- * Configure Tailwind v4 in this file using CSS variables and directives:
- * https://tailwindcss.com/docs/v4-beta#css-first-configuration
- */
-
-
 @import 'tailwindcss';
+
+@font-face {
+  font-family: "Cinzel Decorative";
+  src: url("./fonts/CinzelDecorative-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cinzel Decorative";
+  src: url("./fonts/CinzelDecorative-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Cinzel Decorative";
+  src: url("./fonts/CinzelDecorative-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
 
 @theme {
   --color-primary: #718560;
   --color-background: #FFF5E1;
+  --color-white: #FEFEFE;
+  --color-orange: #ffd888;
+  --color-rust: #CA643C;
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-cinzel: 'Cinzel Decorative', serif;
+
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 850px;
+  --breakpoint-lg: 1600px;
 }
+

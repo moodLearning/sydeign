@@ -11,24 +11,9 @@ import type { LinksFunction, MetaFunction } from 'react-router';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import tailwindStyles from './styles/tailwind.css?url';
-import appStyles from "./styles/app.css"; 
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
-  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-  {
-    rel: 'preconnect',
-    href: 'https://fonts.gstatic.com',
-    crossOrigin: 'anonymous',
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap',
-  },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap',
-  },
 ];
 
 export const meta: MetaFunction = () => [
@@ -41,8 +26,9 @@ export const meta: MetaFunction = () => [
 export const headers = () => {
   return {
     'Content-Security-Policy': 
-      "default-src 'self' https://cdn.shopify.com https://shopify.com https://images.unsplash.com https://fonts.googleapis.com data: http://localhost:* 'unsafe-inline' 'unsafe-eval'; " +
+      "default-src 'self' https://cdn.shopify.com https://shopify.com https://images.unsplash.com https://fonts.googleapis.com https://fonts.gstatic.com data: http://localhost:* 'unsafe-inline' 'unsafe-eval'; " +
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+      "font-src 'self' https://fonts.gstatic.com; " + // Add this line
       "img-src 'self' https://cdn.shopify.com https://images.unsplash.com data: blob:;",
   };
 };
@@ -55,7 +41,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="font-sans antialiased bg-[#FAF9F0] text-gray-900 min-h-screen flex flex-col">
+      <body className="font-sans antialiased bg-white text-gray-900 min-h-screen flex flex-col">
         <Header />
         <main className="flex-1">
           {children}
@@ -89,7 +75,7 @@ export function ErrorBoundary() {
             : 'An unexpected application error occurred.'}
         </p>
         <a
-          href="/home"
+          href="/"
           className="px-6 py-2.5 bg-[#4B6B40] text-white rounded-full font-medium hover:bg-[#3B5432] transition"
         >
           Return Home

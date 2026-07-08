@@ -6,7 +6,7 @@ export default function Header({ q }: { q?: string }) {
   const submit = useSubmit();
 
   return (
-    <header className="relative z-50 bg-[#FFFCEB] px-8 py-4 flex items-center justify-between border-b border-[#D4D9C1]">
+    <header className="relative z-50 bg-[#FFFCEB] px-8 py-4 flex items-center justify-between border-b border-[#D4D9C1] shadow-md">
       
       {/* LEFT: Logo + Search */}
       <div className="flex items-center gap-12 flex-1">

@@ -7,8 +7,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
-        "kyon147/laravel-shopify": "^27.0",
-        "laravel/framework": "^10.0",
+        "kyon147/laravel-shopify": "*",
+        "laravel/framework": "^13.6",
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^3.0",
         "shopify/shopify-api": "^6.1"
@@ -27,7 +27,10 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "classmap": [
+            "vendor/kyon147/laravel-shopify/src"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

@@ -45,7 +45,6 @@ export function FaqSection() {
               </span>
             </button>
             
-            {/* Height-based reliable reveal transition */}
             <div
               className={`overflow-hidden transition-all duration-300 ease-in-out bg-white ${
                 openFaq === index ? "max-h-96" : "max-h-0"
