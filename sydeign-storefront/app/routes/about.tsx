@@ -3,11 +3,11 @@ import React from 'react';
 export default function AboutPage() {
   return (
 <div>
-    <section className="relative w-screen py-12 md:py-32 flex items-center justify-center bg-gray-100 overflow-hidden">
+    <section className="relative w-screen py-12 md:py-32 flex items-center justify-center bg-white overflow-hidden">
       <img 
         src={"./about-banner.png"} 
         alt="About Us" 
-        className="absolute inset-0 w-full h-full object-cover opacity-100"
+        className="absolute w-screen inset-0 object-cover opacity-100"
       />
     </section>
     <div className="max-w-4xl mx-auto px-6 py-16 font-sans">

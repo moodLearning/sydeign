@@ -2,87 +2,82 @@ import React from "react";
 import { productCategories } from "../data/data";
 import { Funnel } from "lucide-react";
 
-export default function Sidebar({
-  onFilterChange,
-}: {
+interface SidebarProps {
+  activeCategory: string;
   onFilterChange: (cat: string) => void;
-}) {
+}
+
+export default function Sidebar({ activeCategory, onFilterChange }: SidebarProps) {
   return (
-    <aside className="bg-white p-6 pr-13 sticky top-6 z-0">
-     {/*<h2 className="flex items-center gap-2 text-2xl font-semibold text-primary mb-6 p-4">
-        <Funnel size={28} />
-        Categories
-      </h2>
+    <aside className="w-full md:w-80 shrink-0 bg-white border border-gray-100 rounded-2xl p-6 h-fit sticky top-6 shadow-sm z-30">
+      <div>
+        <h2 className="flex items-center gap-2 text-2xl font-semibold text-primary mb-4 pb-2 border-b border-gray-100">
+          <Funnel size={24} />
+          Categories
+        </h2>
+        
+        <ul className="space-y-1">
+          {/* All Products Option */}
+          <li>
+            <button 
+              type="button"
+              onClick={() => onFilterChange('All Products')}
+              className={`w-full text-left py-2.5 px-4 rounded-xl text-lg transition-all cursor-pointer block ${
+                activeCategory === 'All Products' 
+                  ? 'bg-primary/10 text-primary font-bold' 
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+              }`}
+            >
+              All Products
+            </button>
+          </li>
 
-      <div className="space-y-5 px-5">
-        {productCategories.map((cat) => (
-          <label
-            key={cat.name}
-            className="flex items-center gap-5 cursor-pointer text-gray-700 hover:text-primary"
-          >
-            <input
-              type="checkbox"
-              className="w-6 h-6 border-gray-300 rounded"
-              onChange={() => onFilterChange(cat.name)}
-            />
-            <span className="text-xl">{cat.name}</span>
-          </label>
-        ))}
-      </div>*/}
-
-      <div className="p-6">
-            <h2 className="flex items-center gap-2 text-2xl font-semibold text-primary mb-6 p-4">
-              <Funnel size={28} />
-              Categories
-            </h2>
-            <ul>
-              {/* All Products Option */}
-              <li className="mb-2">
-                <button 
-                  onClick={() => onFilterChange('All Products')}
-                  className="flex items-center gap-5 cursor-pointer text-gray-700 text-xl hover:text-primary"
-                >
-                  All Products
-                </button>
-              </li>
-              {productCategories.map((cat) => (
-                <li key={cat.name} className="mb-2">
-                  <button 
-                    onClick={() => onFilterChange(cat.name)}
-                    className="flex items-center gap-5 cursor-pointer text-gray-700 text-xl hover:text-primary"
-                  >
-                    {cat.name}
-                  </button>
-                </li>
-              ))}
-            </ul>
+          {/* Dynamic Category Entries */}
+          {productCategories.map((cat) => (
+            <li key={cat.name}>
+              <button 
+                type="button"
+                onClick={() => onFilterChange(cat.name)}
+                className={`w-full text-left py-2.5 px-4 rounded-xl text-lg transition-all cursor-pointer block ${
+                  activeCategory === cat.name 
+                    ? 'bg-primary/10 text-primary font-bold' 
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+                }`}
+              >
+                {cat.name}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
 
+      <hr className="my-8 border-gray-100" />
 
-      <hr className="my-12" />
+      {/* Price Range Section */}
+      <div>
+        <h2 className="text-2xl font-semibold text-primary mb-4">
+          Price Range
+        </h2>
 
-      <h2 className="flex items-center gap-2 text-2xl font-semibold text-primary mb-6 p-4">
-        Price Range
-      </h2>
+        <input
+          type="range"
+          min="1000"
+          max="10000"
+          className="w-full accent-primary cursor-pointer"
+        />
 
-      <input
-        type="range"
-        min="1000"
-        max="10000"
-        className="w-full mx-4 accent-primary"
-      />
+        <div className="flex justify-between mt-2 mb-6">
+          <span className="text-base font-medium text-gray-500">₱1,000</span>
+          <span className="text-base font-medium text-gray-500">₱10,000</span>
+        </div>
 
-      <div className="flex justify-between mt-2 px-4">
-      <h2 className="flex items-center gap-2 text-2xl font-semibold text-primary mb-6 ">
-        ₱1,000</h2>
-      <h2 className="flex items-center gap-2 text-2xl font-semibold text-primary mb-6">
-        ₱10,000</h2>
+        <button 
+          type="button"
+          className="w-full border-2 border-primary text-primary text-xl font-semibold rounded-xl py-2.5 hover:bg-primary hover:text-white transition-all cursor-pointer"
+        >
+          APPLY
+        </button>
       </div>
-
-      <button className="mt-5 border border-primary text-primary text-2xl rounded mx-20 mb-6 px-15 py-1 hover:bg-primary hover:text-white transition">
-        APPLY
-      </button>
     </aside>
   );
 }
-

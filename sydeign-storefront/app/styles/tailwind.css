@@ -35,3 +35,38 @@
   --breakpoint-lg: 1600px;
 }
 
+@layer components {
+  .hero-title {
+    @apply text-3xl lg:text-6xl font-cinzel text-primary mb-2 lg:mb-8;
+  }
+
+  .section-full-width {
+    @apply shadow-md relative h-[60vh] lg:h-[100vh] flex items-center justify-center bg-gray-200;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+  }
+
+  .section-header {
+    @apply text-5xl font-sans text-center font-bold text-primary mb-2 pb-4;
+  }
+
+  .section-body {
+    @apply text-xl font-sans text-center text-primary mb-2 max-w-4xl mx-auto;
+  }
+
+  .section-subheader {
+    @apply text-3xl text-primary text-left font-bold mb-8 mt-16;
+  }
+
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+  }
+}

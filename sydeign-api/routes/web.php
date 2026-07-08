@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Log;
     })->middleware(['auth.shopify']);
 }); */
 
-Route::middleware(['verify.shopify', 'auth.shopify'])->group(function () {
+Route::middleware(['web','auth.shopify'])->group(function () {
     Route::get('/', function () {
         return view('welcome');
     })->name('home');

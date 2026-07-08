@@ -24,8 +24,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->alias([
-            'auth.shopify' => \Osiset\ShopifyApp\Http\Middleware\VerifyShopify::class,
-            'billable'     => \Osiset\ShopifyApp\Http\Middleware\Billable::class,
+            'auth.shopify'    => \Osiset\ShopifyApp\Http\Middleware\VerifyShopify::class,   // Add this
+            'billable'          => \Osiset\ShopifyApp\Http\Middleware\Billable::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

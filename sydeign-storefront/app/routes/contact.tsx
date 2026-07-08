@@ -31,7 +31,7 @@ export default function ContactPage() {
     >     
       <h2 className="text-4xl font-sans text-center font-bold text-primary mt-16 mb-18">Contact Us</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto pb-40">
         {contactBlocks.map((block, index) => (
           <div key={index} className="border rounded-2xl p-8 text-center shadow-sm flex flex-col items-center justify-center h-78 bg-white">
             <div className="text-4xl mb-3 text-primary">{block.icon}</div>
