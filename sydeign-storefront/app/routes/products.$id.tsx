@@ -15,7 +15,7 @@ export default function ProductPage() {
   useEffect(() => {
     if (product) {
       setSelectedImage(product.image);
-      setQuantity(1); // Reset counter on navigation
+      setQuantity(1); 
     }
   }, [product]);
 
@@ -229,3 +229,6 @@ export default function ProductPage() {
     </div>
   );
 }
+
+
+

@@ -12,6 +12,13 @@ export default {
     executionContext: ExecutionContext,
   ): Promise<Response> {
     try {
+
+      console.log("ENV CHECK");
+      console.log({
+            PUBLIC_STORE_DOMAIN: env.PUBLIC_STORE_DOMAIN,
+            PUBLIC_STOREFRONT_ACCESS_TOKEN: env.PUBLIC_STOREFRONT_ACCESS_TOKEN,
+            PUBLIC_LARAVEL_API_URL: env.PUBLIC_LARAVEL_API_URL,
+      });
       const hydrogenContext = await createHydrogenRouterContext(
         request,
         env,

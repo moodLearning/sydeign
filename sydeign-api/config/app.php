@@ -2,8 +2,6 @@
 
 return [
 
-    'Shopify' => Osiset\ShopifyApp\ShopifyAppProvider::class,
-
     /*
     |--------------------------------------------------------------------------
     | Application Name

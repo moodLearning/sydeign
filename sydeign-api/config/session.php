@@ -18,8 +18,7 @@ return [
     |
     */
 
-    'driver' => 'file',
-    //'driver' => env('SESSION_DRIVER', 'database'),
+    'driver' => env('SESSION_DRIVER', 'database'),
 
     /*
     |--------------------------------------------------------------------------
@@ -170,7 +169,7 @@ return [
     |
     */
 
-    'secure' => true,
+    'secure' => env('SESSION_SECURE_COOKIE'),
 
     /*
     |--------------------------------------------------------------------------
@@ -200,8 +199,7 @@ return [
     |
     */
 
-    //'same_site' => env('SESSION_SAME_SITE', 'lax'),
-    'same_site' => 'none',
+    'same_site' => env('SESSION_SAME_SITE', 'lax'),
 
     /*
     |--------------------------------------------------------------------------
@@ -214,8 +212,7 @@ return [
     |
     */
 
-    //'partitioned' => env('SESSION_PARTITIONED_COOKIE', false),
-    'partitioned' => true,
+    'partitioned' => env('SESSION_PARTITIONED_COOKIE', false),
 
     /*
     |--------------------------------------------------------------------------

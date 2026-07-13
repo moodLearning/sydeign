@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -10,24 +11,16 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {
-        // Enforce cookie properties for Laravel 13 cross-domain storage tracking
-        $middleware->encryptCookies(except: [
-            'shopify_user_state',
-            'shopify_signature',
-        ]);
+    ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->trustProxies(at: '*');
+        $middleware->validateCsrfTokens(except: ['*']);
 
-        $middleware->validateCsrfTokens(except: [
-            'authenticate',
-            'authenticate/*',
-            'webhook/*',
-        ]);
-
-        $middleware->alias([
-            'auth.shopify'    => \Osiset\ShopifyApp\Http\Middleware\VerifyShopify::class,   // Add this
-            'billable'          => \Osiset\ShopifyApp\Http\Middleware\Billable::class,
+        $middleware->web(remove: [
+            \Osiset\ShopifyApp\Http\Middleware\IframeProtection::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
-        //
+    ->withExceptions(function (Exceptions $exceptions): void {
+        $exceptions->shouldRenderJsonWhen(
+            fn (Request $request) => $request->is('api/*'),
+        );
     })->create();

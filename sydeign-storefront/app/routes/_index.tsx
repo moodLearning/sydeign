@@ -49,7 +49,7 @@ const topSellingProducts = products.filter(product =>
           <ButtonAlt label="Explore Now" to="/products" />
         </div>
       </section> 
-      <section className="relative py-16 bg-background border-y border-gray-100 w-full overflow-hidden z-20">
+      <section className="relative py-16 bg-background border-y border-gray-100 w-full overflow-hidden z-20 shadow-inner">
       <div className="max-w-360 mx-auto px-6 md:px-12 relative group">
         
         {/* Section Typography Headers */}
@@ -115,8 +115,8 @@ const topSellingProducts = products.filter(product =>
     </section>
 
       <div className="shadow-md relative w-full bg-white z-20 pb-4">
-        <section className="w-full py-20">
-          <div className="max-w-7xl mx-auto px-8"><DesignerSection /></div>
+        <section className="w-full">
+          <div className="max-w-screen mx-auto"><DesignerSection /></div>
         </section>
       </div>
           

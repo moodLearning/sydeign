@@ -3,35 +3,19 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\URL;
+use Osiset\ShopifyApp\Http\Middleware\IframeProtection;
+use App\Http\Middleware\ShopifyIframeProtection;
 
 class AppServiceProvider extends ServiceProvider
 {
-
-    
-    /**
-     * Register any application services.
-     */
     public function register(): void
+    {
+        // Swap the package's IframeProtection with our safe override
+        $this->app->bind(IframeProtection::class, ShopifyIframeProtection::class);
+    }
+
+    public function boot(): void
     {
         //
     }
-
-    /**
-     * Bootstrap any application services.
-     */
-
-
-    public function boot()
-    {
-        \Illuminate\Support\Facades\URL::forceScheme('https');
-        if (str_contains(request()->HttpHost(), 'ngrok-free.dev')) {
-            URL::forceScheme('https');
-        }
-        if (str_contains(config('app.url'), 'ngrok')) {
-            URL::forceRootUrl(config('app.url'));
-            URL::forceScheme('https');
-        }
-    }
-
 }

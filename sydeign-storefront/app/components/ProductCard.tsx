@@ -14,11 +14,11 @@ interface ProductCardProps {
   product: Product;
 }
 
-{/*export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product }: ProductCardProps) {
   return (
     <Link 
       to={`/products/${product.id}`} 
-      className="w-70 group block rounded-2xl overflow-hidden bg-[#f0f7f6] shadow-md border border-stone-100 transition-transform hover:scale-[1.02]"
+      className="shadow-lg w-70 group block rounded-2xl overflow-hidden bg-[#f0f7f6] shadow-md border border-stone-100 transition-transform hover:scale-[1.02]"
     >
       <div className="aspect-[3/4] w-full overflow-hidden bg-stone-200">
         <img 
@@ -44,9 +44,9 @@ interface ProductCardProps {
       </div>
     </Link>
   );
-}*/}
+}
 
-export function ProductCard({ product }: ProductCardProps) {
+{/* export function ProductCard({ product }: ProductCardProps) {
   // Handle click interception so clicking heart/cart doesn't navigate to details page
   const handleAction = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -63,7 +63,6 @@ export function ProductCard({ product }: ProductCardProps) {
       to={`/products/${product.id}`} 
       className="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm group block transition-all duration-300 hover:shadow-md"
     >
-      {/* Product Image Frame */}
       <div className="h-48 bg-gray-50 relative overflow-hidden">
         <img 
           src={product.image} 
@@ -72,12 +71,10 @@ export function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      {/* Info Details Section */}
       <div className="p-4">
         <div className="text-sm font-semibold text-gray-800 font-mono">₱ {formattedPrice}</div>
         <h4 className="text-xs text-gray-500 font-medium mt-0.5 line-clamp-1">{product.name}</h4>
         
-        {/* Designer Row & Global Microactions */}
         <div className="flex items-center justify-between mt-3 pt-2 border-t border-gray-50">
           <span className="text-[10px] text-gray-400 truncate max-w-[120px]">
             {product.designer}
@@ -102,4 +99,4 @@ export function ProductCard({ product }: ProductCardProps) {
       </div>
     </Link>
   );
-}
+}*/}

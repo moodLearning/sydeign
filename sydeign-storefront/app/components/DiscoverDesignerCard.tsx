@@ -14,7 +14,6 @@ export function DiscoverDesignerCard({ designer, productImage, isAlternate }: Di
         isAlternate ? 'sm:flex-row-reverse' : 'sm:flex-row'
       }`}
     >
-      {/* 1. Portrait Image (Flips to Right on alternate) */}
       <div className="w-full sm:w-[220px] h-[220px] shrink-0 bg-stone-100">
         <img 
           src={designer.image} 
@@ -23,7 +22,6 @@ export function DiscoverDesignerCard({ designer, productImage, isAlternate }: Di
         />
       </div>
 
-      {/* 2. Center Content Block */}
       <div 
         className="flex-1 p-6 md:p-8 text-left bg-no-repeat" 
         style={{ 
@@ -38,7 +36,6 @@ export function DiscoverDesignerCard({ designer, productImage, isAlternate }: Di
         </p>
       </div>
 
-      {/* 3. Product Image Cutout (Flips to Left on alternate) */}
       <div className="w-[180px] h-[180px] shrink-0 p-4 hidden md:flex items-center justify-center">
         <img 
           src={productImage} 
@@ -49,3 +46,4 @@ export function DiscoverDesignerCard({ designer, productImage, isAlternate }: Di
     </div>
   );
 }
+

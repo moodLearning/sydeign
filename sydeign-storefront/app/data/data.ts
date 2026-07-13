@@ -40,7 +40,7 @@ export const designers: Designer[] = [
     id: 'd-jackie',
     name: 'Jackie De Glae',
     handle: '@jackiedeglae',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500',
+    image: '/des1.png',
     bio: 'Miss Universe 2018 Catriona Gray has been a staunch supporter of local weaves. Among her best ensembles are the looks made with the Pisayabit textile, one of which featured the weaving of Julmina Sawadi Juri. Hailed from the Tausug Livelihood community in Parang, Sulu Jolo, the 24-year-old has been weaving Pisayabit for over 15 years, starting as an apprentice to her mother, a Pisayabit master weaver.',
     isFeatured: true,
     rating: '5.0',
@@ -50,7 +50,7 @@ export const designers: Designer[] = [
     id: 'd-nida',
     name: 'Nida Bacaling',
     handle: '@nida_bacaling',
-    image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400',
+    image: '/des2.png',
     bio: 'Specializing in organic and wire-wrapped statement pieces reflecting traditional Visayan lore.',
     isTopRated: true,
     rating: '5.0',
@@ -60,7 +60,7 @@ export const designers: Designer[] = [
     id: 'd-nelia',
     name: 'Nelia Adinale',
     handle: '@nelia_adi',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+    image: '/des3.png',
     bio: 'Pioneering minimalist fine metalsmithing using responsibly sourced Mindanao gold.',
     isTopRated: true,
     rating: '4.0',
@@ -69,7 +69,7 @@ export const designers: Designer[] = [
   {
     id: 'd-evelinda',
     name: 'Evelinda Otong',
-    handle: '@evelinda_otong',
+    handle: '/des4.png',
     image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400',
     bio: 'Integrating native Yakan tapestry designs directly into modern lifestyle accessories.',
     isTopRated: true,
@@ -80,7 +80,7 @@ export const designers: Designer[] = [
     id: 'd-rachel',
     name: 'Rachel Elisier',
     handle: '@rachel_elisier',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400',
+    image: '/des1.png',
     bio: 'Contemporary silver collections capturing raw textures found across coastal ecosystems.',
     isTopRated: true,
     rating: '4.0',
@@ -89,7 +89,7 @@ export const designers: Designer[] = [
   {
     id: 'd-ariosto',
     name: 'Ariosto Dale Ballero',
-    handle: '@ariosto_dale',
+    handle: '/des2.png',
     image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400',
     bio: 'Avant-garde structure design specializing in bold filigree armlets and structural pins.',
     rating: '4.8',
@@ -99,7 +99,7 @@ export const designers: Designer[] = [
     id: 'd-lymuel',
     name: 'Lymuel Baustista',
     handle: '@lymuel_b',
-    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=400',
+    image: 'des3.png',
     bio: 'Eco-conscious designer utilizing recycled copper and wood accents.',
     rating: '4.7',
     reviewsCount: '6k'
@@ -108,7 +108,7 @@ export const designers: Designer[] = [
     id: 'd-kathleen',
     name: 'Kathleen Dagus',
     handle: '@kath_dagus',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400',
+    image: 'des4.png',
     bio: 'Delicate fashion loops, anklets, and intricate crystal hair fixtures.',
     rating: '4.9',
     reviewsCount: '11k'
@@ -117,7 +117,7 @@ export const designers: Designer[] = [
     id: 'd-murdhir',
     name: 'Murdhir Laza',
     handle: '@murdhir_laza',
-    image: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=400',
+    image: 'des1.png',
     bio: 'Traditional metal casting focused on preserving cultural heirloom configurations.',
     rating: '4.6',
     reviewsCount: '7k'
@@ -136,13 +136,18 @@ export interface Product {
 
 export const products: Product[] = [
   { id: '1', name: 'Emerald Pendant', price: 2500, image: '/p (1).png', designer: 'Nida Bacaling', sections: ['onSale', 'popular', 'topSelling'], category: 'Necklaces' },
-  { id: '2', name: 'Butterfly Studs', price: 1200, image: '/p (2).png', designer: 'Nida Bacaling', sections: ['new', 'discovery'], category: 'Earrings' },
+  { id: '11', name: 'Gold Chain', price: 1800, image: '/p (2).png', designer: 'Nida Bacaling', sections: ['popular', 'topSelling'], category: 'Necklaces' },
+  { id: '12', name: 'Silver Layered Necklace', price: 2100, image: '/p (3).png', designer: 'Aris G.', sections: ['new', 'topSelling'], category: 'Necklaces' },
+
+  { id: '2', name: 'Butterfly Studs', price: 1200, image: '/p (2).png', designer: 'Nida Bacaling', sections: ['new', 'discovery', 'topSelling'], category: 'Earrings' },
+  { id: '13', name: 'Pearl Drop Earrings', price: 950, image: '/p (4).png', designer: 'Nida Bacaling', sections: ['popular', 'topSelling'], category: 'Earrings' },
+  { id: '14', name: 'Hoop Gold Earrings', price: 1100, image: '/p (5).png', designer: 'Luxe Wear', sections: ['discovery'], category: 'Earrings' },
+
   { id: '3', name: 'Gold Solitaire Ring', price: 4500, image: '/p (3).png', designer: 'Aris G.', sections: ['popular', 'topSelling'], category: 'Rings' },
+  { id: '15', name: 'Silver Band Ring', price: 800, image: '/p (6).png', designer: 'Aris G.', sections: ['new'], category: 'Rings' },
+  { id: '16', name: 'Diamond Eternity Ring', price: 5500, image: '/p (7).png', designer: 'Luxe Wear', sections: ['topSelling'], category: 'Rings' },
+
   { id: '4', name: 'Minimalist Cuff', price: 850, image: '/p (4).png', designer: 'Luxe Wear', sections: ['new'], category: 'Bracelets' },
-  { id: '5', name: 'Crystal Hair Pins', price: 400, image: '/p (5).png', designer: 'Nida Bacaling', sections: ['discovery'], category: 'Hair Jewelry' },
-  { id: '6', name: 'Silver Anklet Chain', price: 650, image: '/p (6).png', designer: 'Silver Lining', sections: ['onSale', 'discovery', 'topSelling'], category: 'Anklets' },
-  { id: '7', name: 'Vintage Pearl Brooch', price: 1800, image: '/p (7).png', designer: 'Classic Gems', sections: ['popular'], category: 'Brooches' },
-  { id: '8', name: 'Diamond Toe Ring', price: 900, image: '/p (8).png', designer: 'Aris G.', sections: ['new', 'topSelling'], category: 'Toe Rings' },
-  { id: '9', name: 'Engraved Silver Cufflinks', price: 1100, image: '/p (9).png', designer: 'Modern Man', sections: ['popular'], category: 'Cufflinks' },
-  { id: '10', name: 'Gold Body Chain', price: 3200, image: '/p (10).png', designer: 'Luxe Wear', sections: ['new', 'discovery', 'topSelling'], category: 'Body Jewelry' }
+  { id: '17', name: 'Leather Wrap Bracelet', price: 600, image: '/p (8).png', designer: 'Luxe Wear', sections: ['discovery'], category: 'Bracelets' },
+  { id: '18', name: 'Bangle Set', price: 1200, image: '/p (9).png', designer: 'Silver Lining', sections: ['popular'], category: 'Bracelets' },
 ];

@@ -8,7 +8,6 @@ export default function Header({ q }: { q?: string }) {
   return (
     <header className="relative z-50 bg-[#FFFCEB] px-8 py-4 flex items-center justify-between border-b border-[#D4D9C1] shadow-md">
       
-      {/* LEFT: Logo + Search */}
       <div className="flex items-center gap-12 flex-1">
         <Link to="/home" className="hover:opacity-80 transition flex items-center">
           <img
@@ -25,7 +24,7 @@ export default function Header({ q }: { q?: string }) {
             defaultValue={q}
             placeholder="Search products, shops..."
             onChange={(e) => submit(e.currentTarget.form)}
-            className="w-full bg-[#FAFAF2] border border-[#BAC3A1] rounded-full px-6 py-2 text-[#4B6B40] focus:outline-none focus:ring-1 focus:ring-[#4B6B40] placeholder-[#A3AF8A]"
+            className="w-full bg-[#FAFAF2] border border-[#BAC3A1] rounded-full px-6 py-2 text-[#4B6B40] focus:outline-none focus:ring-1 focus:ring-[#4B6B40] placeholder-[#A3AF8A] text-xl font-sans"
           />
           <span className="absolute right-4 top-2.5 text-[#4B6B40] pointer-events-none">
             <Search className="w-5 h-5 stroke-[2.5]" />
@@ -33,8 +32,7 @@ export default function Header({ q }: { q?: string }) {
         </Form>
       </div>
 
-      {/* RIGHT: Navigation */}
-      <nav className="flex items-center gap-8 text-[#4B6B40] font-medium ml-8 relative">
+      <nav className="flex items-center gap-8 text-[#4B6B40] font-sans text-2xl ml-8 relative">
         <Link to="/" className="hover:text-[#2C4124]">Home</Link>
         <Link to="/products" className="hover:text-[#2C4124]">Products</Link>
         <Link to="/designers" className="hover:text-[#2C4124]">Designers</Link>

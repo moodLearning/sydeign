@@ -1,41 +1,33 @@
 <?php
 
-namespace App\Models; 
-
+namespace App\Models;
+use Osiset\ShopifyApp\Contracts\ShopModel as IShopModel;
+use Osiset\ShopifyApp\Traits\ShopModel;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+#[Fillable(['name', 'email', 'password'])]
+#[Hidden(['password', 'remember_token'])]
+class User extends Authenticatable implements IShopModel
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, Notifiable, ShopModel;
 
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'email_address',
-        'username',
-        'password',
-        'phone_number',
-    ];
-
-    protected $hidden = [
-        'password',
-    ];
-
-    public function roles()
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return $this->belongsToMany(Role::class, 'user_roles');
-    }
-
-    public function customer()
-    {
-        return $this->hasOne(Customer::class);
-    }
-
-    public function merchant()
-    {
-        return $this->hasOne(Merchant::class);
+        return [
+            'email_verified_at' => 'datetime',
+            //'password' => 'hashed',
+        ];
     }
 }

@@ -41,7 +41,7 @@ export function DesignerCard({ designer }: DesignerCardProps) {
           </div>
           {/* Rating & Review Count */}
           <span className="text-stone-600 font-medium">
-            {designer.rating} <span className="text-stone-400">({designer.reviewCount})</span>
+            {designer.rating} <span className="text-stone-400">({designer.reviewsCount})</span>
           </span>
         </div>
       </div>

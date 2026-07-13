@@ -96,7 +96,7 @@ return [
     | If you need to keep User model intact, add custom auth provider and route middlewares for it
     |
     */
-    'shop_auth_provider' => 'shops',
+    'shop_auth_provider' => env('SHOPIFY_SHOP_AUTH_PROVIDER', 'users'),
 
     /*
     |--------------------------------------------------------------------------
@@ -568,7 +568,6 @@ return [
         * The fully qualified class name of the Plan model.
         */
         'plan' => Osiset\ShopifyApp\Storage\Models\Plan::class,
-        'shop' => App\Models\Shop::class,
     ],
 
     'table_names' => [
@@ -585,7 +584,7 @@ return [
         /*
          * The table name for the Shop.
          */
-        'shops' => 'shops',
+        'shops' => 'users',
     ],
 
     /*
