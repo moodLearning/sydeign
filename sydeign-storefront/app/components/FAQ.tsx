@@ -1,62 +1,101 @@
-import React, { useState } from 'react';
+import {useState} from 'react';
+import {ChevronDown} from 'lucide-react';
+
+interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+const FAQS: FaqItem[] = [
+  {
+    question: 'Does Sydeign offer international shipping?',
+    answer:
+      'Yes, Sydeign supports independent artisans globally with fully integrated shipping and tracking metrics directly connected to our partner couriers.',
+  },
+  {
+    question: 'How do I track my order?',
+    answer:
+      'Once your order has shipped, you will receive an email containing a tracking link and a reference number to monitor your shipment in real time.',
+  },
+  {
+    question: 'Is there a physical Sydeign store I can visit?',
+    answer:
+      'Sydeign currently operates primarily as an online collective showcasing independent creators and pop-up events.',
+  },
+  {
+    question: 'How do I start selling on Sydeign?',
+    answer:
+      'Independent artisans and creators can apply through our creator portal by submitting their portfolio for review.',
+  },
+];
 
 export function FaqSection() {
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const faqs = [
-    {
-      question: 'Does Sydeign offer international shipping?',
-      answer: 'Yes, Sydeign supports independent artisans globally with fully integrated shipping and tracking metrics directly connected to our partner couriers.',
-    },
-    {
-      question: 'How to track my order?',
-      answer: 'Once your order has shipped, you will receive an email containing a tracking link and a reference number to monitor your shipment in real time.',
-    },
-    {
-      question: 'Is there a physical Sydeign store I can visit?',
-      answer: 'Sydeign currently operates primarily as an online collective, showcasing independent creators and pop-up events. Subscribe to our newsletter for announcements regarding physical retail locations.',
-    },
-    {
-      question: 'How to start selling products in Sydeign?',
-      answer: 'If you are an independent artisan or creator, you can apply to become a partner merchant by navigating to our creator portal and submitting your portfolio.',
-    },
-  ];
+  function toggle(index: number) {
+    console.log('FAQ clicked:', index);
+
+    setOpenIndex((current) =>
+      current === index ? null : index,
+    );
+  }
 
   return (
-    <div className="isolation-isolate relative">
-      <h2 className="text-2xl font-bold text-center text-gray-800 mb-10">
+    <section className="mx-auto max-w-5xl px-6">
+      <h2 className="section-header">
         Frequently Asked Questions
       </h2>
-      
+
       <div className="space-y-4">
-        {faqs.map((faq, index) => (
-          <div key={index} className="border-b border-gray-200 bg-transparent overflow-hidden relative">
-            <button 
-              type="button"
-              onClick={() => {
-                setOpenFaq(openFaq === index ? null : index);
-                console.log("clicked FAQ item:", index);
-              }}
-              className="w-full flex justify-between items-center px-6 py-4 text-left font-semibold text-emerald-950 bg-white hover:bg-gray-50 transition cursor-pointer relative z-50"
+        {FAQS.map((faq, index) => {
+          const isOpen = openIndex === index;
+
+          return (
+            <article
+              key={faq.question}
+              className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
             >
-              <span className="text-sm font-medium">{faq.question}</span>
-              <span className={`text-gray-400 text-xs transition-transform duration-300 ${openFaq === index ? 'rotate-180' : ''}`}>
-                ▼
-              </span>
-            </button>
-            
-            <div
-              className={`overflow-hidden transition-all duration-300 ease-in-out bg-white ${
-                openFaq === index ? "max-h-96" : "max-h-0"
-              }`}
-            >
-              <div className="px-6 pb-5 pt-1 text-gray-600">
-                {faq.answer}
+              <button
+                type="button"
+                onClick={() => toggle(index)}
+                className="flex w-full cursor-pointer items-center justify-between px-6 py-5 text-left transition hover:bg-stone-50"
+              >
+                <span className="font-semibold text-primary">
+                  {faq.question}
+                </span>
+
+                <ChevronDown
+                  size={18}
+                  className={`
+                    transition-transform
+                    duration-300
+                    ${isOpen ? 'rotate-180' : ''}
+                  `}
+                />
+              </button>
+
+              <div
+                className={`
+                  grid
+                  transition-all
+                  duration-300
+                  ${
+                    isOpen
+                      ? 'grid-rows-[1fr]'
+                      : 'grid-rows-[0fr]'
+                  }
+                `}
+              >
+                <div className="overflow-hidden">
+                  <p className="px-6 pb-6 text-stone-600">
+                    {faq.answer}
+                  </p>
+                </div>
               </div>
-            </div>          
-          </div>
-        ))}
+            </article>
+          );
+        })}
       </div>
-    </div>
+    </section>
   );
-}  
+}

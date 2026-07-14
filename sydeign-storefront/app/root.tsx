@@ -11,6 +11,7 @@ import type { LinksFunction, MetaFunction } from 'react-router';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import tailwindStyles from './styles/tailwind.css?url';
+import { useNonce } from '@shopify/hydrogen'; 
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
@@ -28,12 +29,15 @@ export const headers = () => {
     'Content-Security-Policy': 
       "default-src 'self' https://cdn.shopify.com https://shopify.com https://images.unsplash.com https://fonts.googleapis.com https://fonts.gstatic.com data: http://localhost:* 'unsafe-inline' 'unsafe-eval'; " +
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-      "font-src 'self' https://fonts.gstatic.com; " + // Add this line
+      "font-src 'self' https://fonts.gstatic.com; " + 
       "img-src 'self' https://cdn.shopify.com https://images.unsplash.com data: blob:;",
   };
 };
 
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const nonce = useNonce(); 
+
   return (
     <html lang="en">
       <head>
@@ -47,8 +51,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
         <Footer />
-        <ScrollRestoration />
-        <Scripts />
+        <Scripts nonce={nonce}/>
+        <ScrollRestoration nonce={nonce} />
       </body>
     </html>
   );
@@ -62,7 +66,7 @@ export function ErrorBoundary() {
   const error = useRouteError();
 
   return (
-    <Layout> 
+    <Layout>
       <div className="flex-grow flex flex-col items-center justify-center p-8 text-center min-h-[60vh]">
         <h1 className="text-6xl font-serif text-[#4B6B40] font-bold mb-4">
           {isRouteErrorResponse(error) ? error.status : 'Oops!'}

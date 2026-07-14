@@ -1,40 +1,99 @@
-import React from 'react';
-import { DesignerSection } from '../components/DesignerSection';
-import { TopDesignerSection } from '../components/TopDesignerSection';
-import { DiscoverDesignerSection } from '../components/DiscoverDesignerSection';
+import { type LoaderFunctionArgs, useLoaderData } from 'react-router';
 import { MessageSquare } from 'lucide-react';
+import { DesignerSection } from '../components/designer/DesignerSection';
+import { TopDesignerSection } from '../components/designer/TopDesignerSection';
+import { DiscoverDesignerSection } from '../components/designer/DiscoverDesignerSection';
+import { getDesignersPage } from '../lib/designers.server';
+import { HomeSection } from '../components/home/HomeSection';
+
+export async function loader({ context }: LoaderFunctionArgs) {
+
+  try {
+    return await getDesignersPage(
+      context.storefront,
+    );
+
+  } catch(error) {
+
+    console.error(
+      'Designers page error:',
+      error,
+    );
+
+    return {
+      designers: [],
+      products: [],
+      designerOfTheMonth: null,
+      topRatedDesigners: [],
+      featuredProduct: null,
+    };
+
+  }
+}
+
 
 export default function DesignersIndex() {
+
+  const {
+    designers,
+    products,
+    designerOfTheMonth,
+    topRatedDesigners,
+    featuredProduct,
+
+  } = useLoaderData<typeof loader>();
+
   return (
-    <div className="bg-white text-gray-900 font-sans min-h-screen relative">
+
+    <main className="min-h-screen relative text-gray-900 font-sans">
+
+      {
+        designerOfTheMonth && (
+          <HomeSection className="bg-white shadow-xl z-40">
+            <DesignerSection
+              data={designerOfTheMonth}
+              featuredProduct={featuredProduct}
+            />
+          </HomeSection>
+        )
+      }
+
+      <HomeSection alternate className="shadow-xl">
+        <TopDesignerSection list={topRatedDesigners}/>
+      </HomeSection>
+
+      <HomeSection className="relative z-50 pb-24">
+        <DiscoverDesignerSection masterList={designers} products={products}/>
+      </HomeSection>
       
-      {/* Designer of the Month Section */}
-      <section className="w-full pt-12 pb-16 z-30 relative shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] shadow-md bg-white">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-          <DesignerSection />
-        </div>
-      </section>
+      <ChatButton />
 
-      {/* Top Rated Carousel Section (Beige Background matching mockup) */}
-      <section className="w-full bg-[#f9f5e8] py-16 z-20 relative shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)] shadow-xl">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-          <TopDesignerSection />
-        </div>
-      </section>
+    </main>
 
-      {/* Discover Designers Grid Section */}
-      <section className="w-full bg-[#fcfdfa] py-16 z-10 relative pb-24">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-          <DiscoverDesignerSection />
-        </div>
-      </section>
-
-      {/* Floating Chat Accent Button */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <button type="button" className="bg-[#c36a3e] hover:bg-[#b05c32] text-white p-3.5 rounded-full shadow-lg transition-transform hover:scale-105 cursor-pointer">
-          <MessageSquare size={22} />
-        </button>
-      </div>
-    </div>
   );
+}
+
+function ChatButton(){
+
+  return (
+
+    <div className="fixed bottom-6 right-6 z-50">
+      <button type="button" aria-label="Open chat"
+        className="
+          bg-[#c36a3e]
+          hover:bg-[#b05c32]
+          text-white
+          p-3.5
+          rounded-full
+          shadow-lg
+          transition-transform
+          hover:scale-105
+        "
+      >
+        <MessageSquare size={22}/>
+      </button>
+    </div>
+
+  );
+
 }

@@ -124,15 +124,36 @@ export const designers: Designer[] = [
   }
 ];
 
+// Add or update this in your types / data file
 export interface Product {
   id: string;
-  name: string;
-  price: number;
-  image: string;
-  designer: string; 
-  sections: ('onSale' | 'popular' | 'new' | 'discovery' | 'topSelling')[];
-  category: Category; 
+  title: string;
+  handle: string;
+  description?: string;
+  images: {
+    nodes: Array<{
+      url: string;
+      altText?: string | null;
+    }>;
+  };
+  priceRange: {
+    minVariantPrice: {
+      amount: string;
+      currencyCode: string;
+    };
+  };
+  designerMetafield?: {
+    reference?: {
+      designerNameField?: {
+        value: string;
+      };
+    } | null;
+  } | null;
 }
+
+/*export const products: ShopifyProduct[] = [
+  // Your mock items go here...
+];*/
 
 export const products: Product[] = [
   { id: '1', name: 'Emerald Pendant', price: 2500, image: '/p (1).png', designer: 'Nida Bacaling', sections: ['onSale', 'popular', 'topSelling'], category: 'Necklaces' },

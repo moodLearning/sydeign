@@ -1,18 +1,36 @@
 import React from "react";
-import { productCategories } from "../data/data";
-import { Funnel } from "lucide-react";
+import { Filter } from "lucide-react"; 
+
+interface ShopifyCollection {
+  id: string;
+  title: string;
+  handle: string;
+}
 
 interface SidebarProps {
   activeCategory: string;
   onFilterChange: (cat: string) => void;
+  collections: ShopifyCollection[];
 }
 
-export default function Sidebar({ activeCategory, onFilterChange }: SidebarProps) {
+export default function Sidebar({ activeCategory, onFilterChange, collections }: SidebarProps) {
+  const excludedCategories = [
+    "home page",
+    "daily discovery",
+    "new arrivals",
+    "best sellers",
+    "on sale"
+  ];
+
+  const filteredCollections = collections.filter(
+    (col) => !excludedCategories.includes(col.title.toLowerCase())
+  );
+
   return (
-    <aside className="w-full md:w-80 shrink-0 bg-white border border-gray-100 rounded-2xl p-6 h-fit sticky top-6 shadow-sm z-30">
+    <aside className="w-full md:w-80 shrink-0 bg-white border border-gray-100 rounded-2xl p-6 h-fit sticky top-6 shadow-sm z-50 pointer-events-auto isolate">
       <div>
         <h2 className="flex items-center gap-2 text-2xl font-semibold text-primary mb-4 pb-2 border-b border-gray-100">
-          <Funnel size={24} />
+          <Filter size={24} />
           Categories
         </h2>
         
@@ -32,19 +50,19 @@ export default function Sidebar({ activeCategory, onFilterChange }: SidebarProps
             </button>
           </li>
 
-          {/* Dynamic Category Entries */}
-          {productCategories.map((cat) => (
-            <li key={cat.name}>
+          {/* Cleaned Dynamic Sidebar Menu List */}
+          {filteredCollections.map((collection) => (
+            <li key={collection.id}>
               <button 
                 type="button"
-                onClick={() => onFilterChange(cat.name)}
+                onClick={() => onFilterChange(collection.title)}
                 className={`w-full text-left py-2.5 px-4 rounded-xl text-lg transition-all cursor-pointer block ${
-                  activeCategory === cat.name 
+                  activeCategory.toLowerCase() === collection.title.toLowerCase()
                     ? 'bg-primary/10 text-primary font-bold' 
                     : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
                 }`}
               >
-                {cat.name}
+                {collection.title}
               </button>
             </li>
           ))}

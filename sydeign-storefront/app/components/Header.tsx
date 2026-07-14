@@ -26,7 +26,7 @@ export default function Header({ q }: { q?: string }) {
             onChange={(e) => submit(e.currentTarget.form)}
             className="w-full bg-[#FAFAF2] border border-[#BAC3A1] rounded-full px-6 py-2 text-[#4B6B40] focus:outline-none focus:ring-1 focus:ring-[#4B6B40] placeholder-[#A3AF8A] text-xl font-sans"
           />
-          <span className="absolute right-4 top-2.5 text-[#4B6B40] pointer-events-none">
+          <span className="absolute right-4 top-2.5 text-[#4B6B40]">
             <Search className="w-5 h-5 stroke-[2.5]" />
           </span>
         </Form>
