@@ -10,8 +10,11 @@ import {
 import type { LinksFunction, MetaFunction } from 'react-router';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import { CartProvider } from './data/CartContext';
 import tailwindStyles from './styles/tailwind.css?url';
-import { useNonce } from '@shopify/hydrogen'; 
+import { useNonce } from '@shopify/hydrogen';
+import Login from './routes/Login';
+import Signup from './routes/Signup'; 
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: tailwindStyles },
@@ -40,33 +43,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <html lang="en">
+      <CartProvider>
       <head>
         <meta charSet="utf-8" />
         <Meta />
         <Links />
       </head>
       <body className="font-sans antialiased bg-white text-gray-900 min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+          <Header />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
         <Scripts nonce={nonce}/>
         <ScrollRestoration nonce={nonce} />
       </body>
+      </CartProvider>
     </html>
   );
 }
 
 export default function App() {
-  return <Outlet />;
+  return <>
+      <Outlet />
+      <Login />
+      <Signup />
+    </>;
 }
 
 export function ErrorBoundary() {
   const error = useRouteError();
 
   return (
-    <Layout>
       <div className="flex-grow flex flex-col items-center justify-center p-8 text-center min-h-[60vh]">
         <h1 className="text-6xl font-serif text-[#4B6B40] font-bold mb-4">
           {isRouteErrorResponse(error) ? error.status : 'Oops!'}
@@ -85,6 +93,5 @@ export function ErrorBoundary() {
           Return Home
         </a>
       </div>
-    </Layout>
   );
 }

@@ -13,43 +13,41 @@ import {getDesignersPage} from '../lib/designers.server';
 
 
 export async function loader({
-  context,
-}:LoaderFunctionArgs){
+    context,
+  }:LoaderFunctionArgs){
 
-  const {
-    designerOfTheMonth,
-  } = await getDesignersPage(
-    context.storefront,
-  );
-
-  const data =
-    await context.storefront.query(
-      HOMEPAGE_QUERY,
-      {
-        variables:{
-          count:12,
-        },
-      },
+    const {
+      designerOfTheMonth,
+    } = await getDesignersPage(
+      context.storefront,
     );
 
-  const products =
-  data.products.nodes.map(normalizeProduct);
+    const data =
+      await context.storefront.query(
+        HOMEPAGE_QUERY,
+        {
+          variables:{
+            count:12,
+          },
+        },
+      );
 
-  return {
-  products:
-    (data.products?.nodes ?? [])
-      .map(normalizeProduct),
+    const products =
+    data.products.nodes.map(normalizeProduct);
 
-  collections:
-    data.collections?.nodes ?? [],
+    return {
+    products:
+      (data.products?.nodes ?? [])
+        .map(normalizeProduct),
 
-  featuredDesigner:
-    designerOfTheMonth ?? null,
-};
+    collections:
+      data.collections?.nodes ?? [],
+
+    featuredDesigner:
+      designerOfTheMonth ?? null,
+  };
 
 }
-
-
 
 export default function HomePage(){
 

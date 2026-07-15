@@ -1,40 +1,39 @@
-import {Link} from 'react-router';
-import {Heart, ShoppingCart} from 'lucide-react';
-
-import type {Product} from '../../data/shopify';
+import { Link } from 'react-router';
+import { Heart, ShoppingCart } from 'lucide-react';
+import type { Product } from '../../data/shopify';
+import { useCart } from '../../data/CartContext'; // Adjust path accordingly
 
 interface ProductCardProps {
   product: Product;
 }
 
-function formatCurrency(
-  price: number,
-  currency: string,
-) {
+function formatCurrency(price: number, currency: string) {
   return new Intl.NumberFormat('en-PH', {
     style: 'currency',
     currency,
   }).format(price);
 }
 
-function preventNavigation(
-  event: React.MouseEvent<HTMLButtonElement>,
-) {
-  event.preventDefault();
-  event.stopPropagation();
-}
+export function ProductCard({ product }: ProductCardProps) {
+  const { addToCart, addToWishlist, wishlistItems } = useCart();
 
-export function ProductCard({
-  product,
-}: ProductCardProps) {
-  const formattedPrice = formatCurrency(
-    product.price,
-    product.currency,
-  );
+  const formattedPrice = formatCurrency(product.price, product.currency);
+  const designer = product.designerName ?? 'Designer Collection';
+  
+  // Visual state check: see if item is already wishlisted
+  const isWishlisted = wishlistItems.some((item) => item.product.handle === product.handle);
 
-  const designer =
-    product.designerName ??
-    'Designer Collection';
+  const handleWishlistClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    addToWishlist(product);
+  };
+
+  const handleCartClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    addToCart(product);
+  };
 
   return (
     <article>
@@ -51,10 +50,8 @@ export function ProductCard({
           hover:scale-[1.02]
         "
       >
-
         {/* Image */}
-        <div className="aspect-[3/4] w-full overflow-hidden bg-stone-200">
-
+        <div className="aspect-3/4 w-full overflow-hidden bg-stone-200">
           <img
             src={product.image || '/placeholder.png'}
             alt={product.title}
@@ -68,17 +65,13 @@ export function ProductCard({
               group-hover:scale-105
             "
           />
-
         </div>
-
 
         {/* Content */}
         <div className="flex flex-col p-4">
-
           <span className="text-lg font-bold text-stone-900">
             {formattedPrice}
           </span>
-
 
           <h4
             className="
@@ -92,7 +85,6 @@ export function ProductCard({
             {product.title}
           </h4>
 
-
           <div
             className="
               mt-2
@@ -102,7 +94,6 @@ export function ProductCard({
               gap-3
             "
           >
-
             <p
               className="
                 max-w-[120px]
@@ -115,7 +106,6 @@ export function ProductCard({
               {designer}
             </p>
 
-
             <div
               className="
                 flex
@@ -123,25 +113,24 @@ export function ProductCard({
                 text-stone-600
               "
             >
-
               <button
                 type="button"
-                onClick={preventNavigation}
-                className="
+                onClick={handleWishlistClick}
+                className={`
                   cursor-pointer
                   transition
                   hover:text-emerald-700
-                "
+                  ${isWishlisted ? 'text-red-500 hover:text-red-600' : ''}
+                `}
                 aria-label={`Add ${product.title} to wishlist`}
                 title="Add to wishlist"
               >
-                <Heart size={20}/>
+                <Heart size={20} fill={isWishlisted ? 'currentColor' : 'none'} />
               </button>
-
 
               <button
                 type="button"
-                onClick={preventNavigation}
+                onClick={handleCartClick}
                 className="
                   cursor-pointer
                   transition
@@ -150,15 +139,11 @@ export function ProductCard({
                 aria-label={`Add ${product.title} to cart`}
                 title="Add to cart"
               >
-                <ShoppingCart size={20}/>
+                <ShoppingCart size={20} />
               </button>
-
             </div>
-
           </div>
-
         </div>
-
       </Link>
     </article>
   );

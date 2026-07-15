@@ -27,7 +27,7 @@ export default function ContactPage() {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
       }}
-      className="w-screen min-h-[calc(100vh-370.336px)] font-sans pt-16"
+      className="h-4/5-screen font-sans pt-16"
     >     
       <h2 className="text-4xl font-sans text-center font-bold text-primary mt-16 mb-18">Contact Us</h2>
 

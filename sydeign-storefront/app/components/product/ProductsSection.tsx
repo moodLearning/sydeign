@@ -1,3 +1,4 @@
+import { Link } from 'react-router'; 
 import { ProductCard } from './ProductCard';
 import type { Product } from '../../data/shopify';
 import { getProductsForSection } from '../../lib/products';
@@ -24,20 +25,17 @@ export default function ProductSection({
     activeCategory,
   );
 
-console.log('ProductSection Debug', {
-  title,
-  sectionKey,
-  activeCategory,
-
-  productCount: allProducts.length,
-
-  firstProductCollections:
-    allProducts[0]?.collections,
-
-});
+  console.log('ProductSection Debug', {
+    title,
+    sectionKey,
+    activeCategory,
+    productCount: allProducts.length,
+    firstProductCollections: allProducts[0]?.collections,
+  });
 
   if (!items.length) return null;
 
+  const searchUrl = `/search?category=${encodeURIComponent(title)}`;
 
   return (
     <section
@@ -48,7 +46,6 @@ console.log('ProductSection Debug', {
         ${className}
       `}
     >
-
       <header
         className="
           mb-8
@@ -57,7 +54,6 @@ console.log('ProductSection Debug', {
           justify-between
         "
       >
-
         <h2
           className="
             text-5xl
@@ -68,21 +64,19 @@ console.log('ProductSection Debug', {
           {title}
         </h2>
 
-
-        <button
-          type="button"
+        <Link
+          to={searchUrl}
           className="
             cursor-pointer
             text-xl
             text-primary
             hover:underline
+            font-semibold
           "
         >
           See All
-        </button>
-
+        </Link>
       </header>
-
 
       <div
         className="
@@ -92,17 +86,13 @@ console.log('ProductSection Debug', {
           lg:grid-cols-4
         "
       >
-
-        {items.map((product)=>(
+        {items.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
           />
         ))}
-
       </div>
-
-
     </section>
   );
 }

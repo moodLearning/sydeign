@@ -1,7 +1,7 @@
 import { type LoaderFunctionArgs, useLoaderData, useSearchParams } from 'react-router';
-import Sidebar from '../components/Sidebar';
+import Sidebar, { PRICE_FILTER_CONFIG } from '../components/Sidebar';
 import ProductSection from '../components/product/ProductsSection';
-import {getProductsCatalog} from '../lib/products.server';
+import { getProductsCatalog } from '../lib/products.server';
 import type { Product } from '../data/shopify';
 
 interface ShopifyCollection {
@@ -15,63 +15,82 @@ export async function loader({ context }: LoaderFunctionArgs) {
     return await getProductsCatalog(context.storefront);
   } catch(error) {
     console.error('Products catalog error:', error);
-    return {products: [], collections: []};
+    return { products: [], collections: [] };
   }
 }
 
-export default function ProductsIndex() {
+const cleanString = (str: string) => 
+  decodeURIComponent(str)
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '');
 
+export default function ProductsIndex() {
   const { products, collections } = useLoaderData<{
     products: Product[];
     collections: ShopifyCollection[];
   }>();
+  
   const [searchParams, setSearchParams] = useSearchParams();
-  const activeCategory = searchParams.get('category') ?? 'All Products';
+  const activeCategoryParam = searchParams.get('category') ?? 'All Products';
+  
+  const maxPriceLimit = Number(searchParams.get('maxPrice') ?? PRICE_FILTER_CONFIG.MAX_LIMIT);
 
-  const bannerName =
-    activeCategory
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-');
-
-  function handleFilter(category:string){
-
-    const params = new URLSearchParams(searchParams);
-
-    if(category === 'All Products'){
-      params.delete('category');
-    }
-    else {
-      params.set('category',category);
-    }
-
-    setSearchParams(params);
-
-  }
-
-  const visibleCollections =
-    collections
-      .filter((collection: ShopifyCollection)=>
-        [
-          'daily discovery',
-          'new arrivals',
-          'best sellers',
-          'on sale',
-        ].includes(
-          collection.title.toLowerCase(),
-        ),
-      )
-      .filter((collection: ShopifyCollection)=>
-        activeCategory === 'All Products' ||
-        collection.title === activeCategory,
+  const isAllProducts = cleanString(activeCategoryParam) === 'allproducts' || cleanString(activeCategoryParam) === 'all';
+  
+  const activeCollection = isAllProducts
+    ? null
+    : collections.find(
+        (col) =>
+          cleanString(col.title) === cleanString(activeCategoryParam) ||
+          cleanString(col.handle) === cleanString(activeCategoryParam)
       );
 
+  const activeCategoryTitle = activeCollection ? activeCollection.title : 'All Products';
+
+  const bannerName = activeCollection 
+    ? activeCollection.handle 
+    : 'all-products';
+
+  function handleFilter(category: string) {
+    const params = new URLSearchParams(searchParams);
+    const normalized = cleanString(category);
+
+    if (normalized === 'allproducts' || normalized === 'all') {
+      params.delete('category');
+    } else {
+      params.set('category', category); 
+    }
+
+    setSearchParams(params, { replace: true, preventScrollReset: true });
+  }
+
+  const priceFilteredProducts = products.filter(
+    (product) => product.price <= maxPriceLimit
+  );
+
+  const homepageCollectionHandles = [
+    'daily-discovery',
+    'new-arrivals',
+    'best-sellers',
+    'on-sale',
+  ];
+
+  const visibleCollections = collections.filter((collection: ShopifyCollection) => {
+    const isAllProducts = activeCategoryTitle === 'All Products';
+
+    if (isAllProducts) {
+      return homepageCollectionHandles.includes(collection.handle);
+    } else {
+      return (
+        collection.title.toLowerCase() === activeCategoryTitle.toLowerCase() ||
+        collection.handle === activeCategoryTitle.toLowerCase()
+      );
+    }
+  });
+
   return (
-
     <main className="min-h-screen w-full overflow-x-hidden bg-background">
-
-      <CategoryBanner category={activeCategory} imageName={bannerName}/>
+      <CategoryBanner category={activeCategoryTitle} imageName={bannerName} />
 
       <div
         className="
@@ -90,10 +109,9 @@ export default function ProductsIndex() {
         "
       >
         <Sidebar
-          activeCategory={activeCategory}
+          activeCategory={activeCategoryParam}
           onFilterChange={handleFilter}
           collections={collections}
-          
         />
         
         <section
@@ -105,37 +123,29 @@ export default function ProductsIndex() {
             min-w-0
           "
         >
-
           {visibleCollections.map(
-            (collection: ShopifyCollection, index: number)=> (
-
+            (collection: ShopifyCollection, index: number) => (
               <ProductSection
                 key={collection.id}
                 title={collection.title}
                 sectionKey={collection.title}
-                allProducts={products}
-                activeCategory={activeCategory}
+                allProducts={priceFilteredProducts}
+                activeCategory={activeCategoryTitle}
                 className={
                   index % 2 !== 0
                     ? 'bg-background'
                     : 'bg-white'
                 }
               />
-
             ),
           )}
-
         </section>
-
       </div>
-
     </main>
-
   );
 }
 
-function CategoryBanner({ category, imageName }:{ category:string; imageName:string }) {
-
+function CategoryBanner({ category, imageName }: { category: string; imageName: string }) {
   return (
     <header className="relative h-70 w-full overflow-hidden shadow-xl">
       <img
@@ -149,18 +159,15 @@ function CategoryBanner({ category, imageName }:{ category:string; imageName:str
           w-full
           object-cover
         "
-        onError={(event)=>{
-          event.currentTarget.src =
-            '/default-banner.png';
+        onError={(event) => {
+          event.currentTarget.src = '/default-banner.png';
         }}
       />
 
-      <div className="absolute inset-0 bg-black/20"/>
+      <div className="absolute inset-0 bg-black/20" />
 
       <div className="absolute inset-0 flex items-center">
-
         <div className="w-full px-8 md:px-30">
-
           <h1
             className="
               font-cinzel
@@ -174,12 +181,8 @@ function CategoryBanner({ category, imageName }:{ category:string; imageName:str
           >
             {category}
           </h1>
-
         </div>
-
       </div>
-
     </header>
-
   );
 }

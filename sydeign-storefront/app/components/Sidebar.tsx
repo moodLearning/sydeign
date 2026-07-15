@@ -1,5 +1,12 @@
 import React from "react";
 import { Filter } from "lucide-react"; 
+import { useSearchParams } from "react-router";
+
+export const PRICE_FILTER_CONFIG = {
+  MIN_LIMIT: 0,      
+  MAX_LIMIT: 1000,    
+  STEP: 100,          
+};
 
 interface ShopifyCollection {
   id: string;
@@ -14,6 +21,11 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ activeCategory, onFilterChange, collections }: SidebarProps) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  
+  // Read current max price from URL, falling back dynamically to our configured max limit
+  const currentMaxPrice = Number(searchParams.get('maxPrice') ?? PRICE_FILTER_CONFIG.MAX_LIMIT);
+
   const excludedCategories = [
     "home page",
     "daily discovery",
@@ -26,8 +38,22 @@ export default function Sidebar({ activeCategory, onFilterChange, collections }:
     (col) => !excludedCategories.includes(col.title.toLowerCase())
   );
 
+  // Instantly update search params as the slider moves
+  const handleSliderChange = (value: number) => {
+    const params = new URLSearchParams(searchParams);
+    
+    // If the slider is dragged to the absolute maximum limit, clean up the URL parameter
+    if (value < PRICE_FILTER_CONFIG.MAX_LIMIT) {
+      params.set('maxPrice', value.toString());
+    } else {
+      params.delete('maxPrice');
+    }
+    
+    setSearchParams(params, { replace: true, preventScrollReset: true });
+  };
+
   return (
-    <aside className="w-full md:w-80 shrink-0 bg-white border border-gray-100 rounded-2xl p-6 h-fit sticky top-6 shadow-sm z-50 pointer-events-auto isolate">
+    <aside className="mb-80 w-full md:w-80 shrink-0 bg-white border border-gray-100 rounded-2xl p-6 h-fit sticky top-6 shadow-sm z-50 pointer-events-auto isolate">
       <div>
         <h2 className="flex items-center gap-2 text-2xl font-semibold text-primary mb-4 pb-2 border-b border-gray-100">
           <Filter size={24} />
@@ -77,24 +103,26 @@ export default function Sidebar({ activeCategory, onFilterChange, collections }:
           Price Range
         </h2>
 
+        {/* Input elements are now fully configured from your config variables */}
         <input
           type="range"
-          min="1000"
-          max="10000"
+          min={PRICE_FILTER_CONFIG.MIN_LIMIT}
+          max={PRICE_FILTER_CONFIG.MAX_LIMIT}
+          step={PRICE_FILTER_CONFIG.STEP}
+          value={currentMaxPrice}
+          onChange={(e) => handleSliderChange(Number(e.target.value))}
           className="w-full accent-primary cursor-pointer"
         />
 
-        <div className="flex justify-between mt-2 mb-6">
-          <span className="text-base font-medium text-gray-500">₱1,000</span>
-          <span className="text-base font-medium text-gray-500">₱10,000</span>
+        {/* Price Indicators display dynamically */}
+        <div className="flex justify-between mt-2">
+          <span className="text-base font-medium text-gray-500">
+            ₱{PRICE_FILTER_CONFIG.MIN_LIMIT.toLocaleString()}
+          </span>
+          <span className="text-base font-bold text-primary">
+            ₱{currentMaxPrice.toLocaleString()}
+          </span>
         </div>
-
-        <button 
-          type="button"
-          className="w-full border-2 border-primary text-primary text-xl font-semibold rounded-xl py-2.5 hover:bg-primary hover:text-white transition-all cursor-pointer"
-        >
-          APPLY
-        </button>
       </div>
     </aside>
   );

@@ -16,21 +16,44 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    connectSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      'https://monorail-edge.shopifysvc.com',
+      'https://shopify.com',              
+      
+      'https://*.ngrok-free.app',    
+      'wss://*.ngrok-free.app',
+      'https://*.ngrok-free.dev',    
+      'wss://*.ngrok-free.dev',
+      
+      'http://localhost:*',
+      'ws://localhost:*',
+      'ws://127.0.0.1:*',
+    ],
+    imgSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      'https://images.unsplash.com',
+      'data:',
+      'blob:',
+    ],
+    styleSrc: [
+      "'self'",
+      "'unsafe-inline'",
+      'https://fonts.googleapis.com',
+    ],
+    fontSrc: [
+      "'self'",
+      'https://fonts.gstatic.com',
+    ],
+    scriptSrc: [
+      "'self'",
+      "'unsafe-inline'",
+      "'unsafe-eval'",
+      'https://cdn.shopify.com',
+    ],
   });
-
-  const customCspHeader = 
-    `${header}; ` + 
-    `img-src 'self' https://cdn.shopify.com https://images.unsplash.com data: blob:; ` +
-    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; ` +
-    `font-src 'self' https://fonts.gstatic.com; ` +
-    `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.shopify.com 'nonce-${nonce}';`;
-
-  const fixedCspHeader = 
-    `${header}; ` + 
-    `img-src 'self' https://cdn.shopify.com https://images.unsplash.com data: blob:; ` +
-    `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; ` +
-    `font-src 'self' https://fonts.gstatic.com; ` +
-    `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.shopify.com 'nonce-${nonce}';`;
 
   const body = await renderToReadableStream(
     <NonceProvider>
@@ -55,8 +78,8 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  // Pass the properly concatenated CSP string
-  responseHeaders.set('Content-Security-Policy', customCspHeader);
+  
+  responseHeaders.set('Content-Security-Policy', header);
 
   return new Response(body, {
     headers: responseHeaders,
