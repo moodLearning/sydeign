@@ -37,7 +37,7 @@ export default function Login() {
       
       // Kept identical to your working signup parameters
       shopifyAuthUrl.searchParams.append('client_id', 'f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5');
-      shopifyAuthUrl.searchParams.append('redirect_uri', 'https://quality-education-exhaust-formal.trycloudflare.com/authenticate');
+      shopifyAuthUrl.searchParams.append('redirect_uri', 'https://nimbly-precut-scant.ngrok-free.dev/authenticate');
       shopifyAuthUrl.searchParams.append('response_type', 'code');
       shopifyAuthUrl.searchParams.append('scope', 'openid email customer-account-api:full');
       shopifyAuthUrl.searchParams.append('state', state);

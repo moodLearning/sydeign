@@ -11,6 +11,7 @@ import type { LinksFunction, MetaFunction } from 'react-router';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import { CartProvider } from './data/CartContext';
+import { AuthProvider } from './data/AuthContext';
 import tailwindStyles from './styles/tailwind.css?url';
 import { useNonce } from '@shopify/hydrogen';
 import Login from './routes/Login';
@@ -37,44 +38,51 @@ export const headers = () => {
   };
 };
 
-
 export function Layout({ children }: { children: React.ReactNode }) {
   const nonce = useNonce(); 
 
   return (
     <html lang="en">
-      <CartProvider>
       <head>
         <meta charSet="utf-8" />
         <Meta />
         <Links />
+        <script nonce={nonce}>let FF_FOUC_FIX;</script>
       </head>
-      <body className="font-sans antialiased bg-white text-gray-900 min-h-screen flex flex-col">
-          <Header />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-        <Scripts nonce={nonce}/>
-        <ScrollRestoration nonce={nonce} />
-      </body>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <body className="font-sans antialiased bg-white text-gray-900 min-h-screen flex flex-col">
+            <script nonce={nonce}>0</script> 
+            <Header />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+            <Scripts nonce={nonce} />
+            <ScrollRestoration nonce={nonce} />
+          </body>
+        </CartProvider>
+      </AuthProvider>
     </html>
   );
 }
 
+// 2. App stays clean since Layout now manages the state wrappers
 export default function App() {
-  return <>
+  return (
+    <>
       <Outlet />
       <Login />
       <Signup />
-    </>;
+    </>
+  );
 }
 
 export function ErrorBoundary() {
   const error = useRouteError();
 
   return (
+    <Layout>
       <div className="flex-grow flex flex-col items-center justify-center p-8 text-center min-h-[60vh]">
         <h1 className="text-6xl font-serif text-[#4B6B40] font-bold mb-4">
           {isRouteErrorResponse(error) ? error.status : 'Oops!'}
@@ -93,5 +101,6 @@ export function ErrorBoundary() {
           Return Home
         </a>
       </div>
+    </Layout>
   );
 }

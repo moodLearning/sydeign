@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Link, useSubmit, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Heart, Bell, Menu } from 'lucide-react';
 import { useCart } from '../data/CartContext';
+import { useAuth } from '../data/AuthContext'; 
 import { Drawer } from './Drawer';
 import { CartDrawerContent } from './header/CartDrawerContent';
 import { WishlistDrawerContent } from './header/WishlistDrawerContent';
@@ -10,21 +11,16 @@ import { ProfileDrawerContent } from './header/ProfileDrawerContent';
 export default function Header({ q }: { q?: string }) {
   const submit = useSubmit();
   const navigate = useNavigate();
+
   const { cartItems, wishlistItems } = useCart();
+  const { isLoggedIn, logout } = useAuth(); 
   
   const [activeDrawer, setActiveDrawer] = useState<'profile' | 'wishlist' | 'cart' | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const token = localStorage.getItem('shopify_customer_token');
-    setIsLoggedIn(!!token);
-  }, [activeDrawer]); 
 
   const closeDrawer = () => setActiveDrawer(null);
 
   const handleLogout = () => {
-    localStorage.removeItem('shopify_customer_token');
-    setIsLoggedIn(false);
+    logout(); // 3. Triggers the global state change & updates localStorage automatically!
     closeDrawer();
     navigate('/');
   };
