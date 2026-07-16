@@ -37,7 +37,7 @@ export default function Login() {
       
       // Kept identical to your working signup parameters
       shopifyAuthUrl.searchParams.append('client_id', 'f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5');
-      shopifyAuthUrl.searchParams.append('redirect_uri', 'https://crunching-audience-gestate.ngrok-free.dev/authenticate');
+      shopifyAuthUrl.searchParams.append('redirect_uri', 'https://quality-education-exhaust-formal.trycloudflare.com/authenticate');
       shopifyAuthUrl.searchParams.append('response_type', 'code');
       shopifyAuthUrl.searchParams.append('scope', 'openid email customer-account-api:full');
       shopifyAuthUrl.searchParams.append('state', state);
@@ -89,7 +89,7 @@ export default function Login() {
               type="submit"
               className="w-full py-4 bg-[#D36B45] hover:bg-[#b25130] text-white font-bold rounded-xl transition shadow-md tracking-wide flex items-center justify-center"
             >
-              CONTINVE TO SECURE LOGIN
+              CONTINUE TO SECURE LOGIN
             </button>
           </form>
 

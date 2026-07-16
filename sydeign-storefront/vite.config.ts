@@ -23,7 +23,16 @@ export default defineConfig({
     },
   },
   build: {
-    assetsInlineLimit: 0,
+    sourcemap: true, 
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (warning.code === 'SOURCEMAP_ERROR' && warning.message.includes('node_modules')) {
+          return;
+        }
+        warn(warning);
+      },
+    },
+    assetsInlineLimit: 0, 
   },
   ssr: {
     optimizeDeps: {
@@ -35,6 +44,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ['.tryhydrogen.dev', 'crunching-audience-gestate.ngrok-free.dev'],
+    allowedHosts: ['.tryhydrogen.dev', '.loca.lt', '.trycloudflare.com', '.ngrok-free.app', '.ngrok-free.dev'],
   },
 });

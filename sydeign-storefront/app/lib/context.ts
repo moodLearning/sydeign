@@ -36,6 +36,9 @@ export async function createHydrogenRouterContext(
   /**
    * Open a cache instance in the worker and a custom session instance.
    */
+
+  console.log("PUBLIC_STORE_DOMAIN =", env.PUBLIC_STORE_DOMAIN);
+  console.log("PUBLIC_STOREFRONT_API_TOKEN =", !!env.PUBLIC_STOREFRONT_API_TOKEN);
   if (!env?.SESSION_SECRET) {
     throw new Error('SESSION_SECRET environment variable is not set');
   }

@@ -1,4 +1,3 @@
-// src/pages/Authorize.tsx
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { handleAuthCallback } from '../auth';
@@ -14,7 +13,6 @@ export function AuthorizePage() {
     if (code && state) {
       handleAuthCallback(code, state)
         .then(() => {
-          // Success! Redirect the customer to their profile page
           navigate('/account/profile');
         })
         .catch((err) => {

@@ -1,7 +1,7 @@
 import * as oauth from 'oauth4webapi';
 
-const CLIENT_ID = 'f3b178c7-7dc8-40b7-ad03-1a0dc8e7ab5'; 
-const REDIRECT_URI = 'https://crunching-audience-gestate.ngrok-free.dev/authenticate';
+const CLIENT_ID = 'f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5'; 
+const REDIRECT_URI = 'https://quality-education-exhaust-formal.trycloudflare.com/authenticate';
 
 const client: oauth.Client = {
   client_id: CLIENT_ID,

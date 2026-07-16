@@ -87,15 +87,39 @@ query GetDesignersPage {
     }
   }
 
-  products(first: 100) {
+  products(first: 25) {
     nodes {
       id
       title
+      description
       handle
+      tags
 
-      images(first: 1) {
+      variants(first: 1) {
         nodes {
+          id
+        }
+      }
+
+      images(first: 10) {
+        nodes {
+          id
           url
+          altText
+        }
+      }
+
+      priceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+
+      collections(first: 10) {
+        nodes {
+          title
+          handle
         }
       }
 

@@ -7,11 +7,16 @@ export const PRODUCTS_CATALOG_QUERY = `#graphql
         handle
       }
     }
-    products(first: 100) {
+    products(first: 25) {
       nodes {
         id
         title
         handle
+        variants(first: 1) {
+          nodes {
+            id
+          }
+        }
         images(first: 5) {
           nodes {
             id
@@ -53,7 +58,11 @@ query Product($handle: String!) {
     title
     handle
     description
-
+    variants(first: 1) {
+      nodes {
+        id
+      }
+    }
     images(first: 5) {
       nodes {
         id
@@ -61,14 +70,12 @@ query Product($handle: String!) {
         altText
       }
     }
-
     priceRange {
       minVariantPrice {
         amount
         currencyCode
       }
     }
-
     designerMetafield: metafield(
       namespace: "custom"
       key: "designer_reference"

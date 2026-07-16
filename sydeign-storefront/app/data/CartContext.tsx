@@ -25,9 +25,12 @@ interface CartContextType {
   addToWishlist: (product: Product) => void;
   removeFromWishlist: (id: string) => void;
   toggleWishlistSelect: (id: string) => void;
+  getCheckoutUrl: () => Promise<string | null>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
+const SHOPIFY_STOREFRONT_ACCESS_TOKEN = 'a31c4c2226ad99d901220ac433acc15c';
+const SHOPIFY_STORE_DOMAIN = 'sydeign-ypslvqn7.myshopify.com'; 
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -43,6 +46,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
             : item
         );
       }
+      console.log("Adding to cart:", {
+        title: product.title,
+        productId: product.id,
+        variantId: product.variantId,
+      });
       return [...prev, { id: product.handle, product, quantity: 1, selected: true }];
     });
   };
@@ -80,11 +88,73 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const toggleWishlistSelect = (id: string) => {
-    setWishlistItems((prev) =>
+    setCartItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, selected: !item.selected } : item))
     );
   };
 
+  const getCheckoutUrl = async (): Promise<string | null> => {
+  const selectedItems = cartItems.filter((item) => item.selected);
+  if (selectedItems.length === 0) return null;
+
+  // Since normalizeProduct guarantees 'variantId', mapping is now trivial
+  const lines = selectedItems.map((item) => ({
+    merchandiseId: item.product.variantId,
+    quantity: item.quantity,
+  }));
+
+  const query = `
+    mutation cartCreate($input: CartInput!) {
+      cartCreate(input: $input) {
+        cart {
+          id
+          checkoutUrl
+        }
+        userErrors {
+          code
+          field
+          message
+        }
+      }
+    }
+  `;
+
+  try {
+    const response = await fetch(
+      `https://${SHOPIFY_STORE_DOMAIN}/api/2024-01/graphql.json`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': SHOPIFY_STOREFRONT_ACCESS_TOKEN,
+        },
+        body: JSON.stringify({
+          query,
+          variables: { input: { lines } },
+        }),
+      }
+    );
+
+    const json = await response.json();
+    
+    if (json.errors?.length > 0) {
+      console.error('GraphQL API errors:', json.errors);
+      return null;
+    }
+
+    const { cart, userErrors } = json.data.cartCreate;
+
+    if (userErrors?.length > 0) {
+      console.error('Cart mutation errors:', userErrors);
+      return null;
+    }
+
+    return cart?.checkoutUrl ?? null;
+  } catch (err) {
+    console.error('Network or parsing error during checkout creation:', err);
+    return null;
+  }
+};
   return (
     <CartContext.Provider
       value={{
@@ -97,6 +167,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         addToWishlist,
         removeFromWishlist,
         toggleWishlistSelect,
+        getCheckoutUrl,
       }}
     >
       {children}

@@ -136,12 +136,27 @@ export default {
         );
       }
 
+      // --- UPDATED 404 & REDIRECT HANDLING ---
       if (response.status === 404) {
-        return storefrontRedirect({
-          request,
-          response,
-          storefront: hydrogenContext.storefront,
-        });
+        const url = new URL(request.url);
+        const excludedPaths = ['/favicon.ico', '/robots.txt', '/sitemap.xml'];
+
+        // 1. Skip Shopify API redirect checks for static resource assets
+        if (excludedPaths.includes(url.pathname) || url.pathname.startsWith('/build/')) {
+          return response;
+        }
+
+        // 2. Prevent server crash if the connection to Shopify fails/times out
+        try {
+          return await storefrontRedirect({
+            request,
+            response,
+            storefront: hydrogenContext.storefront,
+          });
+        } catch (redirectError) {
+          console.error("Failed to fetch redirects from Shopify Storefront API:", redirectError);
+          return response; // Gracefully fall back to standard 404 response
+        }
       }
 
       return response;

@@ -9,7 +9,7 @@ export default function AuthenticateCallback() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let active = true; // Guard flag to prevent double-execution in Dev StrictMode
+    let active = true; 
 
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -31,8 +31,8 @@ export default function AuthenticateCallback() {
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({
             grant_type: 'authorization_code',
-            client_id: 'f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5', // Fixed Client ID typo
-            redirect_uri: 'https://crunching-audience-gestate.ngrok-free.dev/authenticate',
+            client_id: 'f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5', 
+            redirect_uri: 'https://quality-education-exhaust-formal.trycloudflare.com/authenticate',
             code: code,
             code_verifier: savedVerifier,
           }),

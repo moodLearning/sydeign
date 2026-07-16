@@ -124,9 +124,10 @@ interface DesignerProfileProps {
 }
 
 function DesignerProfile({ designer }: DesignerProfileProps) {
-  // Parse the initial followers count from the designer string safely (e.g. "4k Followers" or "20")
-  const initialCountStr = designer.followers?.replace(/[^0-9]/g, '') || '0';
-  const initialCount = parseInt(initialCountStr, 10);
+
+  const initialCount = typeof designer.followers === 'number'
+    ? designer.followers
+    : parseInt(String(designer.followers || '0').replace(/[^0-9]/g, ''), 10) || 0;
 
   const [followerCount, setFollowerCount] = useState(initialCount);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -134,7 +135,6 @@ function DesignerProfile({ designer }: DesignerProfileProps) {
   return (
     <div className="relative z-20 mx-auto mt-20 max-w-5xl px-6 text-center">
       
-      {/* We pass these states down so the button can modify and sync them together */}
       <FollowButton 
         designerId={designer.id} 
         isFollowing={isFollowing} 
@@ -148,10 +148,7 @@ function DesignerProfile({ designer }: DesignerProfileProps) {
 
       <DesignerRating designer={designer} />
 
-      {/* Renders dynamic count instead of hardcoded strings */}
       <DesignerMetrics designer={designer} followerCount={followerCount} />
-
-      {/*<SocialLinks designer={designer} />*/}
 
       <p className="section-body">
         {designer.bio}

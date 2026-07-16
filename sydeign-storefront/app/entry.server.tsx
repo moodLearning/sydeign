@@ -26,6 +26,12 @@ export default async function handleRequest(
       'wss://*.ngrok-free.app',
       'https://*.ngrok-free.dev',    
       'wss://*.ngrok-free.dev',
+
+      'https://*.loca.lt',    
+      'wss://*.loca.lt',
+
+      'https://*.trycloudflare.com', 
+      'wss://*.trycloudflare.com',  
       
       'http://localhost:*',
       'ws://localhost:*',

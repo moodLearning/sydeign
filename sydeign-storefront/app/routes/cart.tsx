@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Trash2, Edit2 } from 'lucide-react';
 
 export default function CartPage() {
-  // Placeholder cart items
+  
   const [cartItems, setCartItems] = useState([
     {
       id: '1',
