@@ -107,7 +107,7 @@ export default function SearchResultsPage() {
                 key={col.id}
                 type="button"
                 onClick={() => handleCategoryClick(col.title)}
-                className={`px-6 py-2 rounded-lg border text-sm font-medium transition duration-200 cursor-pointer ${
+                className={`px-6 py-2 rounded-lg border text-lg font-medium transition duration-200 cursor-pointer ${
                   isSelected
                     ? 'bg-[#4B6B40] text-white border-[#4B6B40]'
                     : 'bg-[#FFFCEB] text-[#4B6B40] border-[#BAC3A1] hover:bg-[#F2F4E1]'
@@ -124,7 +124,7 @@ export default function SearchResultsPage() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-[#D4D9C1] pb-4 mb-6">
           
           {/* Breadcrumbs */}
-          <div className="flex items-center gap-2 text-sm text-[#7D8B62]">
+          <div className="flex items-center gap-2 text-md text-[#7D8B62]">
             <Link to="/" className="flex items-center gap-1 hover:text-[#4B6B40]">
               <ArrowLeft className="w-4 h-4" /> Home
             </Link>
@@ -133,7 +133,7 @@ export default function SearchResultsPage() {
           </div>
 
           {/* Quick tags */}
-          <div className="flex items-center gap-4 text-xs text-[#7D8B62]">
+          <div className="flex items-center gap-4 text-md text-[#7D8B62]">
             <span className="flex items-center gap-1 font-semibold text-[#4B6B40]">
               <SlidersHorizontal className="w-4 h-4" /> Popular Searches:
             </span>
@@ -145,12 +145,12 @@ export default function SearchResultsPage() {
           </div>
 
           {/* Sorting */}
-          <div className="flex items-center gap-2 text-sm">
+          <div className="flex items-center gap-2 text-lg">
             <span className="text-[#7D8B62]">Sort By:</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-[#FFFCEB] border border-[#BAC3A1] rounded px-3 py-1 text-sm text-[#4B6B40] focus:outline-none"
+              className="bg-[#FFFCEB] border border-[#BAC3A1] rounded px-3 py-1 text-lg text-[#4B6B40] focus:outline-none"
             >
               <option>Best Match</option>
               <option>Price: Low to High</option>
@@ -174,7 +174,7 @@ export default function SearchResultsPage() {
         {products.length === 0 ? (
           <div className="text-center py-20 bg-white border-2 border-dashed border-[#D4D9C1] rounded-3xl">
             <p className="text-[#7D8B62] text-lg font-medium">No jewelry items found matching your filters.</p>
-            <p className="text-sm text-gray-400 mt-1">Try adjusting your keywords or clearing selected category pills.</p>
+            <p className="text-lg text-gray-400 mt-1">Try adjusting your keywords or clearing selected category pills.</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-5">

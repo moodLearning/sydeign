@@ -44,6 +44,6 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ['.tryhydrogen.dev', '.loca.lt', '.trycloudflare.com', '.ngrok-free.app', '.ngrok-free.dev'],
+    allowedHosts: ['.tryhydrogen.dev', '.loca.lt', '.trycloudflare.com', '.ngrok-free.app', '.ngrok-free.dev', 'nimbly-precut-scant.ngrok-free.dev'],
   },
 });

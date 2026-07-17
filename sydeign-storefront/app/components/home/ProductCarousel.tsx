@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductCard } from '../product/ProductCard';
-import { Button } from '../Button';
+import { Button, ButtonAlt, ButtonCard } from '../Button';
 import type { Product } from '../../data/shopify';
 
 interface ProductCarouselProps {
@@ -25,24 +25,40 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
 
   return (
 
-    <section className="bg-background border-y border-gray-100 py-16">
+    <section 
+  className="relative bg-background border-y border-gray-100 py-16 shadow-inner"
+  style={{
+    backgroundImage: "linear-gradient(to bottom, transparent 0%, var(--background, #fff5e1) 80%, var(--background, #fff5e1) 100%), url('/textured-wallpaper.png')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+  }}
+>
       <div className="max-w-350 mx-auto px-6">
-        <header className="mb-10">
-          <h2 className="section-header">
-            Masterpieces to Discover
-          </h2>
+        <div className="relative inline-flex items-center">
 
-          <p className="section-body">
-            Browse through our live collection
-            of carefully crafted design
-            architectures and products.
-          </p>
+  <div
+    className="
+      absolute
+      inset-0
 
-          <h3 className="section-subheader">
-            Top Selling Products
-          </h3>
+      scale-[1.8]
 
-        </header>
+      rounded-full
+
+      bg-[#fcfbf8]
+
+      blur-3xl
+
+      opacity-80
+    "
+  />
+
+  <div className="relative flex items-center gap-6">
+    ...
+  </div>
+
+</div>
 
         <div className="relative group">
           <CarouselButton direction="left" onClick={() => scroll('left')}/>
@@ -59,7 +75,7 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
         </div>
 
         <div className="mt-6 flex justify-center">
-          <Button label="See more products" to="/products"/>
+          <ButtonCard label="See more products" to="/products"/>
         </div>
       </div>
     </section>

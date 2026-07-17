@@ -1,25 +1,67 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CUSTOMER_ORDERS_QUERY } from '../graphql/customer-account/CustomerOrdersQuery';
+import { useAuth } from '../data/AuthContext';
 
-// Replace this with your actual Shopify Storefront / Customer Account API endpoint
-const SHOPIFY_API_ENDPOINT = 'https://your-shop-name.myshopify.com/api/2024-01/graphql';
+const SHOPIFY_API_ENDPOINT = 'https://sydeign-ypslvqn7.myshopify.com/api/2024-01/graphql';
 
-export default function MyOrdersPage({ customerAccessToken }) {
-  const [orders, setOrders] = useState([]);
-  const [activeTab, setActiveTab] = useState('Placed');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const PUBLIC_STOREFRONT_ACCESS_TOKEN = 'a31c4c2226ad99d901220ac433acc15c';
+
+interface ShopifyOrdersResponse {
+  data?: {
+    customer?: {
+      orders: {
+        edges: Array<{
+          node: {
+            id: string;
+            name: string;
+            processedAt: string;
+            fulfillmentStatus: string;
+            cancelReason: string | null;
+            lineItems: {
+              edges: Array<{
+                node: {
+                  title: string;
+                  quantity: number;
+                  variant?: {
+                    price?: {
+                      amount: string;
+                    };
+                    image?: {
+                      url: string;
+                    };
+                    selectedOptions?: Array<{
+                      name: string;
+                      value: string;
+                    }>;
+                  };
+                };
+              }>;
+            };
+          };
+        }>;
+      };
+    };
+  };
+  errors?: Array<{ message: string }>;
+}
+
+export default function MyOrdersPage() {
+  const { token: customerAccessToken, loading: authLoading } = useAuth();
+  const [orders, setOrders] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState<string>('Placed');
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 1. Auth Guard: Redirect if no access token is present
+    if (authLoading) return;
+
     if (!customerAccessToken) {
       navigate('/?auth=login');
       return;
     }
 
-    // 2. Fetch function using standard fetch API
     const fetchOrders = async () => {
       try {
         setLoading(true);
@@ -27,15 +69,20 @@ export default function MyOrdersPage({ customerAccessToken }) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            // Pass the logged-in user's token in the header
-            'X-Shopify-Storefront-Customer-Access-Token': customerAccessToken,
+            // MUST use the standard allowed storefront access header:
+            'X-Shopify-Storefront-Access-Token': PUBLIC_STOREFRONT_ACCESS_TOKEN, 
           },
           body: JSON.stringify({
             query: CUSTOMER_ORDERS_QUERY,
+            // Pass the logged-in customer's access token via query variables
+            variables: {
+              customerAccessToken: customerAccessToken,
+            },
           }),
         });
 
-        const { data, errors } = await response.json();
+        const jsonResult = (await response.json()) as ShopifyOrdersResponse;
+        const { data, errors } = jsonResult;
 
         if (errors || !data?.customer) {
           throw new Error(errors?.[0]?.message || 'Failed to retrieve orders');
@@ -43,22 +90,23 @@ export default function MyOrdersPage({ customerAccessToken }) {
 
         setOrders(data.customer.orders.edges || []);
       } catch (err) {
-        setError(err.message);
+        const errorObj = err as Error;
+        setError(errorObj.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchOrders();
-  }, [customerAccessToken, navigate]);
+  }, [customerAccessToken, authLoading, navigate]);
 
-  // 3. Filter mapping logic
+  // Filter mapping logic
   const filteredOrders = orders.filter(({ node: order }) => {
     const status = order.fulfillmentStatus;
     const isCancelled = order.cancelReason !== null;
 
     if (activeTab === 'Cancelled') return isCancelled;
-    if (isCancelled) return false; // Don't show cancelled orders in other tabs
+    if (isCancelled) return false;
 
     switch (activeTab) {
       case 'Placed':
@@ -72,8 +120,17 @@ export default function MyOrdersPage({ customerAccessToken }) {
     }
   });
 
-  if (loading) return <div className="p-12 text-center text-[#4B6B40] font-medium">Loading your order history...</div>;
-  if (error) return <div className="p-12 text-center text-red-500">Error: {error}</div>;
+  if (authLoading) {
+    return <div className="p-12 text-center text-[#4B6B40] font-medium">Verifying session...</div>;
+  }
+
+  if (loading) {
+    return <div className="p-12 text-center text-[#4B6B40] font-medium">Loading your order history...</div>;
+  }
+
+  if (error) {
+    return <div className="p-12 text-center text-red-500">Error: {error}</div>;
+  }
 
   return (
     <div className="flex min-h-screen bg-white">
@@ -97,7 +154,7 @@ export default function MyOrdersPage({ customerAccessToken }) {
         </nav>
       </aside>
 
-      {/* Main Panel matching your UI layout */}
+      {/* Main Panel */}
       <main className="flex-1 p-8 max-w-4xl">
         <div className="flex flex-col gap-8">
           {filteredOrders.length === 0 ? (
@@ -125,7 +182,7 @@ export default function MyOrdersPage({ customerAccessToken }) {
                       <div className="text-sm text-gray-500 space-y-1 mb-4">
                         <p>Order No: <span className="font-mono text-gray-800 font-bold">{order.name}</span></p>
                         <p>Date: {new Date(order.processedAt).toLocaleDateString()}</p>
-                        {item.variant?.selectedOptions?.map(opt => (
+                        {item.variant?.selectedOptions?.map((opt: any) => (
                           <p key={opt.name}>{opt.name}: <span className="text-gray-800 font-medium">{opt.value}</span></p>
                         ))}
                         <p>Quantity: <span className="text-gray-800 font-medium">{item.quantity}x</span></p>

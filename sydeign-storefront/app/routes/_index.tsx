@@ -58,13 +58,13 @@ export default function HomePage(){
     <main>
       <HeroSection />
       <ProductCarousel products={products} />
-      <HomeSection>
+      <HomeSection alternate>
         <DesignerSection  data={featuredDesigner} />
       </HomeSection>
-      <HomeSection alternate className="py-20 shadow-md z-40">
+      <HomeSection alternate className="z-40">
         <ProductCategoriesSection collections={collections} />
       </HomeSection>
-      <HomeSection className="shadow-xl py-20 z-40">
+      <HomeSection className="shadow-xl py-20 pb-40 z-40">
         <FaqSection/>
       </HomeSection>
     </main>

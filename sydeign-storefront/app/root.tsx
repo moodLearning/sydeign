@@ -58,8 +58,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
               {children}
             </main>
             <Footer />
-            <Scripts nonce={nonce} />
-            <ScrollRestoration nonce={nonce} />
+            <Scripts nonce={nonce || undefined} />
+            <ScrollRestoration nonce={nonce || undefined} />
           </body>
         </CartProvider>
       </AuthProvider>

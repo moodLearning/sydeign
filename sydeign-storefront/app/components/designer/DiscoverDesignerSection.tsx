@@ -87,7 +87,7 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
 
       </div>
 
-      <div className="max-w-xl mx-auto mb-16 px-4">
+      <div className="max-w-4/5 mx-auto mb-16 px-4">
 
         <div
           className="
@@ -107,7 +107,7 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
 
           <Search
             size={18}
-            className="text-stone-400 mr-2"
+            className="text-stone-400 mr-2 rounded-2xl"
           />
 
 
@@ -126,7 +126,7 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
             className="
               w-full
               bg-transparent
-              text-sm
+              text-xl
               focus:outline-none
               text-stone-800
             "
@@ -142,7 +142,7 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
 
       <div
         className="
-          max-w-4xl
+          max-w-4/5
           mx-auto
           px-4
           flex

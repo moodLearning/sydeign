@@ -32,3 +32,18 @@ export function ButtonAlt({ label, to, className = "" }: ButtonProps) {
     </div>
   );
 }
+
+export function ButtonCard({ label, to }: ButtonProps) {
+  return (
+    <Link
+      to={to}
+      className="inline-flex items-center justify-center rounded-[18px] border border-[#e2d5c5] bg-white px-6 py-3.5 text-md font-bold uppercase tracking-[0.15em] text-[#7b5a45] shadow-[0_4px_12px_rgba(0,0,0,0.03)] transition-all duration-300 hover:bg-[#7b5a45] hover:text-white hover:border-[#7b5a45] hover:shadow-[0_8px_20px_rgba(123,90,69,0.15)] hover:-translate-y-0.5 active:translate-y-0 shrink-0 group"
+    >
+      {label}
+      {/* If your ButtonCard has that little right arrow from the original screenshot, add this: */}
+      <span className="ml-2 transition-transform duration-300 group-hover:translate-x-1">
+        →
+      </span>
+    </Link>
+  );
+}

@@ -47,13 +47,14 @@ export async function getDesignersPage(
 
   const featuredProduct =
     products.find(
-      (product)=>
-        product.designerName ===
-        designerOfTheMonth?.name,
-    )
-    ??
+      (product) =>
+        product.handle === designerOfTheMonth?.featuredProductHandle,
+    ) ??
+    products.find(
+      (product) =>
+        product.designerId === designerOfTheMonth?.id,
+    ) ??
     null;
-
 
   return {
     designers,

@@ -27,8 +27,13 @@
   --color-white: #FEFEFE;
   --color-orange: #ffd888;
   --color-rust: #CA643C;
+  
+  /* Inter is back to being your default sans font (what the designer name uses!) */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  
+  /* Cinzel is kept separate for when you want to use 'font-cinzel' or 'font-serif' */
   --font-cinzel: 'Cinzel Decorative', serif;
+  --font-serif: 'Cinzel Decorative', serif;
 
   --breakpoint-sm: 640px;
   --breakpoint-md: 850px;
@@ -52,13 +57,12 @@
   }
 
   .section-body {
-    @apply text-2xl font-sans text-center text-primary mb-2 max-w-4xl mx-auto;
+    @apply text-xl font-sans text-center text-primary mb-2 max-w-4xl mx-auto;
   }
 
   .section-subheader {
     @apply text-4xl text-primary text-left font-bold mb-8 mt-16;
   }
-
 }
 
 @layer utilities {

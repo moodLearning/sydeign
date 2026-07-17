@@ -20,7 +20,7 @@ export default function Header({ q }: { q?: string }) {
   const closeDrawer = () => setActiveDrawer(null);
 
   const handleLogout = () => {
-    logout(); // 3. Triggers the global state change & updates localStorage automatically!
+    logout(); 
     closeDrawer();
     navigate('/');
   };
@@ -30,7 +30,7 @@ export default function Header({ q }: { q?: string }) {
       <header className="relative z-50 bg-[#FFFCEB] px-8 py-4 flex items-center justify-between border-b border-[#D4D9C1] shadow-md">
         <div className="flex items-center gap-12 flex-1">
           <Link to="/" className="hover:opacity-80 transition flex items-center">
-            <img src="/logo-small.png" alt="SÝDEIGN" className="h-10 w-auto object-contain" />
+            <img src="/logo-small.png" alt="SÝDEIGN" className="h-12 w-auto object-contain" />
           </Link>
 
           <Form action="/search" method="get" className="relative w-full max-w-xl">
@@ -38,7 +38,7 @@ export default function Header({ q }: { q?: string }) {
               type="search"
               name="q"
               defaultValue={q}
-              placeholder="Search products, shops..."
+              placeholder="Search products, designers..."
               onChange={(e) => submit(e.currentTarget.form)}
               className="w-full bg-[#FAFAF2] border border-[#BAC3A1] rounded-full px-6 py-2 text-[#4B6B40] focus:outline-none focus:ring-1 focus:ring-[#4B6B40] placeholder-[#A3AF8A] text-xl font-sans"
             />
@@ -48,7 +48,7 @@ export default function Header({ q }: { q?: string }) {
           </Form>
         </div>
 
-        <nav className="flex items-center gap-8 text-[#4B6B40] font-sans text-2xl ml-8 relative">
+        <nav className="flex items-center gap-8 text-primary font-sans font-bold text-2xl ml-8 relative">
           <Link to="/" className="hover:text-[#2C4124]">Home</Link>
           <Link to="/products" className="hover:text-[#2C4124]">Products</Link>
           <Link to="/designers" className="hover:text-[#2C4124]">Designers</Link>
@@ -58,12 +58,12 @@ export default function Header({ q }: { q?: string }) {
           {/* Action Trigger Buttons */}
           <div className="flex items-center gap-4 ml-4 text-[#4B6B40]">
             <Link to="/notifications" className="hover:text-[#2C4124] transition-colors relative" title="Notifications">
-              <Bell className="w-6 h-6 stroke-[2.2]" />
+              <Bell className="w-8 h-8 stroke-2.5" />
               <span className="absolute -top-1 -right-1 bg-red-500 h-2.5 w-2.5 rounded-full" />
             </Link>
             
             <button onClick={() => setActiveDrawer('wishlist')} className="hover:text-[#2C4124] transition-colors relative" title="Wishlist">
-              <Heart className="w-6 h-6 stroke-[2.2]" />
+              <Heart className="w-8 h-8 stroke-2.5" />
               {wishlistItems.length > 0 && (
                 <span className="absolute -top-1 -right-2 bg-[#4B6B40] text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
                   {wishlistItems.length}
@@ -72,7 +72,7 @@ export default function Header({ q }: { q?: string }) {
             </button>
 
             <button onClick={() => setActiveDrawer('cart')} className="hover:text-[#2C4124] transition-colors relative" title="Shopping Cart">
-              <ShoppingCart className="w-6 h-6 stroke-[2.2]" />
+              <ShoppingCart className="w-8 h-8 stroke-2.5" />
               {cartItems.length > 0 && (
                 <span className="absolute -top-1 -right-2 bg-[#D36B45] text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
                   {cartItems.length}
@@ -81,7 +81,7 @@ export default function Header({ q }: { q?: string }) {
             </button>
 
             <button onClick={() => setActiveDrawer('profile')} className="hover:text-[#2C4124] transition-colors focus:outline-none" title="Menu">
-              <Menu className="w-6 h-6 stroke-[2.2]" />
+              <Menu className="w-8 h-8 stroke-2.5" />
             </button>
           </div>
         </nav>

@@ -1,23 +1,24 @@
-import {useRef} from 'react';
-import {ChevronLeft, ChevronRight} from 'lucide-react';
-import {DesignerCard} from './DesignerCard';
+import { useRef } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { DesignerCard } from './DesignerCard';
+import type { Designer } from '../../data/shopify';
 
 interface TopDesignerSectionProps {
-  list: any[];
+  list: Designer[];
 }
 
-export function TopDesignerSection({ list }: TopDesignerSectionProps) {
-  const carouselRef = useRef<HTMLDivElement>(null);
+export function TopDesignerSection({
+  list,
+}: TopDesignerSectionProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  function scrollCarousel( direction: 'left' | 'right' ) {
-    const container = carouselRef.current;
+  function scroll(direction: 'left' | 'right') {
+    const container = containerRef.current;
+
     if (!container) return;
 
     container.scrollBy({
-      left:
-        direction === 'left'
-          ? -340
-          : 340,
+      left: direction === 'left' ? -340 : 340,
       behavior: 'smooth',
     });
   }
@@ -25,104 +26,165 @@ export function TopDesignerSection({ list }: TopDesignerSectionProps) {
   if (!list.length) return null;
 
   return (
-    <div className="relative group w-full py-15 px-20">
+    <section className="relative overflow-hidden py-24">
 
-      <h2 className="section-header font-cinzel text-center text-[#9c522b] uppercase tracking-widest mb-1">
-        Top Designers
-      </h2>
+      {/* White Background */}
+      <div className="absolute inset-0 bg-white" />
 
-      <div className="mb-10 flex items-center justify-center gap-2">
-        <div className="h-px w-16 bg-[#9c522b]/30" />
-        <span className="text-xs text-[#9c522b]">✦</span>
-        <div className="h-px w-16 bg-[#9c522b]/30" />
-      </div>
+      {/* Wallpaper Fade */}
+      <div
+        className="absolute inset-0 opacity-100"
+        style={{
+          backgroundImage: "url('/textured-wallpaper.png')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          WebkitMaskImage:
+            'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.98) 100%, black 100%)',
+          maskImage:
+            'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.98) 100%, black 100%)',
+        }}
+      />
 
-      <button
-        type="button"
-        onClick={() => scrollCarousel('left')}
-        aria-label="Scroll left"
+      {/* Soft Glow */}
+      <div
         className="
           absolute
-          -left-4
+          left-1/2
           top-1/2
+          -translate-x-1/2
           -translate-y-1/2
-          z-20
-          hidden
-          md:flex
-          items-center
-          justify-center
+          w-[900px]
+          h-[500px]
           rounded-full
-          border
-          border-gray-100
-          bg-white
-          p-2.5
-          shadow-md
-          opacity-0
-          transition
-          group-hover:opacity-100
-          hover:text-primary
+          bg-[#ead8ca]/30
+          blur-3xl
+          pointer-events-none
         "
-      >
-        <ChevronLeft size={20} />
-      </button>
+      />
 
-      {/* Carousel */}
-      <div
-        ref={carouselRef}
-        className="
-          flex
-          gap-6
-          overflow-x-auto
-          pb-6
-          snap-x
-          snap-mandatory
-          no-scrollbar
-        "
-      >
-        {list.map((designer) => (
+      <div className="relative z-10 max-w-[1700px] mx-auto px-6">
+
+        <header className="mb-12">
+
+          <h2 className="section-header text-[#9c522b] uppercase">
+            Top Designers
+          </h2>
+
+          <p className="section-body max-w-2xl mx-auto">
+            Meet the artists whose work continues to inspire our community
+            through craftsmanship, creativity, and timeless design.
+          </p>
+
+          <div className="mt-8 mb-12 flex items-center justify-center gap-4">
+
+            <div className="h-px w-20 bg-[#c79a7d]/40" />
+
+            <div className="h-3 w-3 rotate-45 border border-[#9c522b]/60 bg-white" />
+
+            <div className="h-px w-20 bg-[#c79a7d]/40" />
+
+          </div>
+
+        </header>
+
+        <div className="relative group lg:px-40">
+
+          <CarouselButton
+            direction="left"
+            onClick={() => scroll('left')}
+          />
+
           <div
-            key={designer.id}
+            ref={containerRef}
             className="
-              w-[280px]
-              sm:w-[300px]
-              shrink-0
-              snap-start
+              flex
+              gap-6
+              overflow-x-auto
+              pb-6
+              snap-x
+              snap-mandatory
+              scroll-smooth
+              no-scrollbar
             "
           >
-            <DesignerCard designer={designer} />
+            {list.map((designer) => (
+              <div
+                key={designer.id}
+                className="
+                  w-[280px]
+                  sm:w-[300px]
+                  shrink-0
+                  snap-start
+                "
+              >
+                <DesignerCard designer={designer} />
+              </div>
+            ))}
           </div>
-        ))}
+
+          <CarouselButton
+            direction="right"
+            onClick={() => scroll('right')}
+          />
+
+        </div>
+
       </div>
 
-      <button
-        type="button"
-        onClick={() => scrollCarousel('right')}
-        aria-label="Scroll right"
-        className="
-          absolute
-          -right-4
-          top-1/2
-          -translate-y-1/2
-          z-20
-          hidden
-          md:flex
-          items-center
-          justify-center
-          rounded-full
-          border
-          border-gray-100
-          bg-white
-          p-2.5
-          shadow-md
-          opacity-0
-          transition
-          group-hover:opacity-100
-          hover:text-primary
-        "
-      >
-        <ChevronRight size={20} />
-      </button>
+    </section>
+  );
+}
 
-    </div>
+function CarouselButton({
+  direction,
+  onClick,
+}: {
+  direction: 'left' | 'right';
+  onClick: () => void;
+}) {
+  const Icon =
+    direction === 'left'
+      ? ChevronLeft
+      : ChevronRight;
+
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={`Scroll ${direction}`}
+      className={`
+        hidden
+        md:flex
+        items-center
+        justify-center
+        absolute
+        top-1/2
+        -translate-y-1/2
+        ${
+          direction === 'left'
+            ? '-left-4'
+            : '-right-4'
+        }
+        z-20
+        h-12
+        w-12
+        rounded-full
+        border
+        border-[#d6b49b]
+        bg-white/90
+        backdrop-blur-sm
+        text-[#9c522b]
+        shadow-lg
+        opacity-0
+        transition-all
+        duration-300
+        group-hover:opacity-100
+        hover:bg-[#9c522b]
+        hover:text-white
+        hover:scale-105
+      `}
+    >
+      <Icon size={20} />
+    </button>
   );
 }
