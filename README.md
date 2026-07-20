@@ -1,4 +1,4 @@
-**Sydeign** is a general e-commerce store made to highlight local artists, giving them an opportunity to market their traditional and/or digital works, and provide a means for customers to follow artists and be updated with their upcoming pieces for sale.
+Sydeign is a general e-commerce store made to highlight local artists, giving them an opportunity to market their traditional and/or digital works, and provide a means for customers to follow artists and be updated with their upcoming pieces for sale.
 
 This is an overhaul of the [old Sydeign website](https://github.com/moodLearning/sydeign-dev#introduction), where we pivot from using OpenCart to a headless setup using Shopify Hydrogen to make the storefront to access Shopify's API endpoints.
 # Setup
@@ -50,10 +50,29 @@ Go to **Settings > Payments**. A development store can only process test payment
 Under **Additional payment providers** search **GCash** and click **Secure Payments via PayMongo**. Verify if Test Mode is toggled on or off after adding the provider to the store by visiting **Settings > Payments > Secure Payments via PayMongo** and scrolling all the way down to the **Test mode** section.
 
 To complete this step, it is required to have a registered and verified PayMongo account, as you will need to get the Public and Secret keys from your account Developer settings and add it to the payment provider details (**Secure Payments via PayMongo > Manage**).
+
 ## Shopify Hydrogen for Frontend
-## Laravel-Shopify for Backend
-## Testing
+
+Storefront directory was setup with Shopify-Hydrogen.
+
+## Testing (Flow)
+
+Run tunnelling service, e.g.
+
+`ngrok http 8000`
+
+Run storefront,
+
+`npm run dev`
+
+Open browser and go to your shop domain and then enter the shop password,
+
+`http://your-shop-domain.myshopify.com`
 # Shopify Store Configuration
+
+### Redirect from Shopify Theme
+
+For the store to use the custom theme you made in the storefront, you must modify the source code of the theme the store is currently using. To do this, 
 ### Custom Product Fields
 ### Custom Metaobject Designer
 
