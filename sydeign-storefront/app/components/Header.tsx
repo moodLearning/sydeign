@@ -27,10 +27,10 @@ export default function Header({ q }: { q?: string }) {
 
   return (
     <>
-      <header className="relative z-50 bg-[#FFFCEB] px-8 py-4 flex items-center justify-between border-b border-[#D4D9C1] shadow-md">
+      <header className="relative z-50 bg-[#FFFCEB] px-8 py-8 flex items-center justify-between border-b border-[#D4D9C1] shadow-md">
         <div className="flex items-center gap-12 flex-1">
           <Link to="/" className="hover:opacity-80 transition flex items-center">
-            <img src="/logo-small.png" alt="SÝDEIGN" className="h-12 w-auto object-contain" />
+            <img src="/logo-small.png" alt="SÝDEIGN" className="h-18 w-auto object-contain" />
           </Link>
 
           <Form action="/search" method="get" className="relative w-full max-w-xl">
@@ -40,10 +40,10 @@ export default function Header({ q }: { q?: string }) {
               defaultValue={q}
               placeholder="Search products, designers..."
               onChange={(e) => submit(e.currentTarget.form)}
-              className="w-full bg-[#FAFAF2] border border-[#BAC3A1] rounded-full px-6 py-2 text-[#4B6B40] focus:outline-none focus:ring-1 focus:ring-[#4B6B40] placeholder-[#A3AF8A] text-xl font-sans"
+              className="w-full bg-[#FAFAF2] border border-primary rounded-full px-6 py-4 text-primary focus:outline-none focus:ring-1 focus:ring-[#4B6B40] placeholder-[#A3AF8A] text-xl font-sans"
             />
-            <span className="absolute right-4 top-2.5 text-[#4B6B40]">
-              <Search className="w-5 h-5 stroke-[2.5]" />
+            <span className="absolute right-4 py-3 pt-3.5 text-primary">
+              <Search className="w-8 h-8 stroke-[2.7]" />
             </span>
           </Form>
         </div>

@@ -110,9 +110,9 @@ function DesignerBanner({ designer }: DesignerBannerProps) {
             alt={designer.name}
             className="relative z-30 h-full w-full rounded-full object-cover"
           />
-          <div className="absolute -right-4 bottom-2 z-40 rounded-sm border border-[#d1a153]/30 bg-[#445c49] px-2.5 py-1 font-serif text-[9px] uppercase tracking-widest text-white shadow-md">
+          {/*<div className="absolute -right-4 bottom-2 z-40 rounded-sm border border-[#d1a153]/30 bg-[#445c49] px-2.5 py-1 font-sans text-md uppercase tracking-widest text-white shadow-md">
             Designer
-          </div>
+          </div>*/}
         </div>
       </div>
     </div>
@@ -229,8 +229,8 @@ function FollowButton({ designerId, isFollowing, setIsFollowing, setFollowerCoun
           border
           px-6
           py-1.5
-          font-serif
-          text-xs
+          font-sans
+          text-lg
           font-semibold
           uppercase
           tracking-widest
@@ -255,10 +255,10 @@ interface DesignerInfoProps {
 function DesignerRating({ designer }: DesignerInfoProps) {
   return (
     <div className="mb-4 flex items-center justify-center gap-1.5 text-[#c36a3e]">
-      <span className="text-sm">
+      <span className="text-xl">
         ★★★★★
       </span>
-      <span className="ml-1 font-sans text-xs font-semibold tracking-wider text-stone-500">
+      <span className="ml-1 font-sans text-lg font-semibold tracking-wider text-stone-500">
         {designer.handle || '@designer'}
       </span>
       <span className="rounded-full border border-emerald-100 bg-emerald-50 px-1.5 py-[2px] text-[10px] text-emerald-700">
@@ -274,7 +274,7 @@ interface DesignerMetricsProps extends DesignerInfoProps {
 
 function DesignerMetrics({ designer, followerCount }: DesignerMetricsProps) {
   return (
-    <div className="mb-4 flex items-center justify-center gap-4 font-serif text-xs font-medium uppercase tracking-wider text-stone-600">
+    <div className="mb-4 flex items-center justify-center gap-4 font-sans text-lg font-semibold uppercase tracking-wider text-stone-600">
       <span>
         {designer.products || '84 Designs'}
       </span>
