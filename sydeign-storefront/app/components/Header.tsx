@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Form, Link, useSubmit, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, Heart, Bell, Menu } from 'lucide-react';
 import { useCart } from '../data/CartContext';
-import { useAuth } from '../data/AuthContext'; 
+import { useAuth } from '../data/AuthContext';
+import { useCustomerProfile } from '../hooks/useCustomerProfile';
 import { Drawer } from './Drawer';
 import { CartDrawerContent } from './header/CartDrawerContent';
 import { WishlistDrawerContent } from './header/WishlistDrawerContent';
@@ -13,7 +14,8 @@ export default function Header({ q }: { q?: string }) {
   const navigate = useNavigate();
 
   const { cartItems, wishlistItems } = useCart();
-  const { isLoggedIn, logout } = useAuth(); 
+  const { isLoggedIn, logout } = useAuth();
+  const { name: customerName } = useCustomerProfile();
   
   const [activeDrawer, setActiveDrawer] = useState<'profile' | 'wishlist' | 'cart' | null>(null);
 
@@ -89,10 +91,11 @@ export default function Header({ q }: { q?: string }) {
 
       {/* Profile/Menu Sidebar */}
       <Drawer isOpen={activeDrawer === 'profile'} onClose={closeDrawer} title="Menu">
-        <ProfileDrawerContent 
-          isLoggedIn={isLoggedIn} 
-          onLogout={handleLogout} 
-          closeDrawer={closeDrawer} 
+        <ProfileDrawerContent
+          isLoggedIn={isLoggedIn}
+          customerName={customerName}
+          onLogout={handleLogout}
+          closeDrawer={closeDrawer}
         />
       </Drawer>
 

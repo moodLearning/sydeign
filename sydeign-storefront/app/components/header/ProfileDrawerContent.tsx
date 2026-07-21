@@ -6,11 +6,12 @@ import {
 
 interface ProfileDrawerContentProps {
   isLoggedIn: boolean;
+  customerName?: string | null;
   onLogout: () => void;
   closeDrawer: () => void;
 }
 
-export function ProfileDrawerContent({ isLoggedIn, onLogout, closeDrawer }: ProfileDrawerContentProps) {
+export function ProfileDrawerContent({ isLoggedIn, customerName, onLogout, closeDrawer }: ProfileDrawerContentProps) {
   if (isLoggedIn) {
     return (
       <div className="flex flex-col h-full bg-[#F2F2F2] -m-6 p-6 justify-center">
@@ -25,7 +26,7 @@ export function ProfileDrawerContent({ isLoggedIn, onLogout, closeDrawer }: Prof
               }} 
             />
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 leading-tight">Authenticated User</h3>
+          <h3 className="text-2xl font-bold text-gray-900 leading-tight">{customerName ?? 'My Account'}</h3>
         </div>
 
         <nav className="flex-1 py-8 flex flex-col gap-4 text-xl text-gray-800">
