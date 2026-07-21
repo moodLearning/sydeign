@@ -1,0 +1,16 @@
+{
+  "name": "sydeign-storefront",
+  "main": "dist/server/index.js",
+  "compatibility_date": "2025-04-01",
+  "assets": {
+    "directory": "dist/client",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    "PUBLIC_STORE_DOMAIN": "sydeign-ypslvqn7.myshopify.com",
+    "PUBLIC_STOREFRONT_ACCESS_TOKEN": "a31c4c2226ad99d901220ac433acc15c",
+    "PUBLIC_STOREFRONT_API_TOKEN": "a31c4c2226ad99d901220ac433acc15c",
+    "PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID": "f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5",
+    "PUBLIC_CUSTOMER_ACCOUNT_API_URL": "https://shopify.com/77132071069"
+  }
+}
