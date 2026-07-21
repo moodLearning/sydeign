@@ -1,75 +1,6 @@
-import React, { useState, useEffect } from 'react';
 import type { Designer } from '../../data/shopify';
+import { useDesignerFollow } from '../../hooks/useDesignerFollow';
 /*import {SocialLinks} from './SocialLinks';*/
-
-async function getCustomerFollowing(): Promise<string[]> {
-  const token = localStorage.getItem('shopify_customer_token');
-  if (!token) return [];
-
-  const query = `
-    query GetFollowing {
-      customer {
-        metafield(namespace: "custom", key: "following_designers") {
-          value
-        }
-      }
-    }
-  `;
-
-  try {
-    const response = await fetch('https://shopify.com/77132071069/account/api/2026-07/graphql', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/graphql',
-        'Authorization': token,
-      },
-      body: query,
-    });
-    
-    const result = (await response.json()) as { data?: { customer?: { metafield?: { value?: string } } } };
-    const rawValue = result.data?.customer?.metafield?.value;
-    return rawValue ? (JSON.parse(rawValue) as string[]) : [];
-  } catch (err) {
-    console.error("Error checking following state:", err);
-    return [];
-  }
-}
-
-async function updateCustomerFollowing(followingList: string[]) {
-  const token = localStorage.getItem('shopify_customer_token');
-  const customerId = localStorage.getItem('shopify_customer_id');
-  if (!token || !customerId) return;
-
-  const query = `
-    mutation UpdateFollowing {
-      metafieldsSet(metafields: [
-        {
-          ownerId: "${customerId}"
-          namespace: "custom"
-          key: "following_designers"
-          value: "${JSON.stringify(followingList).replace(/"/g, '\\"')}"
-          type: "list.single_line_text_field"
-        }
-      ]) {
-        metafields {
-          key
-        }
-        userErrors {
-          message
-        }
-      }
-    }
-  `;
-
-  await fetch('https://shopify.com/77132071069/account/api/2026-07/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/graphql',
-      'Authorization': token,
-    },
-    body: query,
-  });
-}
 
 // --- React Components ---
 
@@ -124,23 +55,42 @@ interface DesignerProfileProps {
 }
 
 function DesignerProfile({ designer }: DesignerProfileProps) {
-
-  const initialCount = typeof designer.followers === 'number'
-    ? designer.followers
-    : parseInt(String(designer.followers || '0').replace(/[^0-9]/g, ''), 10) || 0;
-
-  const [followerCount, setFollowerCount] = useState(initialCount);
-  const [isFollowing, setIsFollowing] = useState(false);
+  const initialCount = typeof designer.followers === 'number' ? designer.followers : 0;
+  const { isFollowing, followerCount, loading, toggleFollow } = useDesignerFollow(
+    designer.id,
+    initialCount,
+  );
 
   return (
     <div className="relative z-20 mx-auto mt-20 max-w-5xl px-6 text-center">
-      
-      <FollowButton 
-        designerId={designer.id} 
-        isFollowing={isFollowing} 
-        setIsFollowing={setIsFollowing} 
-        setFollowerCount={setFollowerCount} 
-      />
+
+      <div className="mb-4">
+        <button
+          onClick={toggleFollow}
+          disabled={loading}
+          type="button"
+          className={`
+            cursor-pointer
+            rounded-full
+            border
+            px-6
+            py-1.5
+            font-sans
+            text-lg
+            font-semibold
+            uppercase
+            tracking-widest
+            transition-all
+            ${isFollowing
+              ? 'bg-[#c36a3e] border-[#c36a3e] text-white hover:opacity-90'
+              : 'border-[#c36a3e] text-[#c36a3e] hover:bg-[#c36a3e] hover:text-white'
+            }
+            disabled:opacity-50
+          `}
+        >
+          {loading ? 'Processing...' : isFollowing ? 'Following' : 'Follow'}
+        </button>
+      </div>
 
       <h1 className="section-header font-cinzel">
         {designer.name}
@@ -153,97 +103,6 @@ function DesignerProfile({ designer }: DesignerProfileProps) {
       <p className="section-body">
         {designer.bio}
       </p>
-    </div>
-  );
-}
-
-interface FollowButtonProps {
-  designerId: string;
-  isFollowing: boolean;
-  setIsFollowing: React.Dispatch<React.SetStateAction<boolean>>;
-  setFollowerCount: React.Dispatch<React.SetStateAction<number>>;
-}
-
-function FollowButton({ designerId, isFollowing, setIsFollowing, setFollowerCount }: FollowButtonProps) {
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    getCustomerFollowing().then((followingList) => {
-      setIsFollowing(followingList.includes(designerId));
-    });
-  }, [designerId, setIsFollowing]);
-
-  const handleFollowToggle = async () => {
-    const token = localStorage.getItem('shopify_customer_token');
-    if (!token) {
-      alert("Please sign in to follow designers.");
-      return;
-    }
-
-    if (loading) return;
-    setLoading(true);
-
-    try {
-      const currentList = await getCustomerFollowing();
-      const alreadyFollowing = currentList.includes(designerId);
-
-      const updatedList = alreadyFollowing
-        ? currentList.filter((id) => id !== designerId)
-        : [...currentList, designerId];
-
-      setIsFollowing(!alreadyFollowing);
-      setFollowerCount((prev) => alreadyFollowing ? Math.max(0, prev - 1) : prev + 1);
-
-      await Promise.all([
-        updateCustomerFollowing(updatedList),
-        fetch('/api/follow-designer', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            designerMetaobjectId: designerId,
-            action: alreadyFollowing ? 'unfollow' : 'follow',
-          }),
-        })
-      ]);
-
-    } catch (err) {
-      console.error("Failed to process follow change:", err);
-      setIsFollowing(isFollowing);
-      setFollowerCount((prev) => isFollowing ? prev + 1 : Math.max(0, prev - 1));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="mb-4">
-      <button
-        onClick={handleFollowToggle}
-        disabled={loading}
-        type="button"
-        className={`
-          cursor-pointer
-          rounded-full
-          border
-          px-6
-          py-1.5
-          font-sans
-          text-lg
-          font-semibold
-          uppercase
-          tracking-widest
-          transition-all
-          ${isFollowing 
-            ? 'bg-[#c36a3e] border-[#c36a3e] text-white hover:opacity-90' 
-            : 'border-[#c36a3e] text-[#c36a3e] hover:bg-[#c36a3e] hover:text-white'
-          }
-          disabled:opacity-50
-        `}
-      >
-        {loading ? 'Processing...' : isFollowing ? 'Following' : 'Follow'}
-      </button>
     </div>
   );
 }

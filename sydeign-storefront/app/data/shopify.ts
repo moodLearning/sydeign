@@ -8,6 +8,24 @@ interface ShopifyField {
   value?: string | null;
 }
 
+export interface ShopifyProductReview {
+  id: string;
+  author?: ShopifyField;
+  date?: ShopifyField;
+  rating?: ShopifyField;
+  body?: ShopifyField;
+  reviewImages?: {
+    references?: {
+      nodes: {
+        image?: {
+          url: string;
+          altText?: string | null;
+        };
+      }[];
+    };
+  };
+}
+
 export interface ShopifyProduct {
   id: string;
   title: string;
@@ -40,6 +58,13 @@ export interface ShopifyProduct {
       designerNameField?: {
         value: string;
       };
+    };
+  };
+  reviewScore?: ShopifyField;
+  reviewCount?: ShopifyField;
+  reviewsList?: {
+    references?: {
+      nodes: ShopifyProductReview[];
     };
   };
 }
@@ -85,6 +110,15 @@ export interface ShopifyDesigner {
 // 2. FRONTEND FLAT TYPES (CLEAN INTERFACES)
 // ==========================================
 
+export interface ProductReview {
+  id: string;
+  author: string;
+  rating: number;
+  date: string;
+  body: string;
+  images: string[];
+}
+
 export interface Product {
   id: string;
   variantId: string; // Used securely by Cart API
@@ -101,6 +135,19 @@ export interface Product {
     title: string;
     handle: string;
   }[];
+  averageRating: number;
+  reviewCount: number;
+  reviews: ProductReview[];
+}
+
+// Parses Shopify's "rating" field JSON shape, e.g. {"value":"4.0","scale_min":"1.0","scale_max":"5.0"}
+function parseRatingValue(raw?: string | null): number {
+  if (!raw) return 0;
+  try {
+    return Number((JSON.parse(raw) as { value?: string })?.value ?? 0) || 0;
+  } catch {
+    return 0;
+  }
 }
 
 export interface Designer {
@@ -144,6 +191,18 @@ export function normalizeProduct(product: ShopifyProduct): Product {
     designerId: product.designerMetafield?.reference?.id,
     designerName: product.designerMetafield?.reference?.designerNameField?.value ?? 'Designer Collection',
     collections: product.collections?.nodes ?? [],
+    averageRating: parseRatingValue(product.reviewScore?.value),
+    reviewCount: Number(product.reviewCount?.value ?? 0) || 0,
+    reviews: (product.reviewsList?.references?.nodes ?? []).map((review) => ({
+      id: review.id,
+      author: review.author?.value ?? 'Anonymous',
+      rating: parseRatingValue(review.rating?.value),
+      date: review.date?.value ?? '',
+      body: review.body?.value ?? '',
+      images: (review.reviewImages?.references?.nodes ?? [])
+        .map((node) => node.image?.url)
+        .filter((url): url is string => Boolean(url)),
+    })),
   };
 }
 

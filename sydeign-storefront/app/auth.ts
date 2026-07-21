@@ -1,7 +1,7 @@
 import * as oauth from 'oauth4webapi';
 
-const CLIENT_ID = 'f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5'; 
-const REDIRECT_URI = 'https://nimbly-precut-scant.ngrok-free.dev/authenticate';
+const CLIENT_ID = 'f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5';
+const REDIRECT_URI = `${import.meta.env.PUBLIC_AUTH_REDIRECT_URI}/authenticate`;
 
 const client: oauth.Client = {
   client_id: CLIENT_ID,

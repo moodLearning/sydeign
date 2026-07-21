@@ -1,5 +1,6 @@
 import {Link} from 'react-router';
 import type {Designer} from '../../data/shopify';
+import {useDesignerFollow} from '../../hooks/useDesignerFollow';
 
 
 interface DesignerCardProps {
@@ -10,6 +11,13 @@ interface DesignerCardProps {
 export function DesignerCard({
   designer,
 }: DesignerCardProps) {
+
+  const initialFollowerCount =
+    typeof designer.followers === 'number' ? designer.followers : 0;
+  const {isFollowing, loading, toggleFollow} = useDesignerFollow(
+    designer.id,
+    initialFollowerCount,
+  );
 
   return (
 
@@ -35,12 +43,45 @@ export function DesignerCard({
 
       <div
         className="
+          relative
           h-[180px]
           w-full
           overflow-hidden
           bg-stone-100
         "
       >
+
+        <button
+          type="button"
+          onClick={(event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            toggleFollow();
+          }}
+          disabled={loading}
+          className={`
+            absolute
+            right-2
+            top-2
+            z-10
+            rounded-full
+            border
+            px-3
+            py-1
+            text-[10px]
+            font-bold
+            uppercase
+            tracking-widest
+            transition-all
+            disabled:opacity-50
+            ${isFollowing
+              ? 'bg-[#7b5a45] text-white border-[#7b5a45]'
+              : 'bg-white/85 text-[#7b5a45] border-[#d9c9b8] hover:bg-[#7b5a45] hover:text-white'
+            }
+          `}
+        >
+          {isFollowing ? 'Following' : 'Follow'}
+        </button>
 
         <img
           src={

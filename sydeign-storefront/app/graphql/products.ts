@@ -89,20 +89,20 @@ query Product($handle: String!) {
       }
     }
 
-    reviewScore: metafield(namespace: "custom", key: "review_score") {
+    reviewScore: metafield(namespace: "custom", key: "rating") {
       value
     }
 
-    reviewCount: metafield(namespace: "custom", key: "review_count") {
+    reviewCount: metafield(namespace: "custom", key: "rating_count") {
       value
     }
 
-    reviewsList: metafield(namespace: "custom", key: "customer_reviews") {
+    reviewsList: metafield(namespace: "custom", key: "reviews_list") {
       references(first: 10) {
         nodes {
           ... on Metaobject {
             id
-            # Retrieve fields defined in your Customer Review Metaobject
+            # Retrieve fields defined in the Customer Review Metaobject
             author: field(key: "author") {
               value
             }
@@ -116,7 +116,7 @@ query Product($handle: String!) {
               value
             }
             # Handles files/images attached to the customer review cards
-            reviewImages: field(key: "review_images") {
+            reviewImages: field(key: "media") {
               references(first: 3) {
                 nodes {
                   ... on MediaImage {

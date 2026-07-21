@@ -32,7 +32,7 @@ export default function AuthenticateCallback() {
           body: new URLSearchParams({
             grant_type: 'authorization_code',
             client_id: 'f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5', 
-            redirect_uri: 'https://nimbly-precut-scant.ngrok-free.dev/authenticate',
+            redirect_uri: `${import.meta.env.PUBLIC_AUTH_REDIRECT_URI}/authenticate`,
             code: code,
             code_verifier: savedVerifier,
           }),

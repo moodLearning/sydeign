@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useLoaderData, useNavigate } from 'react-router';
 import type { LoaderFunctionArgs } from '@shopify/remix-oxygen';
-import { ChevronLeft, ChevronRight, Star, Heart, Share2, Upload } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Star, Heart, Share2 } from 'lucide-react';
 import { PRODUCT_QUERY } from '../graphql/products';
-import { getProductsCatalog } from '../lib/products.server'; 
+import { getProductsCatalog } from '../lib/products.server';
 import { normalizeProduct } from '../data/shopify';
 import type { Product, ProductImage } from '../data/shopify';
 import Sidebar from '../components/Sidebar';
-import { useCart } from '../data/CartContext'; 
-import ProductSection from '../components/product/ProductsSection'; 
+import { useCart } from '../data/CartContext';
+import ProductSection from '../components/product/ProductsSection';
+import { useProductReview } from '../hooks/useProductReview';
 
 export async function loader({ params, context }: LoaderFunctionArgs) {
   const handle = params.id;
@@ -43,6 +44,21 @@ export default function ProductPage() {
   const [recentlyViewed, setRecentlyViewed] = useState<Product[]>([]);
 
   const designerName = product.designerName ?? 'Jeanne Jeanner';
+
+  const { reviews, averageRating, reviewCount, submitting, submitReview } = useProductReview(
+    product.id,
+    { averageRating: product.averageRating, reviewCount: product.reviewCount, reviews: product.reviews },
+  );
+  const [reviewText, setReviewText] = useState('');
+  const [selectedRating, setSelectedRating] = useState(0);
+
+  const handleReviewSubmit = async () => {
+    const ok = await submitReview(selectedRating, reviewText);
+    if (ok) {
+      setReviewText('');
+      setSelectedRating(0);
+    }
+  };
 
   const formattedPrice = new Intl.NumberFormat('en-PH', {
     style: 'currency',
@@ -105,34 +121,6 @@ const computedRecentlyViewed: Product[] = baseRecentlyViewed.map(prod => ({
   ]
 }));
 
-  // Mock data for reviews
-  const mockReviews = [
-    {
-      id: '1',
-      author: 'iamme',
-      rating: 5,
-      date: '01/08/2023',
-      body: 'These pearl earrings are stunning! They add a sophisticated touch to any outfit, whether it\'s for a formal event or a casual day out. I highly recommend it!',
-      images: [images[0]?.url, images[1]?.url, images[2]?.url].filter(Boolean)
-    },
-    {
-      id: '2',
-      author: 'Bell4t',
-      rating: 5,
-      date: '01/08/2023',
-      body: 'Absolutely gorgeous! These pearl earrings are a timeless classic. The quality of the pearls are excellent.',
-      images: [images[0]?.url, images[1]?.url, images[2]?.url].filter(Boolean)
-    },
-    {
-      id: '3',
-      author: 'Ariel Liebert',
-      rating: 5,
-      date: '12/10/2023',
-      body: 'Absolutely gorgeous! These pearl earrings are a timeless classic. The quality of the pearls are excellent.',
-      images: [images[0]?.url, images[1]?.url, images[2]?.url].filter(Boolean)
-    }
-  ];
-
   return (
     <main className="w-full min-h-screen bg-[#fcfdfa]">
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-8 px-6 py-8 md:grid-cols-[20rem_minmax(0,1fr)] md:px-12 md:items-start">
@@ -169,69 +157,100 @@ const computedRecentlyViewed: Product[] = baseRecentlyViewed.map(prod => ({
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
                 <div className="lg:col-span-4 flex flex-col items-center justify-center border-r border-gray-100 pr-8">
                   <div className="text-center">
-                    <span className="text-6xl font-bold text-primary">5.0</span>
+                    <span className="text-6xl font-bold text-primary">{averageRating.toFixed(1)}</span>
                     <div className="flex gap-1 my-2 justify-center">
-                      {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-amber-500 text-amber-500" />)}
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`w-5 h-5 ${i < Math.round(averageRating) ? 'fill-amber-500 text-amber-500' : 'text-gray-300'}`}
+                        />
+                      ))}
                     </div>
-                    <span className="text-sm text-gray-500">(22 reviews)</span>
+                    <span className="text-sm text-gray-500">({reviewCount} {reviewCount === 1 ? 'review' : 'reviews'})</span>
                   </div>
                 </div>
 
                 <div className="lg:col-span-8">
                   <div className="relative border border-gray-200 rounded-2xl p-4 bg-gray-50">
-                    <textarea 
-                      placeholder="Write your review here..." 
+                    <textarea
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                      placeholder="Write your review here..."
                       className="w-full bg-transparent border-none outline-none text-sm resize-none h-24"
                     />
                     <div className="flex items-center justify-between border-t border-gray-200 pt-2 mt-2">
                       <div className="flex gap-1">
-                        {[...Array(5)].map((_, i) => <Star key={i} className="w-4 h-4 text-gray-300 cursor-pointer hover:text-amber-500" />)}
+                        {[...Array(5)].map((_, i) => (
+                          <button
+                            key={i}
+                            type="button"
+                            onClick={() => setSelectedRating(i + 1)}
+                            aria-label={`Rate ${i + 1} star${i === 0 ? '' : 's'}`}
+                          >
+                            <Star
+                              className={`w-4 h-4 cursor-pointer ${i < selectedRating ? 'fill-amber-500 text-amber-500' : 'text-gray-300 hover:text-amber-500'}`}
+                            />
+                          </button>
+                        ))}
                       </div>
                       <div className="flex items-center gap-3">
-                        <button className="text-gray-400 hover:text-primary"><Upload className="w-4 h-4" /></button>
-                        <button className="bg-primary text-white p-2 rounded-lg text-xs uppercase font-semibold">Post</button>
+                        <button
+                          type="button"
+                          disabled={submitting}
+                          onClick={handleReviewSubmit}
+                          className="bg-primary text-white p-2 rounded-lg text-xs uppercase font-semibold disabled:opacity-50"
+                        >
+                          {submitting ? 'Posting...' : 'Post'}
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {mockReviews.map((review) => (
-                  <div key={review.id} className="border border-gray-100 rounded-2xl p-5 shadow-sm bg-white flex flex-col justify-between">
-                    <div>
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-full bg-amber-100 text-primary flex items-center justify-center font-bold text-xs">
-                            {review.author[0].toUpperCase()}
-                          </div>
-                          <div>
-                            <span className="text-sm font-semibold text-gray-800 block">{review.author}</span>
-                            <span className="text-[10px] text-gray-400">{review.date}</span>
+              {reviews.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {reviews.map((review) => (
+                    <div key={review.id} className="border border-gray-100 rounded-2xl p-5 shadow-sm bg-white flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-full bg-amber-100 text-primary flex items-center justify-center font-bold text-xs">
+                              {review.author[0]?.toUpperCase() ?? '?'}
+                            </div>
+                            <div>
+                              <span className="text-sm font-semibold text-gray-800 block">{review.author}</span>
+                              <span className="text-[10px] text-gray-400">
+                                {review.date ? new Date(review.date).toLocaleDateString() : ''}
+                              </span>
+                            </div>
                           </div>
                         </div>
+                        <div className="flex gap-0.5 mb-2">
+                          {[...Array(5)].map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-3.5 h-3.5 ${i < review.rating ? 'fill-amber-500 text-amber-500' : 'text-gray-300'}`}
+                            />
+                          ))}
+                        </div>
+                        <p className="text-gray-600 text-xs leading-relaxed mb-4">{review.body}</p>
                       </div>
-                      <div className="flex gap-0.5 mb-2">
-                        {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />)}
-                      </div>
-                      <p className="text-gray-600 text-xs leading-relaxed mb-4">{review.body}</p>
+                      {review.images.length > 0 && (
+                        <div className="flex gap-2">
+                          {review.images.map((img, index) => (
+                            <div key={index} className="w-12 h-12 rounded-lg overflow-hidden border border-gray-200">
+                              <img src={img} alt="review attachment" className="w-full h-full object-cover" />
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                    {review.images.length > 0 && (
-                      <div className="flex gap-2">
-                        {review.images.map((img, index) => (
-                          <div key={index} className="w-12 h-12 rounded-lg overflow-hidden border border-gray-200">
-                            <img src={img} alt="review attachment" className="w-full h-full object-cover" />
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <div className="text-center mt-6">
-                <button className="text-sm font-semibold text-primary underline hover:text-opacity-80">See All</button>
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-sm text-gray-400">No reviews yet — be the first to leave one!</p>
+              )}
             </div>
           </section>
 
@@ -345,10 +364,15 @@ function ProductInformation({
       <div>
         <div className="flex items-center gap-1 text-xs text-amber-500 font-semibold mb-2">
           <div className="flex gap-0.5">
-            {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />)}
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className={`w-3.5 h-3.5 ${i < Math.round(product.averageRating) ? 'fill-amber-500 text-amber-500' : 'text-gray-300'}`}
+              />
+            ))}
           </div>
-          <span>5.0</span>
-          <span className="text-gray-400 font-normal">| 12k sold</span>
+          <span>{product.averageRating.toFixed(1)}</span>
+          <span className="text-gray-400 font-normal">| {product.reviewCount} {product.reviewCount === 1 ? 'review' : 'reviews'}</span>
           <span className="ml-auto text-gray-500">Item Available: 10</span>
         </div>
 

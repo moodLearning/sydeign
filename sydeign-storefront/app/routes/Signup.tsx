@@ -34,7 +34,7 @@ export default function Signup() {
       const shopifyAuthUrl = new URL('https://shopify.com/authentication/77132071069/oauth/authorize');
       
       shopifyAuthUrl.searchParams.append('client_id', 'f3b178c7-7dc8-40b7-ad03-1a0dc8be7ab5');
-      shopifyAuthUrl.searchParams.append('redirect_uri', 'https://nimbly-precut-scant.ngrok-free.dev/authenticate');
+      shopifyAuthUrl.searchParams.append('redirect_uri', `${import.meta.env.PUBLIC_AUTH_REDIRECT_URI}/authenticate`);
       shopifyAuthUrl.searchParams.append('response_type', 'code');
       shopifyAuthUrl.searchParams.append('scope', 'openid email customer-account-api:full');
       shopifyAuthUrl.searchParams.append('state', state);
