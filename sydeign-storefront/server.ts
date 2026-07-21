@@ -375,7 +375,7 @@ async function handleProductReview(request: Request, env: Env): Promise<Response
 
     return jsonResponse({
       success: true,
-      review: { id: newReviewId, author, rating, date, body },
+      review: { id: newReviewId, author, rating, date, body, images: [] },
       averageRating: newAvg,
       reviewCount: newCount,
     });
