@@ -37,16 +37,26 @@ async function resolveCustomerId(
   customerToken: string,
 ): Promise<string | null> {
   try {
-    const response = await fetch(`${customerAccountApiUrl}/account/api/2026-07/graphql`, {
+    const response = await fetch(`${customerAccountApiUrl}/account/customer/api/2026-07/graphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'User-Agent': 'Mozilla/5.0 (compatible; SydeignStorefront/1.0)',
         Authorization: customerToken,
       },
       body: JSON.stringify({ query: 'query { customer { id } }' }),
     });
-    if (!response.ok) return null;
-    const json: any = await response.json();
+    const rawBody = await response.text();
+    if (!response.ok) {
+      console.error('Customer Account API rejected token:', response.status, rawBody);
+      return null;
+    }
+    const json = JSON.parse(rawBody);
+    if (json.errors) {
+      console.error('Customer Account API returned errors:', JSON.stringify(json.errors));
+      return null;
+    }
     return json?.data?.customer?.id ?? null;
   } catch (err) {
     console.error('Failed to resolve customer from token:', err);
