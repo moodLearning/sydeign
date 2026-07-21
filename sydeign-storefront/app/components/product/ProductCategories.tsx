@@ -19,38 +19,38 @@ interface ProductCategoriesSectionProps {
 export function ProductCategoriesSection({ collections }: ProductCategoriesSectionProps) {
   return (
     <section 
-  className="relative pb-16 px-4 w-full rounded-3xl border-background"
-  style={{
-    backgroundImage: "linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff 100%), url('/desbg1.png')",
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-  }}
->
+      className="relative pb-16 px-4 w-full rounded-3xl border-background"
+      style={{
+        backgroundImage: "linear-gradient(to bottom, rgba(255, 255, 255, 0) 75%, #ffffff 100%), url('/desbg1.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       {/* Optional: Simple fallback solid base in case the image fails to load */}
       <div className="absolute inset-0 bg-[#fcfbf8] -z-10" />
 
       {/* Premium Header */}
-<div className="pt-20 relative z-10 flex flex-col items-center py-12 select-none">
-  <div className="flex items-center gap-6">
-    {/* Left Diamond */}
-    <span className="w-2.5 h-2.5 rotate-45 border border-[#7b5a45] bg-[#7b5a45]/10 shrink-0" />
-    
-    <h2 className="text-3xl md:text-4xl xl:text-5xl font-serif font-bold text-primary text-center whitespace-nowrap">
-      Product Categories
-    </h2>
-    
-    {/* Right Diamond */}
-    <span className="w-2.5 h-2.5 rotate-45 border border-[#7b5a45] bg-[#7b5a45]/10 shrink-0" />
-  </div>
-</div>
+      <div className="pt-20 relative z-10 flex flex-col items-center py-12 select-none">
+        <div className="flex items-center gap-6">
+          {/* Left Diamond */}
+          <span className="w-2.5 h-2.5 rotate-45 border border-[#7b5a45] bg-[#7b5a45]/10 shrink-0" />
+          
+          <h2 className="text-3xl md:text-4xl xl:text-5xl font-serif font-bold text-primary text-center whitespace-nowrap">
+            Product Categories
+          </h2>
+          
+          {/* Right Diamond */}
+          <span className="w-2.5 h-2.5 rotate-45 border border-[#7b5a45] bg-[#7b5a45]/10 shrink-0" />
+        </div>
+      </div>
       
       {/* Grid Container */}
       <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-12 justify-items-center max-w-8xl mx-auto pb-12 px-2 md:px-8 xl:px-16">
         {collections.map((collection) => (
           <Link 
             key={collection.id} 
-            to={`/collections/${collection.handle}`} 
+            to={`/products?category=${encodeURIComponent(collection.handle)}`} 
             className="flex flex-col items-center group w-full"
           >
             {/* Elegant Circle Frame */}
