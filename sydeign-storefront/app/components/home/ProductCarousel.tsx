@@ -35,30 +35,29 @@ export function ProductCarousel({ products }: ProductCarouselProps) {
   }}
 >
       <div className="max-w-350 mx-auto px-6">
-        <div className="relative inline-flex items-center">
+        <header className="mb-10">
+          <div className="relative z-10 flex flex-col items-center pt-12 pb-4 select-none">
+            <div className="flex items-center gap-6">
+              {/* Left Diamond */}
+              <span className="w-2.5 h-2.5 rotate-45 border border-[#7b5a45] bg-[#7b5a45]/10 shrink-0" />
+              
+              <h2 className="text-3xl md:text-4xl xl:text-5xl font-serif font-bold text-primary text-center whitespace-nowrap">
+                  Bestselling Products
+              
+              </h2>
+              
+              {/* Right Diamond */}
+              <span className="w-2.5 h-2.5 rotate-45 border border-[#7b5a45] bg-[#7b5a45]/10 shrink-0" />
+            </div>
+          </div>
 
-  <div
-    className="
-      absolute
-      inset-0
+          <p className="section-body">
+            Browse through our live collection
+            of carefully crafted design
+            architectures and products.
+          </p>
 
-      scale-[1.8]
-
-      rounded-full
-
-      bg-[#fcfbf8]
-
-      blur-3xl
-
-      opacity-80
-    "
-  />
-
-  <div className="relative flex items-center gap-6">
-    ...
-  </div>
-
-</div>
+        </header>
 
         <div className="relative group">
           <CarouselButton direction="left" onClick={() => scroll('left')}/>
