@@ -75,10 +75,12 @@ export function ProductCategoriesSection({ collections }: ProductCategoriesSecti
               </div>
             </div>            
             
-            {/* Typography */}
-            <span className="mt-5 text-sm md:text-base font-serif font-medium text-[#2d2b29] tracking-wide text-center line-clamp-2 px-2 group-hover:text-[#7b5a45] transition-colors duration-300">
-              {collection.title}
-            </span>
+            {/* High-Readability Label Container */}
+            <div className="mt-4 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-sm border border-[#e7ddd2]/60 shadow-sm transition-all duration-300 group-hover:bg-white group-hover:border-[#7b5a45]/30 group-hover:shadow-md">
+              <span className="block text-md md:text-base font-sans font-semibold text-[#1a1817] tracking-tight leading-snug text-center line-clamp-2 transition-all duration-300 group-hover:text-[#7b5a45] group-hover:scale-[1.02]">
+                {collection.title}
+              </span>
+            </div>
           </Link>        
         ))}
       </div>

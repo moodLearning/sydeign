@@ -123,7 +123,7 @@ const computedRecentlyViewed: Product[] = baseRecentlyViewed.map(prod => ({
 
   return (
     <main className="w-full min-h-screen bg-[#fcfdfa]">
-      <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-8 px-6 py-8 md:grid-cols-[20rem_minmax(0,1fr)] md:px-12 md:items-start">
+      <div className="mx-auto grid max-w-full grid-cols-1 gap-8 px-6 py-8 md:grid-cols-[20rem_minmax(0,1fr)] md:px-12 md:items-start">
         
         <Sidebar
           activeCategory="All Products"

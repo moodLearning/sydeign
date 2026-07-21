@@ -22,7 +22,7 @@ export function ProfileDrawerContent({ isLoggedIn, customerName, onLogout, close
               alt="User Avatar" 
               className="w-full h-full object-cover" 
               onError={(e) => { 
-                e.currentTarget.src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256"; 
+                e.currentTarget.src = "profile-default.png"; 
               }} 
             />
           </div>

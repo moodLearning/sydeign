@@ -18,6 +18,7 @@ export async function loader({
 
     const {
       designerOfTheMonth,
+      featuredProduct
     } = await getDesignersPage(
       context.storefront,
     );
@@ -45,22 +46,32 @@ export async function loader({
 
     featuredDesigner:
       designerOfTheMonth ?? null,
+
+    featuredProduct:
+      featuredProduct ?? null,
   };
 
 }
 
 export default function HomePage(){
 
-  const { products, collections, featuredDesigner } = useLoaderData<typeof loader>();
+  const { products, collections, featuredDesigner, featuredProduct } = useLoaderData<typeof loader>();
 
   return (
 
     <main>
       <HeroSection />
       <ProductCarousel products={products} />
-      <HomeSection alternate>
-        <DesignerSection  data={featuredDesigner} />
-      </HomeSection>
+      {
+        featuredDesigner && (
+          <HomeSection className="bg-white shadow-xl z-40">
+            <DesignerSection
+              data={featuredDesigner}
+              featuredProduct={featuredProduct}
+            />
+          </HomeSection>
+        )
+      }
       <HomeSection alternate className="z-40">
         <ProductCategoriesSection collections={collections} />
       </HomeSection>
