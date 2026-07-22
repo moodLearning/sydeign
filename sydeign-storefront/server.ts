@@ -1,6 +1,7 @@
 import * as serverBuild from 'virtual:react-router/server-build';
 import { createRequestHandler, storefrontRedirect } from '@shopify/hydrogen';
 import { createHydrogenRouterContext } from './app/lib/context';
+import { normalizeDesigner } from './app/data/shopify';
 
 const CUSTOMER_METAFIELD_NAMESPACE = 'custom';
 const CUSTOMER_METAFIELD_KEY = 'following_designers';
@@ -194,6 +195,87 @@ async function handleFollowDesigner(request: Request, env: Env): Promise<Respons
     return jsonResponse({ isFollowing: willFollow, followerCount: newFollowerCount });
   } catch (err: any) {
     console.error('Follow designer error:', err);
+    return jsonResponse({ error: err.message ?? 'Internal Server Error' }, 500);
+  }
+}
+
+async function handleFollowingDesigners(request: Request, env: Env): Promise<Response> {
+  const storeDomain = env.PUBLIC_STORE_DOMAIN;
+  const adminToken = env.SHOPIFY_ADMIN_ACCESS_TOKEN;
+  const customerAccountApiUrl = env.PUBLIC_CUSTOMER_ACCOUNT_API_URL;
+
+  if (!storeDomain || !adminToken || !customerAccountApiUrl) {
+    return jsonResponse({ error: 'Server configuration error: missing API credentials' }, 500);
+  }
+
+  const customerToken = request.headers.get('Authorization');
+  const customerId = customerToken
+    ? await resolveCustomerId(customerAccountApiUrl, customerToken)
+    : null;
+
+  if (!customerId) {
+    return jsonResponse({ error: 'Please sign in to view your following list.' }, 401);
+  }
+
+  try {
+    const customerResult = await adminGraphql(
+      storeDomain,
+      adminToken,
+      `query FollowingList($customerId: ID!) {
+        customer(id: $customerId) {
+          metafield(namespace: "${CUSTOMER_METAFIELD_NAMESPACE}", key: "${CUSTOMER_METAFIELD_KEY}") { value }
+        }
+      }`,
+      { customerId },
+    );
+
+    if (customerResult.errors) {
+      return jsonResponse({ error: customerResult.errors }, 400);
+    }
+
+    const rawFollowing = customerResult?.data?.customer?.metafield?.value;
+    const followingIds: string[] = rawFollowing ? (JSON.parse(rawFollowing) as string[]) : [];
+
+    if (!followingIds.length) {
+      return jsonResponse({ designers: [] });
+    }
+
+    const designersResult = await adminGraphql(
+      storeDomain,
+      adminToken,
+      `query FollowingDesigners($ids: [ID!]!) {
+        nodes(ids: $ids) {
+          ... on Metaobject {
+            id
+            handle
+            name: field(key: "name") { value }
+            profilePicture: field(key: "profile_picture") {
+              reference {
+                ... on MediaImage {
+                  image { url altText }
+                }
+              }
+            }
+            averageRating: field(key: "average_rating") { value }
+            reviewCount: field(key: "review_count") { value }
+            followers: field(key: "followers") { value }
+          }
+        }
+      }`,
+      { ids: followingIds },
+    );
+
+    if (designersResult.errors) {
+      return jsonResponse({ error: designersResult.errors }, 400);
+    }
+
+    const designers = ((designersResult?.data?.nodes ?? []) as any[])
+      .filter((node) => node && node.id)
+      .map((node) => normalizeDesigner(node));
+
+    return jsonResponse({ designers });
+  } catch (err: any) {
+    console.error('Following designers error:', err);
     return jsonResponse({ error: err.message ?? 'Internal Server Error' }, 500);
   }
 }
@@ -395,6 +477,10 @@ export default {
 
     if (url.pathname === '/api/follow-designer' && (request.method === 'POST' || request.method === 'GET')) {
       return handleFollowDesigner(request, env);
+    }
+
+    if (url.pathname === '/api/following-designers' && request.method === 'GET') {
+      return handleFollowingDesigners(request, env);
     }
 
     if (url.pathname === '/api/product-review' && request.method === 'POST') {
