@@ -57,11 +57,6 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
       return undefined;
     }
 
-    /*
-      Prefer best sellers collection.
-      Fallback to first product.
-    */
-
     return (
       designerProducts.find(
         (product)=>
@@ -78,121 +73,65 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
 
   return (
     <div className="discover-section">
-
       <div className="discover-section-heading-wrap">
-
         <h2 className="section-subheader text-center">
           Meet The{' '} <span className="text-[#556b57]">Designers</span>
         </h2>
-
       </div>
 
       <div className="discover-section-search-wrap">
-
         <div className="discover-section-search-box">
-
-          <Search
-            size={18}
-            className="discover-section-search-icon"
-          />
-
-
+          <Search size={18} className="discover-section-search-icon"/>
           <input
-
             type="text"
-
             value={searchQuery}
-
             onChange={
               handleSearchChange
             }
-
             placeholder="Search designers..."
-
             className="discover-section-search-input"
-
           />
-
         </div>
-
       </div>
 
-
-
-
       <div className="discover-section-list">
-
-
         {
           currentPagedList.length > 0
-
           ?
-
-          currentPagedList.map(
-            (designer,index)=> {
-
-
+          currentPagedList.map((designer,index)=> {
               const featuredProduct =
                 getDesignerProduct(
                   designer.id,
                 );
 
-
               return (
-
                 <DiscoverDesignerCard
-
-                  key={
-                    designer.id
-                  }
-
-                  designer={
-                    designer
-                  }
-
+                  key={designer.id}
+                  designer={designer}
                   productImage={
                     featuredProduct?.image ??
                     '/placeholder-product.png'
                   }
-
-                  isAlternate={
-                    index % 2 !== 0
-                  }
-
+                  isAlternate={index % 2 !== 0}
                 />
-
               );
-
             },
           )
-
 
           :
 
           (
-
             <div className="discover-section-empty">
-
               No matching designers found.
-
             </div>
-
           )
-
         }
 
-
       </div>
-
-
-
-
-
+      
       {
         totalPages > 1 && (
-
           <div className="discover-section-pagination">
-
             {
               Array.from({
                 length: totalPages,
@@ -200,11 +139,8 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
                 (_,pageIndex)=>(
 
                   <button
-
                     key={pageIndex}
-
                     type="button"
-
                     onClick={()=>
                       setCurrentPage(
                         pageIndex,
@@ -216,22 +152,15 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
                         ? 'discover-section-page-dot-active'
                         : 'discover-section-page-dot-inactive'
                     }`}
-
                   >
-
                     ✦
-
                   </button>
-
                 ),
               )
             }
-
           </div>
-
         )
       }
-
 
     </div>
 

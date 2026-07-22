@@ -75,7 +75,6 @@ export function DiscoverDesignerCard({
       <div
         className={`discover-card-product-wrap ${isAlternate ? 'discover-card-product-border-r' : 'discover-card-product-border-l'}`}
       >
-        {/* Soft, circular backing pod for the product */}
         <div className="discover-card-product-glow" />
 
         <img

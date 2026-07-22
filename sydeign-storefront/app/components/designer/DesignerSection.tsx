@@ -15,7 +15,6 @@ export function DesignerSection({
 
   return (
     <section className="designer-feature-section">
-      {/* Decorative Corners pinned directly to the section boundary */}
       <img
         src="/corner-frame.png"
         alt=""
@@ -125,7 +124,6 @@ export function DesignerSection({
               {data.bio || 'No biography has been provided yet.'}
             </p>
 
-            {/* CTA */}
             <div className="designer-feature-cta">
               <ButtonCard
                 label="VIEW COLLECTION"

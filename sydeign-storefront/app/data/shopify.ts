@@ -106,10 +106,6 @@ export interface ShopifyDesigner {
   socialLinks?: ShopifyField;
 }
 
-// ==========================================
-// 2. FRONTEND FLAT TYPES (CLEAN INTERFACES)
-// ==========================================
-
 export interface ProductReview {
   id: string;
   author: string;
@@ -121,7 +117,7 @@ export interface ProductReview {
 
 export interface Product {
   id: string;
-  variantId: string; // Used securely by Cart API
+  variantId: string; 
   handle: string;
   title: string;
   description: string;
@@ -140,7 +136,6 @@ export interface Product {
   reviews: ProductReview[];
 }
 
-// Parses Shopify's "rating" field JSON shape, e.g. {"value":"4.0","scale_min":"1.0","scale_max":"5.0"}
 function parseRatingValue(raw?: string | null): number {
   if (!raw) return 0;
   try {

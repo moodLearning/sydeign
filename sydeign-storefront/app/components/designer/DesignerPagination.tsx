@@ -10,12 +10,9 @@ interface DesignerPaginationProps {
 
 export function DesignerPagination({
   totalProducts,
-
   visibleCount,
-
   totalPages,
   activePage,
-
   onPageClick,
   onLoadMore,
 }: DesignerPaginationProps) {

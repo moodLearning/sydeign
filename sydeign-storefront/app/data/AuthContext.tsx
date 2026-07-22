@@ -43,11 +43,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider value={{ token, isLoggedIn: !!token, login, logout, loading }}>
-      {/* 
-        Instead of blocking the entire app, we let children render.
-        Components like Header or buttons can look at the `loading` property 
-        to show a skeleton state instead of blocking the whole page.
-      */}
       {children}
     </AuthContext.Provider>
   );
