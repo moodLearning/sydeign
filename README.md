@@ -1,6 +1,8 @@
 Sydeign is a general e-commerce store made to highlight local artists, giving them an opportunity to market their traditional and/or digital works, and provide a means for customers to follow artists and be updated with their upcoming pieces for sale.
 
 This is an overhaul of the [old Sydeign website](https://github.com/moodLearning/sydeign-dev#introduction), where we pivot from using OpenCart to a headless setup using Shopify Hydrogen to make the storefront to access Shopify's API endpoints.
+
+The revamped one currently using a development Shopify store populated with sample Designers and Products can be accessed [here](https://sydeign-ypslvqn7.myshopify.com/).
 # Setup
 
 ## Shopify Hydrogen for Frontend
