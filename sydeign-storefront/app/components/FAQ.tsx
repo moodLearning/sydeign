@@ -41,53 +41,44 @@ export function FaqSection() {
   }
 
   return (
-    <section className="mx-auto max-w-5xl px-6">
+    <section className="faq-section">
       <h2 className="section-header">
         Frequently Asked Questions
       </h2>
 
-      <div className="space-y-4">
+      <div className="faq-list">
         {FAQS.map((faq, index) => {
           const isOpen = openIndex === index;
 
           return (
             <article
               key={faq.question}
-              className="overflow-hidden rounded-2xl border border-stone-200 bg-white shadow-sm"
+              className="faq-item"
             >
               <button
                 type="button"
                 onClick={() => toggle(index)}
-                className="flex w-full cursor-pointer items-center justify-between px-6 py-5 text-left transition hover:bg-stone-50"
+                className="faq-trigger"
               >
-                <span className="font-semibold text-primary">
+                <span className="faq-question">
                   {faq.question}
                 </span>
 
                 <ChevronDown
                   size={18}
-                  className={`
-                    transition-transform
-                    duration-300
-                    ${isOpen ? 'rotate-180' : ''}
-                  `}
+                  className={`faq-chevron ${isOpen ? 'faq-chevron-open' : ''}`}
                 />
               </button>
 
               <div
-                className={`
-                  grid
-                  transition-all
-                  duration-300
-                  ${
-                    isOpen
-                      ? 'grid-rows-[1fr]'
-                      : 'grid-rows-[0fr]'
-                  }
-                `}
+                className={`faq-panel ${
+                  isOpen
+                    ? 'faq-panel-open'
+                    : 'faq-panel-closed'
+                }`}
               >
-                <div className="overflow-hidden">
-                  <p className="px-6 pb-6 text-stone-600">
+                <div className="faq-panel-inner">
+                  <p className="faq-answer">
                     {faq.answer}
                   </p>
                 </div>

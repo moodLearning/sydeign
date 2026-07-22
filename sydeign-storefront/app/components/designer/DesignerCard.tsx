@@ -23,33 +23,12 @@ export function DesignerCard({
 
     <Link
       to={`/designers/${designer.handle}`}
-      className="
-        group
-        block
-        w-[220px]
-        overflow-hidden
-        rounded-3xl
-        bg-white
-        border
-        border-stone-200
-        shadow-sm
-        transition-all
-        hover:-translate-y-1
-        hover:shadow-lg
-      "
+      className="designer-card group"
     >
 
       {/* Designer Image */}
 
-      <div
-        className="
-          relative
-          h-[180px]
-          w-full
-          overflow-hidden
-          bg-stone-100
-        "
-      >
+      <div className="designer-card-image-wrap">
 
         <button
           type="button"
@@ -59,26 +38,10 @@ export function DesignerCard({
             toggleFollow();
           }}
           disabled={loading}
-          className={`
-            absolute
-            right-2
-            top-2
-            z-10
-            rounded-full
-            border
-            px-3
-            py-1
-            text-[10px]
-            font-bold
-            uppercase
-            tracking-widest
-            transition-all
-            disabled:opacity-50
-            ${isFollowing
-              ? 'bg-[#7b5a45] text-white border-[#7b5a45]'
-              : 'bg-white/85 text-[#7b5a45] border-[#d9c9b8] hover:bg-[#7b5a45] hover:text-white'
-            }
-          `}
+          className={`designer-card-follow-btn ${isFollowing
+            ? 'designer-card-follow-btn-active'
+            : 'designer-card-follow-btn-inactive'
+          }`}
         >
           {isFollowing ? 'Following' : 'Follow'}
         </button>
@@ -89,14 +52,7 @@ export function DesignerCard({
             '/placeholder-designer.png'
           }
           alt={designer.name}
-          className="
-            h-full
-            w-full
-            object-cover
-            transition-transform
-            duration-300
-            group-hover:scale-105
-          "
+          className="designer-card-image"
         />
 
       </div>
@@ -104,49 +60,19 @@ export function DesignerCard({
 
       {/* Designer Info */}
 
-      <div
-        className="
-          flex
-          flex-col
-          items-center
-          p-4
-          text-center
-        "
-      >
+      <div className="designer-card-info">
 
-        <h3
-          className="
-            text-lg
-            font-semibold
-            text-stone-800
-            line-clamp-1
-          "
-        >
+        <h3 className="designer-card-name">
           {designer.name}
         </h3>
 
 
-        <p
-          className="
-            text-xs
-            text-stone-500
-            mt-1
-          "
-        >
+        <p className="designer-card-handle">
           @{designer.handle}
         </p>
 
 
-        <div
-          className="
-            mt-3
-            flex
-            items-center
-            gap-1
-            text-sm
-            text-[#9c522b]
-          "
-        >
+        <div className="designer-card-rating">
 
           <span>
             ★
@@ -156,11 +82,7 @@ export function DesignerCard({
             {designer.averageRating.toFixed(1)}
           </span>
 
-          <span
-            className="
-              text-stone-400
-            "
-          >
+          <span className="designer-card-review-count">
             ({designer.reviewCount})
           </span>
 

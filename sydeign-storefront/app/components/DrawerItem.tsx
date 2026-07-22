@@ -27,43 +27,43 @@ export function DrawerItem({
   const isCartMode = quantity !== undefined && onUpdateQuantity !== undefined;
 
   return (
-    <div className="bg-[#FFFCEB] border border-[#D4D9C1] rounded-xl p-4 flex gap-4 items-center shadow-sm">
+    <div className="drawer-item">
       {/* Checkbox Selector */}
-      <input 
-        type="checkbox" 
-        checked={selected} 
-        onChange={onToggleSelect} 
-        className="w-5 h-5 accent-[#4B6B40] cursor-pointer shrink-0" 
+      <input
+        type="checkbox"
+        checked={selected}
+        onChange={onToggleSelect}
+        className="drawer-item-checkbox"
       />
 
       {/* Product Image */}
-      <img 
-        src={image || '/placeholder.png'} 
-        alt={title} 
-        className="w-24 h-24 rounded-lg object-cover border border-[#D4D9C1] shrink-0" 
+      <img
+        src={image || '/placeholder.png'}
+        alt={title}
+        className="drawer-item-image"
       />
 
       {/* Main Info */}
-      <div className="flex-1 min-w-0">
-        <h4 className="text-lg font-bold text-[#4B6B40] truncate" title={title}>
+      <div className="drawer-item-info">
+        <h4 className="drawer-item-title" title={title}>
           {title}
         </h4>
-        <p className="text-xs text-gray-500 mb-2">{subtitle}</p>
+        <p className="drawer-item-subtitle">{subtitle}</p>
 
-        <div className="flex items-center justify-between">
+        <div className="drawer-item-row">
           {/* Cart Quantity Adjusters */}
           {isCartMode && (
-            <div className="flex items-center border border-[#BAC3A1] rounded bg-white text-sm">
-              <button 
-                onClick={() => onUpdateQuantity(-1)} 
-                className="px-2 py-0.5 font-bold hover:bg-gray-100 transition"
+            <div className="drawer-item-qty">
+              <button
+                onClick={() => onUpdateQuantity(-1)}
+                className="drawer-item-qty-btn"
               >
                 -
               </button>
-              <span className="px-2 py-0.5 font-medium border-x border-[#BAC3A1]">{quantity}</span>
-              <button 
-                onClick={() => onUpdateQuantity(1)} 
-                className="px-2 py-0.5 font-bold hover:bg-gray-100 transition"
+              <span className="drawer-item-qty-value">{quantity}</span>
+              <button
+                onClick={() => onUpdateQuantity(1)}
+                className="drawer-item-qty-btn"
               >
                 +
               </button>
@@ -71,15 +71,15 @@ export function DrawerItem({
           )}
 
           {/* Dynamic Row Price Calculation */}
-          <span className="text-lg font-bold text-gray-900 ml-auto">
+          <span className="drawer-item-price">
             ₱ {((price) * (quantity ?? 1)).toLocaleString()}
           </span>
 
           {/* Cart Delete Action Icon */}
           {isCartMode && (
-            <button 
-              onClick={onRemove} 
-              className="text-[#C1C9A1] hover:text-red-500 transition-colors p-1 ml-2 shrink-0"
+            <button
+              onClick={onRemove}
+              className="drawer-item-remove-btn"
               title="Remove item"
             >
               <Trash2 className="w-5 h-5" />
@@ -90,9 +90,9 @@ export function DrawerItem({
 
       {/* Wishlist Delete Action Icon */}
       {!isCartMode && (
-        <button 
-          onClick={onRemove} 
-          className="text-[#C1C9A1] hover:text-red-500 transition-colors self-start p-1 shrink-0"
+        <button
+          onClick={onRemove}
+          className="drawer-item-remove-btn-wishlist"
           title="Remove from wishlist"
         >
           <Trash2 className="w-5 h-5" />

@@ -9,14 +9,14 @@ export function SocialLinks({
   designer,
 }: SocialLinksProps) {
   return (
-    <div className="mb-8 flex items-center justify-center gap-4 text-stone-500">
+    <div className="designer-social-links">
 
       {designer.facebook && (
         <a
           href={designer.facebook}
           target="_blank"
           rel="noopener noreferrer"
-          className="transition-colors hover:text-[#c36a3e]"
+          className="designer-social-link"
           aria-label="Facebook"
         >
           <Facebook size={18} />
@@ -28,7 +28,7 @@ export function SocialLinks({
           href={designer.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          className="transition-colors hover:text-[#c36a3e]"
+          className="designer-social-link"
           aria-label="Instagram"
         >
           <Instagram size={18} />
@@ -40,7 +40,7 @@ export function SocialLinks({
           href={designer.twitter}
           target="_blank"
           rel="noopener noreferrer"
-          className="transition-colors hover:text-[#c36a3e]"
+          className="designer-social-link"
           aria-label="Twitter"
         >
           <Twitter size={18} />
@@ -52,7 +52,7 @@ export function SocialLinks({
           href={designer.youtube}
           target="_blank"
           rel="noopener noreferrer"
-          className="transition-colors hover:text-[#c36a3e]"
+          className="designer-social-link"
           aria-label="YouTube"
         >
           <Youtube size={18} />

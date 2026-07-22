@@ -26,14 +26,14 @@ export function TopDesignerSection({
   if (!list.length) return null;
 
   return (
-    <section className="relative overflow-hidden py-24">
+    <section className="top-designers-section">
 
       {/* White Background */}
-      <div className="absolute inset-0 bg-white" />
+      <div className="top-designers-bg-white" />
 
       {/* Wallpaper Fade */}
       <div
-        className="absolute inset-0 opacity-100"
+        className="top-designers-wallpaper"
         style={{
           backgroundImage: "url('/textured-wallpaper.png')",
           backgroundSize: 'cover',
@@ -46,25 +46,11 @@ export function TopDesignerSection({
       />
 
       {/* Soft Glow */}
-      <div
-        className="
-          absolute
-          left-1/2
-          top-1/2
-          -translate-x-1/2
-          -translate-y-1/2
-          w-[900px]
-          h-[500px]
-          rounded-full
-          bg-[#ead8ca]/30
-          blur-3xl
-          pointer-events-none
-        "
-      />
+      <div className="top-designers-glow" />
 
-      <div className="relative z-10 max-w-[1700px] mx-auto px-6">
+      <div className="top-designers-container">
 
-        <header className="mb-12">
+        <header className="top-designers-header">
 
           <h2 className="section-header text-[#9c522b] uppercase">
             Top Designers
@@ -75,19 +61,19 @@ export function TopDesignerSection({
             through craftsmanship, creativity, and timeless design.
           </p>
 
-          <div className="mt-8 mb-12 flex items-center justify-center gap-4">
+          <div className="top-designers-divider-row">
 
-            <div className="h-px w-20 bg-[#c79a7d]/40" />
+            <div className="top-designers-divider-line" />
 
-            <div className="h-3 w-3 rotate-45 border border-[#9c522b]/60 bg-white" />
+            <div className="top-designers-divider-diamond" />
 
-            <div className="h-px w-20 bg-[#c79a7d]/40" />
+            <div className="top-designers-divider-line" />
 
           </div>
 
         </header>
 
-        <div className="relative group lg:px-40">
+        <div className="top-designers-carousel-wrap group">
 
           <CarouselButton
             direction="left"
@@ -96,26 +82,12 @@ export function TopDesignerSection({
 
           <div
             ref={containerRef}
-            className="
-              flex
-              gap-6
-              overflow-x-auto
-              pb-6
-              snap-x
-              snap-mandatory
-              scroll-smooth
-              no-scrollbar
-            "
+            className="top-designers-carousel-track"
           >
             {list.map((designer) => (
               <div
                 key={designer.id}
-                className="
-                  w-[280px]
-                  sm:w-[300px]
-                  shrink-0
-                  snap-start
-                "
+                className="top-designers-carousel-item"
               >
                 <DesignerCard designer={designer} />
               </div>
@@ -152,37 +124,11 @@ function CarouselButton({
       type="button"
       onClick={onClick}
       aria-label={`Scroll ${direction}`}
-      className={`
-        hidden
-        md:flex
-        items-center
-        justify-center
-        absolute
-        top-1/2
-        -translate-y-1/2
-        ${
-          direction === 'left'
-            ? '-left-4'
-            : '-right-4'
-        }
-        z-20
-        h-12
-        w-12
-        rounded-full
-        border
-        border-[#d6b49b]
-        bg-white/90
-        backdrop-blur-sm
-        text-[#9c522b]
-        shadow-lg
-        opacity-0
-        transition-all
-        duration-300
-        group-hover:opacity-100
-        hover:bg-[#9c522b]
-        hover:text-white
-        hover:scale-105
-      `}
+      className={`top-designers-carousel-btn ${
+        direction === 'left'
+          ? 'top-designers-carousel-btn-left'
+          : 'top-designers-carousel-btn-right'
+      }`}
     >
       <Icon size={20} />
     </button>

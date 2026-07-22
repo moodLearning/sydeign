@@ -13,11 +13,7 @@ export function HomeSection({
 }: HomeSectionProps) {
   return (
     <section
-      className={`
-        w-full
-        ${alternate ? 'bg-background' : 'bg-white'}
-        ${className}
-      `}
+      className={`home-section ${alternate ? 'home-section-alt' : 'home-section-default'} ${className}`}
     >
       {children}
     </section>

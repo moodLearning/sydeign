@@ -11,13 +11,13 @@ export function WishlistDrawerContent({ closeDrawer }: WishlistDrawerContentProp
   const activeWishlistItem = wishlistItems.find(item => item.selected);
 
   if (wishlistItems.length === 0) {
-    return <p className="text-center text-gray-500 mt-12 text-lg">Your wishlist is empty.</p>;
+    return <p className="drawer-empty-text">Your wishlist is empty.</p>;
   }
 
   return (
-    <div className="flex flex-col h-full justify-between">
+    <div className="drawer-content">
       {/* Items Scroll Area */}
-      <div className="flex-1 overflow-y-auto pr-1">
+      <div className="drawer-items-scroll">
         {wishlistItems.map((item) => (
           <DrawerItem
             key={item.id}
@@ -33,28 +33,28 @@ export function WishlistDrawerContent({ closeDrawer }: WishlistDrawerContentProp
       </div>
 
       {/* Wishlist Actions Area */}
-      <div className="flex flex-col gap-4 w-full pt-4 border-t border-gray-100">
+      <div className="drawer-actions-footer">
         {activeWishlistItem && (
-          <div className="flex items-center gap-3 bg-white p-2 rounded-lg border border-[#D4D9C1]">
-            <img 
-              src={activeWishlistItem.product.image || '/placeholder.png'} 
-              className="w-10 h-10 rounded object-cover" 
+          <div className="wishlist-move-preview">
+            <img
+              src={activeWishlistItem.product.image || '/placeholder.png'}
+              className="wishlist-move-preview-img"
               alt=""
             />
-            <span className="text-sm text-gray-600 font-medium truncate">
+            <span className="wishlist-move-preview-text">
               Ready to move: {activeWishlistItem.product.title}
             </span>
           </div>
         )}
 
-        <div className="flex gap-3">
-          <button 
-            onClick={closeDrawer} 
-            className="flex-1 py-3 border border-[#BAC3A1] text-[#4B6B40] rounded-xl font-bold bg-white hover:bg-gray-50 transition text-center text-sm"
+        <div className="drawer-actions-row">
+          <button
+            onClick={closeDrawer}
+            className="drawer-btn-secondary"
           >
             Keep Browsing
           </button>
-          <button className="flex-1 py-3 bg-[#D36B45] hover:bg-[#b25130] text-white rounded-xl font-bold transition text-center shadow-md text-sm">
+          <button className="drawer-btn-primary">
             Add to Cart
           </button>
         </div>

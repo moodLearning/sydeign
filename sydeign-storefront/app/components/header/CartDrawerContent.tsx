@@ -33,13 +33,13 @@ export function CartDrawerContent({ closeDrawer }: CartDrawerContentProps) {
   };
 
   if (cartItems.length === 0) {
-    return <p className="text-center text-gray-500 mt-12 text-lg">Your cart is empty.</p>;
+    return <p className="drawer-empty-text">Your cart is empty.</p>;
   }
 
   return (
-    <div className="flex flex-col h-full justify-between">
+    <div className="drawer-content">
       {/* Items Area */}
-      <div className="flex-1 overflow-y-auto pr-1">
+      <div className="drawer-items-scroll">
         {cartItems.map((item) => (
           <DrawerItem
             key={item.id}
@@ -57,30 +57,30 @@ export function CartDrawerContent({ closeDrawer }: CartDrawerContentProps) {
       </div>
 
       {/* Cart Footer Area */}
-      <div className="flex flex-col gap-4 w-full pt-4 border-t border-gray-100">
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-500">Selected Items ({selectedCartItems.length}x):</span>
+      <div className="drawer-actions-footer">
+        <div className="cart-summary-row">
+          <span className="cart-summary-label">Selected Items ({selectedCartItems.length}x):</span>
           <div className="text-right">
-            <span className="text-xs text-gray-400 block">Subtotal</span>
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="cart-subtotal-label">Subtotal</span>
+            <span className="cart-subtotal-value">
               ₱ {cartSubTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </span>
           </div>
         </div>
 
-        <div className="flex gap-3">
-          <button 
-            onClick={closeDrawer} 
+        <div className="drawer-actions-row">
+          <button
+            onClick={closeDrawer}
             disabled={isRedirecting}
-            className="flex-1 py-3 border border-[#BAC3A1] text-[#4B6B40] rounded-xl font-bold bg-white hover:bg-gray-50 transition text-center text-sm disabled:opacity-50"
+            className="drawer-btn-secondary-fade"
           >
             Continue Shopping
           </button>
-          
+
           <button
             onClick={handleCheckoutRedirect}
             disabled={isRedirecting || selectedCartItems.length === 0}
-            className="flex-1 py-3 bg-[#D36B45] hover:bg-[#b25130] text-white rounded-xl font-bold transition text-center shadow-md text-sm flex items-center justify-center disabled:bg-gray-400 disabled:cursor-not-allowed"
+            className="drawer-btn-checkout"
           >
             {isRedirecting ? 'Redirecting...' : 'Check Out'}
           </button>

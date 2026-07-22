@@ -53,23 +53,23 @@ export default function Sidebar({ activeCategory, onFilterChange, collections }:
   };
 
   return (
-    <aside className="mb-80 w-full md:w-80 shrink-0 bg-white border border-gray-100 rounded-2xl p-6 h-fit sticky top-6 shadow-sm z-50 pointer-events-auto isolate">
+    <aside className="sidebar">
       <div>
-        <h2 className="flex items-center gap-2 text-2xl font-semibold text-primary mb-4 pb-2 border-b border-gray-100">
+        <h2 className="sidebar-heading">
           <Filter size={24} />
           Categories
         </h2>
-        
-        <ul className="space-y-1">
+
+        <ul className="sidebar-list">
           {/* All Products Option */}
           <li>
-            <button 
+            <button
               type="button"
               onClick={() => onFilterChange('All Products')}
-              className={`w-full text-left py-2.5 px-4 rounded-xl text-lg transition-all cursor-pointer block ${
-                activeCategory === 'All Products' 
-                  ? 'bg-primary/10 text-primary font-bold' 
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+              className={`sidebar-link ${
+                activeCategory === 'All Products'
+                  ? 'sidebar-link-active'
+                  : 'sidebar-link-inactive'
               }`}
             >
               All Products
@@ -79,13 +79,13 @@ export default function Sidebar({ activeCategory, onFilterChange, collections }:
           {/* Cleaned Dynamic Sidebar Menu List */}
           {filteredCollections.map((collection) => (
             <li key={collection.id}>
-              <button 
+              <button
                 type="button"
                 onClick={() => onFilterChange(collection.title)}
-                className={`w-full text-left py-2.5 px-4 rounded-xl text-lg transition-all cursor-pointer block ${
+                className={`sidebar-link ${
                   activeCategory.toLowerCase() === collection.title.toLowerCase()
-                    ? 'bg-primary/10 text-primary font-bold' 
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-primary'
+                    ? 'sidebar-link-active'
+                    : 'sidebar-link-inactive'
                 }`}
               >
                 {collection.title}
@@ -95,11 +95,11 @@ export default function Sidebar({ activeCategory, onFilterChange, collections }:
         </ul>
       </div>
 
-      <hr className="my-8 border-gray-100" />
+      <hr className="sidebar-divider" />
 
       {/* Price Range Section */}
       <div>
-        <h2 className="text-2xl font-semibold text-primary mb-4">
+        <h2 className="sidebar-subheading">
           Price Range
         </h2>
 
@@ -111,15 +111,15 @@ export default function Sidebar({ activeCategory, onFilterChange, collections }:
           step={PRICE_FILTER_CONFIG.STEP}
           value={currentMaxPrice}
           onChange={(e) => handleSliderChange(Number(e.target.value))}
-          className="w-full accent-primary cursor-pointer"
+          className="sidebar-range-input"
         />
 
         {/* Price Indicators display dynamically */}
-        <div className="flex justify-between mt-2">
-          <span className="text-base font-medium text-gray-500">
+        <div className="sidebar-price-row">
+          <span className="sidebar-price-min">
             ₱{PRICE_FILTER_CONFIG.MIN_LIMIT.toLocaleString()}
           </span>
-          <span className="text-base font-bold text-primary">
+          <span className="sidebar-price-max">
             ₱{currentMaxPrice.toLocaleString()}
           </span>
         </div>

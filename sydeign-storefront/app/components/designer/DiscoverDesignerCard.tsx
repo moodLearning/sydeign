@@ -13,72 +13,26 @@ export function DiscoverDesignerCard({
 }: DiscoverDesignerCardProps) {
   return (
     <div
-      className={`
-        w-full
-        bg-[#faf9f6]
-        border
-        border-stone-200/60
-        rounded-[2rem]
-        overflow-hidden
-        shadow-sm
-        transition-all
-        duration-300
-        hover:shadow-md
-        hover:-translate-y-1
-        flex
-        flex-col
-        items-center
-        relative
-        min-h-[220px]
-        group
-
-        ${
-          isAlternate
-            ? 'sm:flex-row-reverse'
-            : 'sm:flex-row'
-        }
-      `}
+      className={`discover-card group ${
+        isAlternate
+          ? 'discover-card-reverse'
+          : 'discover-card-normal'
+      }`}
     >
       {/* Designer Avatar Section */}
-      <div
-        className="
-          w-full
-          sm:w-[220px]
-          h-[240px]
-          sm:h-[220px]
-          shrink-0
-          bg-stone-100
-          relative
-          overflow-hidden
-        "
-      >
+      <div className="discover-card-avatar-wrap">
         <img
           src={designer.profileImage || '/placeholder-designer.png'}
           alt={designer.name}
-          className="
-            w-full
-            h-full
-            object-cover
-            transition-transform
-            duration-500
-            group-hover:scale-105
-          "
+          className="discover-card-avatar-img"
         />
         {/* Subtle dark overlay gradient on the avatar for depth */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
+        <div className="discover-card-avatar-overlay" />
       </div>
 
       {/* Designer Information Section */}
       <div
-        className="
-          flex-1
-          p-8
-          md:p-10
-          text-left
-          bg-no-repeat
-          relative
-          z-10
-        "
+        className="discover-card-info"
         style={{
           backgroundImage: `radial-gradient(
             circle at bottom ${isAlternate ? 'left' : 'right'},
@@ -89,13 +43,13 @@ export function DiscoverDesignerCard({
         }}
       >
         {/* Header/Handle with Clean Verified Badge */}
-        <div className="flex items-center gap-2 mb-1.5">
-          <p className="text-lg font-mono tracking-wider text-[#556b57] font-semibold">
+        <div className="discover-card-handle-row">
+          <p className="discover-card-handle">
             @{designer.handle}
           </p>
-          <span className="inline-flex items-center justify-center w-3.5 h-3.5 rounded-full bg-[#556b57]/10 text-[#556b57]">
+          <span className="discover-card-verified-badge">
             <svg
-              className="w-2 h-2"
+              className="discover-card-verified-icon"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -107,80 +61,27 @@ export function DiscoverDesignerCard({
         </div>
 
         {/* Designer Name */}
-        <h3
-          className="
-            text-2xl
-            md:text-3xl
-            font-serif
-            font-bold
-            text-[#143e32]
-            tracking-tight
-            mb-3
-          "
-        >
+        <h3 className="discover-card-name">
           {designer.name}
         </h3>
 
         {/* Bio */}
-        <p
-          className="
-            text-lg
-            text-black
-            leading-relaxed
-            max-w-3xl
-            line-clamp-3
-          "
-        >
+        <p className="discover-card-bio">
           {designer.bio || 'No biography available.'}
         </p>
       </div>
 
       {/* Featured Product Container */}
       <div
-        className={`
-          w-[180px]
-          h-[220px]
-          shrink-0
-          p-6
-          hidden
-          md:flex
-          items-center
-          justify-center
-          relative
-          ${isAlternate ? 'border-r border-stone-100/50' : 'border-l border-stone-100/50'}
-        `}
+        className={`discover-card-product-wrap ${isAlternate ? 'discover-card-product-border-r' : 'discover-card-product-border-l'}`}
       >
         {/* Soft, circular backing pod for the product */}
-        <div 
-          className="
-            absolute 
-            w-28 
-            h-28 
-            rounded-full 
-            bg-stone-200/40 
-            blur-xl 
-            transition-all 
-            duration-300 
-            group-hover:scale-125 
-            group-hover:bg-[#556b57]/5
-          " 
-        />
+        <div className="discover-card-product-glow" />
 
         <img
           src={productImage}
           alt="Featured Product"
-          className="
-            relative
-            z-10
-            max-w-[120px]
-            max-h-[120px]
-            object-contain
-            drop-shadow-[0_10px_15px_rgba(0,0,0,0.08)]
-            transition-transform
-            duration-300
-            group-hover:scale-110
-            group-hover:-rotate-2
-          "
+          className="discover-card-product-img"
         />
       </div>
     </div>

@@ -77,9 +77,9 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
   }
 
   return (
-    <div className="w-full">
+    <div className="discover-section">
 
-      <div className="w-full mb-12">
+      <div className="discover-section-heading-wrap">
 
         <h2 className="section-subheader text-center">
           Meet The{' '} <span className="text-[#556b57]">Designers</span>
@@ -87,27 +87,13 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
 
       </div>
 
-      <div className="max-w-4/5 mx-auto mb-16 px-4">
+      <div className="discover-section-search-wrap">
 
-        <div
-          className="
-            flex
-            items-center
-            bg-white
-            border
-            border-stone-300
-            rounded-lg
-            px-4
-            py-2
-            shadow-sm
-            focus-within:ring-2
-            focus-within:ring-[#556b57]/20
-          "
-        >
+        <div className="discover-section-search-box">
 
           <Search
             size={18}
-            className="text-stone-400 mr-2 rounded-2xl"
+            className="discover-section-search-icon"
           />
 
 
@@ -123,13 +109,7 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
 
             placeholder="Search designers..."
 
-            className="
-              w-full
-              bg-transparent
-              text-xl
-              focus:outline-none
-              text-stone-800
-            "
+            className="discover-section-search-input"
 
           />
 
@@ -140,17 +120,7 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
 
 
 
-      <div
-        className="
-          max-w-4/5
-          mx-auto
-          px-4
-          flex
-          flex-col
-          gap-10
-          min-h-[600px]
-        "
-      >
+      <div className="discover-section-list">
 
 
         {
@@ -201,18 +171,7 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
 
           (
 
-            <div
-              className="
-                text-center
-                py-16
-                text-stone-400
-                text-sm
-                border-2
-                border-dashed
-                border-stone-200
-                rounded-3xl
-              "
-            >
+            <div className="discover-section-empty">
 
               No matching designers found.
 
@@ -232,19 +191,7 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
       {
         totalPages > 1 && (
 
-          <div
-            className="
-              absolute
-              left-0
-              right-0
-              bottom-8
-              z-[100]
-              flex
-              justify-center
-              items-center
-              gap-4
-            "
-          >
+          <div className="discover-section-pagination">
 
             {
               Array.from({
@@ -264,16 +211,11 @@ export function DiscoverDesignerSection({ masterList, products }: DiscoverDesign
                       )
                     }
 
-                    className={`
-                      text-2xl
-                      transition-all
-                      hover:scale-125
-                      ${
-                        pageIndex === currentPage
-                        ? 'text-[#556b57]'
-                        : 'text-stone-400'
-                      }
-                    `}
+                    className={`discover-section-page-dot ${
+                      pageIndex === currentPage
+                        ? 'discover-section-page-dot-active'
+                        : 'discover-section-page-dot-inactive'
+                    }`}
 
                   >
 

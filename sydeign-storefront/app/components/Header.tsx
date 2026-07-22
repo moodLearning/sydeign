@@ -29,61 +29,61 @@ export default function Header({ q }: { q?: string }) {
 
   return (
     <>
-      <header className="relative z-50 bg-[#FFFCEB] px-8 py-8 flex items-center justify-between border-b border-[#D4D9C1] shadow-md">
-        <div className="flex items-center gap-12 flex-1">
-          <Link to="/" className="hover:opacity-80 transition flex items-center">
-            <img src="/logo-small.png" alt="SÝDEIGN" className="h-18 w-auto object-contain" />
+      <header className="site-header">
+        <div className="site-header-left">
+          <Link to="/" className="site-header-logo-link">
+            <img src="/logo-small.png" alt="SÝDEIGN" className="site-header-logo" />
           </Link>
 
-          <Form action="/search" method="get" className="relative w-full max-w-xl">
+          <Form action="/search" method="get" className="site-header-search-form">
             <input
               type="search"
               name="q"
               defaultValue={q}
               placeholder="Search products, designers..."
               onChange={(e) => submit(e.currentTarget.form)}
-              className="w-full bg-[#FAFAF2] border border-primary rounded-full px-6 py-4 text-primary focus:outline-none focus:ring-1 focus:ring-[#4B6B40] placeholder-[#A3AF8A] text-xl font-sans"
+              className="site-header-search-input"
             />
-            <span className="absolute right-4 py-3 pt-3.5 text-primary">
-              <Search className="w-8 h-8 stroke-[2.7]" />
+            <span className="site-header-search-icon">
+              <Search className="site-header-search-icon-glyph" />
             </span>
           </Form>
         </div>
 
-        <nav className="flex items-center gap-8 text-primary font-sans font-bold text-2xl ml-8 relative">
-          <Link to="/" className="hover:text-[#2C4124]">Home</Link>
-          <Link to="/products" className="hover:text-[#2C4124]">Products</Link>
-          <Link to="/designers" className="hover:text-[#2C4124]">Designers</Link>
-          <Link to="/about" className="hover:text-[#2C4124]">About Us</Link>
-          <Link to="/contact" className="hover:text-[#2C4124]">Contact Us</Link>
+        <nav className="site-header-nav">
+          <Link to="/" className="site-header-nav-link">Home</Link>
+          <Link to="/products" className="site-header-nav-link">Products</Link>
+          <Link to="/designers" className="site-header-nav-link">Designers</Link>
+          <Link to="/about" className="site-header-nav-link">About Us</Link>
+          <Link to="/contact" className="site-header-nav-link">Contact Us</Link>
 
           {/* Action Trigger Buttons */}
-          <div className="flex items-center gap-4 ml-4 text-[#4B6B40]">
-            <Link to="/notifications" className="hover:text-[#2C4124] transition-colors relative" title="Notifications">
-              <Bell className="w-8 h-8 stroke-2.5" />
-              <span className="absolute -top-1 -right-1 bg-red-500 h-2.5 w-2.5 rounded-full" />
+          <div className="site-header-actions">
+            <Link to="/notifications" className="site-header-action-link" title="Notifications">
+              <Bell className="site-header-icon" />
+              <span className="site-header-notif-dot" />
             </Link>
-            
-            <button onClick={() => setActiveDrawer('wishlist')} className="hover:text-[#2C4124] transition-colors relative" title="Wishlist">
-              <Heart className="w-8 h-8 stroke-2.5" />
+
+            <button onClick={() => setActiveDrawer('wishlist')} className="site-header-action-link" title="Wishlist">
+              <Heart className="site-header-icon" />
               {wishlistItems.length > 0 && (
-                <span className="absolute -top-1 -right-2 bg-[#4B6B40] text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
+                <span className="site-header-badge">
                   {wishlistItems.length}
                 </span>
               )}
             </button>
 
-            <button onClick={() => setActiveDrawer('cart')} className="hover:text-[#2C4124] transition-colors relative" title="Shopping Cart">
-              <ShoppingCart className="w-8 h-8 stroke-2.5" />
+            <button onClick={() => setActiveDrawer('cart')} className="site-header-action-link" title="Shopping Cart">
+              <ShoppingCart className="site-header-icon" />
               {cartItems.length > 0 && (
-                <span className="absolute -top-1 -right-2 bg-[#D36B45] text-white text-[10px] h-4 w-4 rounded-full flex items-center justify-center">
+                <span className="site-header-badge-cart">
                   {cartItems.length}
                 </span>
               )}
             </button>
 
-            <button onClick={() => setActiveDrawer('profile')} className="hover:text-[#2C4124] transition-colors focus:outline-none" title="Menu">
-              <Menu className="w-8 h-8 stroke-2.5" />
+            <button onClick={() => setActiveDrawer('profile')} className="site-header-menu-btn" title="Menu">
+              <Menu className="site-header-icon" />
             </button>
           </div>
         </nav>

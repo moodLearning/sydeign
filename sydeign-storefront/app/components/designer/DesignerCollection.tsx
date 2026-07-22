@@ -31,37 +31,22 @@ export function DesignerCollection({
   onLoadMore,
 }: DesignerCollectionProps) {
   return (
-    <section className="mx-auto mt-20 max-w-6xl px-6">
-      <header className="mb-12 flex items-center justify-between">
+    <section className="designer-collection-section">
+      <header className="designer-collection-header">
 
         <div>
             <h2 className="section-subheader">
             The Designer&apos;s Collection
             </h2>
 
-            <p className="mt-2 text-sm text-stone-500">
+            <p className="designer-collection-count">
             {totalProducts} products
             </p>
         </div>
 
         <button
             type="button"
-            className="
-            flex
-            items-center
-            gap-2
-            rounded-lg
-            bg-[#c36a3e]
-            px-4
-            py-2
-            text-xs
-            font-semibold
-            uppercase
-            tracking-wide
-            text-white
-            transition
-            hover:bg-[#b05c32]
-            "
+            className="designer-collection-sort-btn"
         >
             <ArrowUpDown size={14} />
             Sort By

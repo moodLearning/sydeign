@@ -24,34 +24,9 @@ export function DesignerPagination({
   }
 
   return (
-    <div
-      className="
-        mt-20
-        flex
-        flex-col
-        items-center
-        gap-6
-      "
-    >
-      <div
-        className="
-          flex
-          w-full
-          items-center
-          justify-center
-          gap-4
-        "
-      >
-        <div
-          className="
-            h-px
-            max-w-[100px]
-            flex-1
-            bg-gradient-to-r
-            from-transparent
-            to-[#9c522b]/30
-          "
-        />
+    <div className="designer-pagination">
+      <div className="designer-pagination-row">
+        <div className="designer-pagination-line" />
 
         {Array.from({
           length: totalPages,
@@ -63,53 +38,24 @@ export function DesignerPagination({
               onPageClick(page)
             }
             title={`Page ${page + 1}`}
-            className={`
-              cursor-pointer
-              transition-all
-              duration-300
-              hover:scale-125
-              focus:outline-none
-
-              ${
-                page <= activePage
-                  ? 'scale-125 font-bold text-[#9c522b] drop-shadow-[0_0_3px_rgba(156,82,43,0.4)]'
-                  : 'text-[#9c522b]/30 hover:text-[#9c522b]/60'
-              }
-            `}
+            className={`designer-pagination-dot ${
+              page <= activePage
+                ? 'designer-pagination-dot-active'
+                : 'designer-pagination-dot-inactive'
+            }`}
           >
             ✦
           </button>
         ))}
 
-        <div
-          className="
-            h-px
-            max-w-[100px]
-            flex-1
-            bg-gradient-to-l
-            from-transparent
-            to-[#9c522b]/30
-          "
-        />
+        <div className="designer-pagination-line-reverse" />
       </div>
 
       {visibleCount < totalProducts && (
         <button
           type="button"
           onClick={onLoadMore}
-          className="
-            border-b
-            border-[#9c522b]/40
-            pb-1
-            text-xs
-            font-semibold
-            uppercase
-            tracking-widest
-            text-[#9c522b]
-            transition
-            hover:text-[#b05c32]
-            cursor-pointer
-          "
+          className="designer-pagination-load-more"
         >
           Load More Products (
           {totalProducts - visibleCount}{' '}

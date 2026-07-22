@@ -39,53 +39,22 @@ export default function ProductSection({
 
   return (
     <section
-      className={`
-        rounded-b-4xl
-        py-12
-        px-10
-        ${className}
-      `}
+      className={`product-section ${className}`}
     >
-      <header
-        className="
-          mb-8
-          flex
-          items-center
-          justify-between
-        "
-      >
-        <h2
-          className="
-            text-5xl
-            font-bold
-            text-primary
-          "
-        >
+      <header className="product-section-header">
+        <h2 className="product-section-title">
           {title}
         </h2>
 
         <Link
           to={searchUrl}
-          className="
-            cursor-pointer
-            text-xl
-            text-primary
-            hover:underline
-            font-semibold
-          "
+          className="product-section-see-all"
         >
           See All
         </Link>
       </header>
 
-      <div
-        className="
-          grid
-          gap-6
-          md:grid-cols-3
-          lg:grid-cols-4
-        "
-      >
+      <div className="product-section-grid">
         {items.map((product) => (
           <ProductCard
             key={product.id}
