@@ -59,11 +59,6 @@ export default function Header({ q }: { q?: string }) {
 
           {/* Action Trigger Buttons */}
           <div className="site-header-actions">
-            <Link to="/notifications" className="site-header-action-link" title="Notifications">
-              <Bell className="site-header-icon" />
-              <span className="site-header-notif-dot" />
-            </Link>
-
             <button onClick={() => setActiveDrawer('wishlist')} className="site-header-action-link" title="Wishlist">
               <Heart className="site-header-icon" />
               {wishlistItems.length > 0 && (
